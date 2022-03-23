@@ -1,45 +1,48 @@
 package ru.barmatin.homework.service;
 
 import org.springframework.stereotype.Service;
-import ru.barmatin.homework.util.MyUtils;
+import ru.barmatin.homework.util.ApplicationUtils;
 
 import java.util.Scanner;
 
 @Service
-public class ConsoleServiceImpl implements ConsoleService {
+public class IOServiceImpl implements IOService {
     private final Scanner scanner;
 
-    public ConsoleServiceImpl() {
+    public IOServiceImpl() {
         this.scanner = new Scanner(System.in);
     }
 
-    public void consoleOut(String text) {
+    public void outputString(String text) {
         System.out.print(text);
     }
 
-    public void consoleOutLn(String text) {
+    public void outputStringLn(String text) {
         System.out.println(text);
     }
 
     @Override
-    public String consoleInString() {
+    public String readString() {
         return scanner.nextLine();
     }
 
     @Override
-    public int consoleInInt(int maxNumber) {
+    public int readInt(int maxNumber) {
         String input;
         while (true) {
             input = scanner.nextLine();
-            if (MyUtils.isInteger(input)){
+            if (ApplicationUtils.isInteger(input)) {
                 int inputNumber = Integer.parseInt(input);
-                if (inputNumber>0 && inputNumber<=maxNumber)
+                if (inputNumber>0 && inputNumber<=maxNumber) {
                     break;
-                else
+                }
+                else {
                     System.out.print("Number out of bounds, please, try again: ");
+                }
             }
-            else
+            else {
                 System.out.print("Not number entered, please, try again: ");
+            }
         }
         return Integer.parseInt(input);
     }

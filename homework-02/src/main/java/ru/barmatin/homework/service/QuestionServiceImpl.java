@@ -16,11 +16,8 @@ public class QuestionServiceImpl implements QuestionService {
         this.questionDao = questionDao;
     }
 
-    public List<Question> getQuestionList() {
-        try {
-            return questionDao.getQuestionList();
-        } catch (QuestionsLoadingException e) {
-            return null;
-        }
+    public List<Question> getQuestionList() throws QuestionsLoadingException {
+        return questionDao.getQuestionList();
+
     }
 }

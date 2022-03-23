@@ -42,7 +42,7 @@ public class QuestionDaoImpl implements QuestionDao {
             } else
                 throw new QuestionsLoadingException("inputStream is null");
         } catch (IOException e) {
-            throw new QuestionsLoadingException(e.getLocalizedMessage());
+            throw new QuestionsLoadingException(e.getMessage());
         }
         return questionList;
     }

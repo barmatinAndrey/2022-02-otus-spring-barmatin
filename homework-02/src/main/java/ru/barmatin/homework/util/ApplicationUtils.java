@@ -1,6 +1,6 @@
 package ru.barmatin.homework.util;
 
-public class MyUtils {
+public class ApplicationUtils {
 
     public static boolean isInteger(String input) {
         try {
