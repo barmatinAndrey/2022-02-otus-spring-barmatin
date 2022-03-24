@@ -36,13 +36,15 @@ public class QuestionDaoImpl implements QuestionDao {
                         }
                         questionList.add(new Question(columns[0], answerList));
                     }
-                    else
+                    else {
                         throw new QuestionsLoadingException("invalid line");
+                    }
                 }
-            } else
+            } else {
                 throw new QuestionsLoadingException("inputStream is null");
+            }
         } catch (IOException e) {
-            throw new QuestionsLoadingException(e.getMessage());
+            throw new QuestionsLoadingException(e);
         }
         return questionList;
     }

@@ -6,4 +6,8 @@ public class QuestionsLoadingException extends Exception {
         super(message);
     }
 
+    public QuestionsLoadingException(Throwable cause){
+        super(cause);
+    }
+
 }

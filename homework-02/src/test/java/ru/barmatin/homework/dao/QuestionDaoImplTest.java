@@ -11,26 +11,25 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class QuestionDaoImplTest {
 
     @Test
     void checkQtyOfAnswers() {
-        QuestionDao questionDao = new QuestionDaoImpl("/questions_test.csv");
-        try {
+        assertDoesNotThrow(() -> {
+            QuestionDao questionDao = new QuestionDaoImpl("/questions_test.csv");
             List<Question> questionList = questionDao.getQuestionList();
             for (Question question: questionList){
                 assertEquals(4, question.getAnswerList().size());
             }
-        } catch (QuestionsLoadingException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Test
     void checkRightAnswersQty() {
-        QuestionDao questionDao = new QuestionDaoImpl("/questions_test.csv");
-        try {
+        assertDoesNotThrow(() -> {
+            QuestionDao questionDao = new QuestionDaoImpl("/questions_test.csv");
             List<Question> questionList = questionDao.getQuestionList();
             for (Question question: questionList){
                 int qty = 0;
@@ -40,22 +39,18 @@ class QuestionDaoImplTest {
                 }
                 assertEquals(1, qty);
             }
-        } catch (QuestionsLoadingException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Test
     void checkQuestionText() {
-        QuestionDao questionDao = new QuestionDaoImpl("/questions_test.csv");
-        try {
+        assertDoesNotThrow(() -> {
+            QuestionDao questionDao = new QuestionDaoImpl("/questions_test.csv");
             List<Question> questionList = questionDao.getQuestionList();
             for (Question question: questionList){
                 assertThat(question.getText()).contains("?");
             }
-        } catch (QuestionsLoadingException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Test

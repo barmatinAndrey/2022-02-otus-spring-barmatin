@@ -13,13 +13,13 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
     private final QuestionService questionService;
     private final int answersToPass;
-    private final IOService IOService;
+    private final IOService ioService;
     private int rightAnswersCount;
 
     @Autowired
-    public TestServiceImpl(QuestionService questionService, IOService IOService, @Value("${answers.to.pass}") int answersToPass) {
+    public TestServiceImpl(QuestionService questionService, IOService ioService, @Value("${answers.to.pass}") int answersToPass) {
         this.questionService = questionService;
-        this.IOService = IOService;
+        this.ioService = ioService;
         this.answersToPass = answersToPass;
     }
 
@@ -27,36 +27,39 @@ public class TestServiceImpl implements TestService {
         try {
             List<Question> questionList = questionService.getQuestionList();
             rightAnswersCount = 0;
-            String userName = printUserName();
-            for (Question question: questionList) {
-                showQuestion(question);
-                int answerPosition = printAnswerPosition(question.getAnswerList().size());
-                checkAnswer(question, answerPosition);
-                IOService.outputStringLn("------------------------------");
-            }
+            String userName = enterUserName();
+            showQuestionList(questionList);
             showTestResult(userName, questionList.size());
         } catch (QuestionsLoadingException e) {
-            IOService.outputString("Test can't be started, because receiving list of questions failed.");
-            System.exit(0);
+            ioService.outputString("Test can't be started, because receiving list of questions failed.");
         }
     }
 
-    private String printUserName() {
-        IOService.outputString("Enter your full name: ");
-        return IOService.readString();
+    private String enterUserName() {
+        ioService.outputString("Enter your full name: ");
+        return ioService.readString();
+    }
+
+    private void showQuestionList(List<Question> questionList) {
+        for (Question question: questionList) {
+            showQuestion(question);
+            int answerPosition = enterAnswerPosition(question.getAnswerList().size());
+            checkAnswer(question, answerPosition);
+            ioService.outputStringLn("------------------------------");
+        }
     }
 
     private void showQuestion(Question question) {
-        IOService.outputStringLn("- "+question.getText());
+        ioService.outputStringLn("- "+question.getText());
         for (int i=0; i<question.getAnswerList().size(); i++) {
             Answer answer = question.getAnswerList().get(i);
-            IOService.outputStringLn((i+1)+". "+answer.getText());
+            ioService.outputStringLn((i+1)+". "+answer.getText());
         }
-        IOService.outputString("Enter number of your answer: ");
+        ioService.outputString("Enter number of your answer: ");
     }
 
-    private int printAnswerPosition(int answerListSize) {
-        return IOService.readInt(answerListSize);
+    private int enterAnswerPosition(int answerListSize) {
+        return ioService.readInt(answerListSize);
     }
 
     private void checkAnswer(Question question, int answerPosition) {
@@ -65,8 +68,8 @@ public class TestServiceImpl implements TestService {
     }
 
     private void showTestResult(String userName, int questionsCount) {
-        IOService.outputStringLn(userName+", your result is "+rightAnswersCount+"/"+questionsCount+".");
-        IOService.outputStringLn(rightAnswersCount>=answersToPass ? "Congratulations, test passed!" : "Test is not passed:(");
+        ioService.outputStringLn(userName+", your result is "+rightAnswersCount+"/"+questionsCount+".");
+        ioService.outputStringLn(rightAnswersCount>=answersToPass ? "Congratulations, test passed!" : "Test is not passed:(");
     }
 
 
