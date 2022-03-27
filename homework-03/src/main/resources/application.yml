@@ -1,0 +1,8 @@
+spring:
+  messages:
+    basename: i18n/messages
+
+test:
+  file: /questions
+  extension: csv
+  answersToPass: 3
