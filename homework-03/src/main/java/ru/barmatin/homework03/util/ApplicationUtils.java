@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import java.util.Locale;
 
 public class ApplicationUtils {
-    public static String LOCALE_TAG = "ru";
+    public static final String LOCALE_TAG = "ru";
 
     public static boolean isInteger(String input) {
         try {
