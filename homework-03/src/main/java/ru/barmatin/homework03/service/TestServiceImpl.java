@@ -1,31 +1,29 @@
 package ru.barmatin.homework03.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.barmatin.homework03.config.YmlTestConfig;
+import ru.barmatin.homework03.config.TestConfig;
 import ru.barmatin.homework03.domain.Answer;
 import ru.barmatin.homework03.domain.Question;
 import ru.barmatin.homework03.exception.QuestionsLoadingException;
 
 import java.util.List;
 
-import static ru.barmatin.homework03.util.ApplicationUtils.getSourceMsg;
 
 @Service
 public class TestServiceImpl implements TestService {
     private final QuestionService questionService;
     private final int answersToPass;
     private final IOService ioService;
-    private final MessageSource messageSource;
+    private final MessageService messageService;
     private int rightAnswersCount;
 
     @Autowired
-    public TestServiceImpl(QuestionService questionService, IOService ioService, YmlTestConfig ymlTestConfig, MessageSource messageSource) {
+    public TestServiceImpl(QuestionService questionService, IOService ioService, TestConfig testConfig, MessageService messageService) {
         this.questionService = questionService;
         this.ioService = ioService;
-        this.answersToPass = ymlTestConfig.getAnswersToPass();
-        this.messageSource = messageSource;
+        this.answersToPass = testConfig.getAnswersToPass();
+        this.messageService = messageService;
     }
 
     public void startTest() {
@@ -36,12 +34,12 @@ public class TestServiceImpl implements TestService {
             showQuestionList(questionList);
             showTestResult(userName, questionList.size());
         } catch (QuestionsLoadingException e) {
-            ioService.outputString(getSourceMsg(messageSource, "strings.question.list.failed"));
+            ioService.outputString(messageService.getMessage("strings.question.list.failed"));
         }
     }
 
     private String enterUserName() {
-        ioService.outputString(getSourceMsg(messageSource, "strings.enter.name")+" ");
+        ioService.outputString(messageService.getMessage("strings.enter.name")+" ");
         return ioService.readString();
     }
 
@@ -60,11 +58,11 @@ public class TestServiceImpl implements TestService {
             Answer answer = question.getAnswerList().get(i);
             ioService.outputStringLn((i+1)+". "+answer.getText());
         }
-        ioService.outputString(getSourceMsg(messageSource, "strings.enter.answer.number")+" ");
+        ioService.outputString(messageService.getMessage("strings.enter.answer.number")+" ");
     }
 
     private int enterAnswerPosition(int answerListSize) {
-        return ioService.readInt(answerListSize);
+        return ioService.readInt(answerListSize, messageService.getMessage("strings.number.out.of.bounds"), messageService.getMessage("strings.not.number"));
     }
 
     private void checkAnswer(Question question, int answerPosition) {
@@ -73,8 +71,8 @@ public class TestServiceImpl implements TestService {
     }
 
     private void showTestResult(String userName, int questionsCount) {
-        ioService.outputStringLn(userName+getSourceMsg(messageSource, "strings.result.is")+" "+rightAnswersCount+"/"+questionsCount+".");
-        ioService.outputStringLn(rightAnswersCount>=answersToPass ? getSourceMsg(messageSource, "strings.test.passed") : getSourceMsg(messageSource, "strings.test.not.passed"));
+        ioService.outputStringLn(userName+messageService.getMessage("strings.result.is")+" "+rightAnswersCount+"/"+questionsCount+".");
+        ioService.outputStringLn(rightAnswersCount>=answersToPass ? messageService.getMessage("strings.test.passed") :messageService.getMessage("strings.test.not.passed"));
     }
 
 

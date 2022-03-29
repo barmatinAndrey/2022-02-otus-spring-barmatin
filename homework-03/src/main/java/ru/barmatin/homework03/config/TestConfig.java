@@ -6,10 +6,19 @@ import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "test")
 @Component
-public class YmlTestConfig {
+public class TestConfig {
+    private String locale;
     private String file;
     private String extension;
     private int answersToPass;
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
 
     public String getFile() {
         return file;

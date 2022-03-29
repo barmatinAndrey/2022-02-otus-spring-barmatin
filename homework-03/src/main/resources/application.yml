@@ -3,6 +3,7 @@ spring:
     basename: i18n/messages
 
 test:
+  locale: ru
   file: /questions
   extension: csv
   answersToPass: 3
