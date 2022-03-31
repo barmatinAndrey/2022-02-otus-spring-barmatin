@@ -28,7 +28,7 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public int readInt(int maxNumber, String outOfBounds, String notNumber) {
+    public int readInt(int maxNumber, String outOfBoundsError, String notNumberError) {
         String input;
         while (true) {
             input = scanner.nextLine();
@@ -38,11 +38,11 @@ public class IOServiceImpl implements IOService {
                     break;
                 }
                 else {
-                    System.out.print(outOfBounds+" ");
+                    System.out.print(outOfBoundsError+" ");
                 }
             }
             else {
-                System.out.print(notNumber+" ");
+                System.out.print(notNumberError+" ");
             }
         }
         return Integer.parseInt(input);

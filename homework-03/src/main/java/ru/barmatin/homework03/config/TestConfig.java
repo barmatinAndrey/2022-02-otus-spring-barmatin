@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "test")
 @Component
-public class TestConfig {
+public class TestConfig implements LocaleExtractor {
     private String locale;
     private String file;
     private String extension;

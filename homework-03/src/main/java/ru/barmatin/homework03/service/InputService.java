@@ -4,5 +4,5 @@ public interface InputService {
 
     String readString();
 
-    int readInt(int maxNumber, String outOfBounds, String notNumber);
+    int readInt(int maxNumber, String outOfBoundsError, String notNumberError);
 }

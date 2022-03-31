@@ -16,7 +16,6 @@ public class TestServiceImpl implements TestService {
     private final int answersToPass;
     private final IOService ioService;
     private final MessageService messageService;
-    private int rightAnswersCount;
 
     @Autowired
     public TestServiceImpl(QuestionService questionService, IOService ioService, TestConfig testConfig, MessageService messageService) {
@@ -29,10 +28,9 @@ public class TestServiceImpl implements TestService {
     public void startTest() {
         try {
             List<Question> questionList = questionService.getQuestionList();
-            rightAnswersCount = 0;
             String userName = enterUserName();
-            showQuestionList(questionList);
-            showTestResult(userName, questionList.size());
+            int rightAnswersCount = showQuestionList(questionList);
+            showTestResult(userName, questionList.size(), rightAnswersCount);
         } catch (QuestionsLoadingException e) {
             ioService.outputString(messageService.getMessage("strings.question.list.failed"));
         }
@@ -43,13 +41,15 @@ public class TestServiceImpl implements TestService {
         return ioService.readString();
     }
 
-    private void showQuestionList(List<Question> questionList) {
+    private int showQuestionList(List<Question> questionList) {
+        int rightAnswersCount = 0;
         for (Question question: questionList) {
             showQuestion(question);
             int answerPosition = enterAnswerPosition(question.getAnswerList().size());
-            checkAnswer(question, answerPosition);
+            rightAnswersCount += checkAnswer(question, answerPosition);
             ioService.outputStringLn("------------------------------");
         }
+        return rightAnswersCount;
     }
 
     private void showQuestion(Question question) {
@@ -65,12 +65,16 @@ public class TestServiceImpl implements TestService {
         return ioService.readInt(answerListSize, messageService.getMessage("strings.number.out.of.bounds"), messageService.getMessage("strings.not.number"));
     }
 
-    private void checkAnswer(Question question, int answerPosition) {
-        if (question.getAnswerList().get(answerPosition-1).isRight())
-            rightAnswersCount++;
+    private int checkAnswer(Question question, int answerPosition) {
+        if (question.getAnswerList().get(answerPosition-1).isRight()) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
     }
 
-    private void showTestResult(String userName, int questionsCount) {
+    private void showTestResult(String userName, int questionsCount, int rightAnswersCount) {
         ioService.outputStringLn(userName+messageService.getMessage("strings.result.is")+" "+rightAnswersCount+"/"+questionsCount+".");
         ioService.outputStringLn(rightAnswersCount>=answersToPass ? messageService.getMessage("strings.test.passed") :messageService.getMessage("strings.test.not.passed"));
     }
