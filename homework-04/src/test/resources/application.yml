@@ -1,0 +1,12 @@
+spring:
+  main:
+    allow-circular-references: true
+  shell:
+    interactive:
+      enabled: false
+
+test:
+  locale: default
+  file: /questions_test
+  extension: csv
+  answersToPass: 3
