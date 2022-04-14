@@ -1,0 +1,122 @@
+1649856013168:help
+1649856019939:show-all
+1649856567390:get-all
+1649856573908:show-all
+1649856725378:show_all
+1649856729309:show-all
+1649862441902:show-all-books-by-author-name Достоевский
+1649863016268:show-all-books-by-author-name Достоевский ффф
+1649863186447:show-all-books-by-author-name Дост
+1649863408219:show-all-books-by-author-name ст
+1649863458712:show-all-books-by-author-name ост
+1649863543637:show-all-books-by-author-name таа
+1649863557949:show-all-books-by-author-name дост
+1649863567261:show-all-books-by-author-name ост
+1649863575881:show-all-books-by-author-name аа
+1649863607482:show-all-books-by-author-name таа
+1649863610898:show-all-books-by-author-name Таа
+1649863617971:show-all-books-by-author-name та
+1649863620679:show-all-books-by-author-name Та
+1649863765979:show-all-books-by-author-name дост
+1649863829259:show-all-books-by-author-name ДОСТ
+1649863854571:show-all-books-by-author-name РТ
+1649865037935:show-all-books-by-author-name фед
+1649865064423:show-all-books-by-author-name ГАРС
+1649865106020:show-all-books-by-author-name мих
+1649865348772:show-all-books-by-book-name ЛЕТ
+1649866009105:s
+1649867384582:show-all-books-by-genre ром
+1649867590337:show-all-books-by-genre маг
+1649868108154:show-all-books-by-genre дет
+1649868659032:show-all-genres
+1649869203747:show-all-authors
+1649869358265:show-all-available-books
+1649869377382:show-all-books-by-author-name мих
+1649869393199:show-all-books-by-book-name ЛЕТ
+1649869414546:show-all-books-by-genre деТЕКТ
+1649869422407:show-all-genres
+1649869426556:show-all-authors
+1649869896082:show-all-available-books
+1649870494827:delete-book-by-id 4
+1649870583931:delete-book-by-id 3
+1649870781778:show-all-available-books
+1649871289930:t 1 2 3 4 5 67 7
+1649871317597:t 1
+1649871327576:t 1 2 3 4
+1649871334655:t 1 2
+1649871366023:t 1
+1649871375999:t 1 2 3 4
+1649871384560:t 1 2 3 4 5
+1649871444681:t aaa sss fff ggg
+1649871467937:t a b c
+1649871475303:t a b c ''
+1649871495145:t a b c d
+1649871617184:a b c null
+1649871627576:t a b c null
+1649871708318:t aaa e r f
+1649871711281:t aaa e r f r
+1649872425806:add-new-book НоваяКнига 3 1 2 3 4
+1649872455202:Too man
+1649872468716:Too manффф 4 2
+1649872479889:add-new-book фф 3 4
+1649872495766:add-new-book фф 3 4add-new-book фф 3 4 5
+1649872515772:add-new-book фф 3 4 5 6 7 8
+1649872539590:add-new-book фф 3 4
+1649872543023:add-new-book фф 3 4 5
+1649905222029:add-new-book
+1649909848020:show-all-available-books
+1649909884202:show-all-authors
+1649909953003:add-new-book
+1649910222667:show-all-authors
+1649910802160:add-new-book
+1649910836316:show-all-available-books
+1649910846203:show-all-authors
+1649910868585:add-new-book
+1649910887262:show-all-authors
+1649910929924:add-new-book
+1649910977714:show-all-authors
+1649911583218:add-new-book
+1649911619417:show-all-genres
+1649912223468:add-new-book
+1649912256606:show-all-authors
+1649912263872:show-all-genres
+1649912531088:add-new-book
+1649912671608:show-all-available-books
+1649912844047:add-new-book
+1649912888800:show-all-available-books
+1649912919777:add-new-book
+1649912964209:show-all-available-books
+1649913066269:add-new-book
+1649913130557:show-all-available-books
+1649913214925:add-new-book
+1649913251195:show-all-available-books
+1649913343223:add-new-book
+1649913371774:show-all-available-books
+1649913494834:add-new-book
+1649913812178:show-all-available-books
+1649913819783:add-new-book
+1649915440398:show-all-available-books
+1649915473544:show-all-books-by-author-name
+1649915481665:show-all-books-by-author-name лев
+1649915490739:show-all-genres
+1649915516024:show-all-authors
+1649919499315:add-new-book
+1649919547991:show-all-available-books
+1649919569151:show-all-genres
+1649919575893:show-all-authors
+1649925512770:add-new-book
+1649925557346:show-all-available-books
+1649925571824:show-all-genres
+1649925579146:show-all-authors
+1649925598638:add-new-book
+1649925663443:show-all-available-books
+1649925677082:show-all-authors
+1649925687606:show-all-genres
+1649925796298:add-new-book
+1649925839611:show-all-available-books
+1649925856446:show-all-genres
+1649925870072:show-all-authors
+1649926056533:add-new-book
+1649926091447:show-all-available-books
+1649926100655:show-all-genres
+1649926109165:show-all-authors
