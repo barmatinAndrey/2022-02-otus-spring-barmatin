@@ -25,32 +25,32 @@ class AuthorDaoJdbcTest {
         assertThat(actualAuthor.getSurname()).isEqualTo("Маркес");
     }
 
-    @DisplayName("возвращать правильное количество авторов по имени")
+    @DisplayName("проверяет, существует ли такой автор")
     @Test
-    void getCountByName() {
-        long count = authorDao.getCountByName("Достоевский", "Федор", "Михайлович");
+    void exists() {
+        boolean exists = authorDao.exists(new Author(0, "Готтлиб", "Лори", ""));
+        assertThat(exists).isTrue();
+    }
+
+    @DisplayName("возвращает правильного автора по имени")
+    @Test
+    void getIdByName() {
+        long count = authorDao.getIdByName(new Author(0, "Достоевский", "Федор", "Михайлович"));
         assertThat(count).isEqualTo(1);
     }
 
-    @DisplayName("возвращать правильный id автора по имени")
+    @DisplayName("возвращает правильную секвенцию")
     @Test
-    void getIdByName() {
-        long authorId = authorDao.getIdByName("Готтлиб", "Лори", "");
-        assertThat(authorId).isEqualTo(4);
+    void getNextId() {
+        assertThat(authorDao.getNextId()).isEqualTo(6);
     }
 
-    @DisplayName("возвращать правильное количество авторов")
-    @Test
-    void count() {
-        assertThat(authorDao.getAll().size()).isEqualTo(5);
-    }
-
-    @DisplayName("добавлять автора в БД")
+    @DisplayName("добавляет автора в БД")
     @Test
     void insert() {
         Author actualAuthor = new Author(6, "Толстой", "Лев", "Николаевич");
         authorDao.insert(actualAuthor);
-        long expectedAuthorId = authorDao.getIdByName("Толстой", "Лев", "Николаевич");
+        long expectedAuthorId = authorDao.getIdByName(new Author(0, "Толстой", "Лев", "Николаевич"));
         assertThat(actualAuthor.getId()).isEqualTo(expectedAuthorId);
     }
 }

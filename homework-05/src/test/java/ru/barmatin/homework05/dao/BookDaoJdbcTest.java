@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao для работы с книгами")
 @JdbcTest
-@Import({BookDaoJdbc.class, GenreDaoJdbc.class})
+@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
 
 class BookDaoJdbcTest {
     @Autowired
@@ -34,21 +34,21 @@ class BookDaoJdbcTest {
     @DisplayName("возвращает правильную книгу по части имени автора")
     @Test
     void getAllByAuthorName() {
-        List<Book> bookList = bookDao.getAllByAuthorName("достоев");
+        List<Book> bookList = bookDao.getAllByAuthorNameContains("достоев");
         assertThat(bookList.get(0).getName()).isEqualTo("Преступление и наказание");
     }
 
     @DisplayName("возвращает правильную книгу по части названия")
     @Test
     void getAllByBookName() {
-        List<Book> bookList = bookDao.getAllByBookName("100 лет");
+        List<Book> bookList = bookDao.getAllByBookNameContains("100 лет");
         assertThat(bookList.get(0).getName()).isEqualTo("100 лет одиночества");
     }
 
     @DisplayName("возвращает правильное количество книг по части названия жанра")
     @Test
     void getAllByGenre() {
-        List<Book> bookList = bookDao.getAllByGenre("роман");
+        List<Book> bookList = bookDao.getAllByGenreNameContains("роман");
         assertThat(bookList.size()).isEqualTo(4);
     }
 
@@ -59,26 +59,19 @@ class BookDaoJdbcTest {
         assertThat(bookDao.getAll().size()).isEqualTo(4);
     }
 
-    @DisplayName("возвращает правильное количество книг")
+    @DisplayName("возвращает правильную секвенцию")
     @Test
-    void count() {
-        assertThat(bookDao.count()).isEqualTo(5);
-    }
-
-    @DisplayName("добавляет связь в БД")
-    @Test
-    void bookGenreRelationInsert() {
-        bookDao.insert(new BookGenreRelation(5, 3));
-        assertThat(bookDao.getAllByBookName("Преступление и наказание")
-                .get(0).getGenreList().size()).isEqualTo(2);
+    void getNextId() {
+        assertThat(bookDao.getNextId()).isEqualTo(6);
     }
 
     @DisplayName("добавляет книгу в БД")
     @Test
     void bookInsert() {
         Book book = new Book(6, "Идиот", new Author(1, "", "", ""), new ArrayList<>());
+        int bookCountBeforeInsert = bookDao.getAll().size();
         bookDao.insert(book);
-        List<Book> bookList = bookDao.getAllByBookName("Идиот");
-        assertThat(bookList.get(0).getId()).isEqualTo(6);
+        int bookCountAfterInsert = bookDao.getAll().size();
+        assertThat(bookCountAfterInsert).isEqualTo(bookCountBeforeInsert+1);
     }
 }

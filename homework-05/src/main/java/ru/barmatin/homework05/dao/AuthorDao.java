@@ -8,11 +8,11 @@ public interface AuthorDao {
 
     List<Author> getAll();
 
-    long getCountByName(String surname, String name, String patronym);
+    boolean exists(Author author);
 
-    long getIdByName(String surname, String name, String patronym);
+    long getIdByName(Author author);
 
-    long count();
+    long getNextId();
 
     void insert (Author author);
 

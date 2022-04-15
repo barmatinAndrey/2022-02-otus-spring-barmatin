@@ -41,17 +41,17 @@ class GenreDaoJdbcTest {
         assertThat(genreList.get(0).getName()).isEqualTo("фантастика");
     }
 
-    @DisplayName("возвращает правильное количество жанров по части имени")
+    @DisplayName("проверяет, существует ли такой жанр")
     @Test
-    void getCountByName() {
-        long count = genreDao.getCountByName("магическ");
-        assertThat(count).isEqualTo(1);
+    void exists() {
+        boolean exists = genreDao.exists(new Genre(0, "трагедия"));
+        assertThat(exists).isTrue();
     }
 
-    @DisplayName("возвращает правильный id жанра по части имени")
+    @DisplayName("возвращает правильный id жанра по имени")
     @Test
     void getIdByName() {
-        long genreId = genreDao.getIdByName("триллер");
+        long genreId = genreDao.getIdByName(new Genre(0, "триллер"));
         assertThat(genreId).isEqualTo(3);
     }
 
@@ -61,12 +61,12 @@ class GenreDaoJdbcTest {
         assertThat(genreDao.getAll().size()).isEqualTo(7);
     }
 
-    @DisplayName("добавлять жанр в БД")
+    @DisplayName("добавляет жанр в БД")
     @Test
     void insert() {
         Genre actualGenre = new Genre(8, "комедия");
         genreDao.insert(actualGenre);
-        long expectedGenreId = genreDao.getIdByName("комедия");
+        long expectedGenreId = genreDao.getIdByName(new Genre(0, "комедия"));
         assertThat(actualGenre.getId()).isEqualTo(expectedGenreId);
     }
 }

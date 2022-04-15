@@ -12,11 +12,11 @@ public interface GenreDao {
 
     List<Genre> getAllByName(String textToSearch);
 
-    long getCountByName(String name);
+    boolean exists(Genre genre);
 
-    long getIdByName(String name);
+    long getIdByName(Genre genre);
 
-    long count();
+    long getNextId();
 
     void insert (Genre genre);
 

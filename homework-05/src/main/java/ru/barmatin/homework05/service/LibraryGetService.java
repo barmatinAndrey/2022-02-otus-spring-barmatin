@@ -1,17 +1,23 @@
 package ru.barmatin.homework05.service;
 
+import ru.barmatin.homework05.domain.Author;
+import ru.barmatin.homework05.domain.Book;
+import ru.barmatin.homework05.domain.Genre;
+
+import java.util.List;
+
 public interface LibraryGetService {
 
-    void showAllAvailableBooks();
+    List<Book> getAllAvailableBooks();
 
-    void showAllBooksByAuthorName(String textToSearch);
+    List<Book> getAllBooksByAuthorNameContains(String text);
 
-    void showAllBooksByBookName(String textToSearch);
+    List<Book> getAllBooksByBookNameContains(String text);
 
-    void showAllBooksByGenre(String genreName);
+    List<Book> getAllBooksByGenreNameContains(String text);
 
-    void showAllGenres();
+    List<Genre> getAllGenres();
 
-    void showAllAuthors();
+    List<Author> getAllAuthors();
 
 }

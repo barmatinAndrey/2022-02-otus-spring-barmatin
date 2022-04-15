@@ -26,50 +26,35 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public long getCountByName(String surname, String name, String patronym) {
+    public boolean exists(Author author) {
         Map<String,String> params = new HashMap<>(3);
-        params.put("surname", surname);
-        params.put("name", name);
-        if (patronym.isEmpty()) {
-            return namedJdbc.queryForObject("select count(id) from authors where " +
-                            "lower(surname) like lower(:surname) and " +
-                            "lower(name) like lower(:name)",
+        params.put("surname", author.getSurname());
+        params.put("name", author.getName());
+        params.put("patronym", author.getPatronym());
+        long count = namedJdbc.queryForObject("select count(id) from authors where " +
+                        "lower(surname) like lower(:surname) and " +
+                        "lower(name) like lower(:name) and " +
+                        "lower(patronym) like lower(:patronym)",
                     params, Long.class);
-        }
-        else {
-            params.put("patronym", patronym);
-            return namedJdbc.queryForObject("select count(id) from authors where " +
-                            "lower(surname) like lower(:surname) and " +
-                            "lower(name) like lower(:name) and " +
-                            "lower(patronym) like lower(:patronym)",
-                    params, Long.class);
-        }
+        return count!=0;
     }
 
     @Override
-    public long getIdByName(String surname, String name, String patronym) {
+    public long getIdByName(Author author) {
         Map<String,String> params = new HashMap<>(3);
-        params.put("surname", surname);
-        params.put("name", name);
-        if (patronym.isEmpty()) {
-            return namedJdbc.queryForObject("select id from authors where " +
-                            "lower(surname) like lower(:surname) and " +
-                            "lower(name) like lower(:name)",
+        params.put("surname", author.getSurname());
+        params.put("name", author.getName());
+        params.put("patronym", author.getPatronym());
+        return namedJdbc.queryForObject("select id from authors where " +
+                        "lower(surname) like lower(:surname) and " +
+                        "lower(name) like lower(:name) and " +
+                        "lower(patronym) like lower(:patronym)",
                     params, Long.class);
-        }
-        else {
-            params.put("patronym", patronym);
-            return namedJdbc.queryForObject("select id from authors where " +
-                            "lower(surname) like lower(:surname) and " +
-                            "lower(name) like lower(:name) and " +
-                            "lower(patronym) like lower(:patronym)",
-                    params, Long.class);
-        }
     }
 
     @Override
-    public long count() {
-        return namedJdbc.getJdbcOperations().queryForObject("select count(id) from authors", Long.class);
+    public long getNextId() {
+        return namedJdbc.getJdbcOperations().queryForObject("values next value for authors_sequence", Long.class);
     }
 
     @Override

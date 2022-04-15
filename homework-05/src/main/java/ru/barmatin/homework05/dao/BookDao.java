@@ -9,18 +9,16 @@ public interface BookDao {
 
     List<Book> getAll();
 
-    List<Book> getAllByAuthorName(String textToSearch);
+    List<Book> getAllByAuthorNameContains(String textToSearch);
 
-    List<Book> getAllByBookName(String textToSearch);
+    List<Book> getAllByBookNameContains(String textToSearch);
 
-    List<Book> getAllByGenre(String genreName);
+    List<Book> getAllByGenreNameContains(String genreName);
 
     void deleteById(long id);
 
-    long count();
+    long getNextId();
 
-    void insert (BookGenreRelation bookGenreRelation);
-
-    void insert (Book book);
+    void insert(Book book);
 
 }

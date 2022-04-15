@@ -39,26 +39,27 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public long getCountByName(String name) {
+    public boolean exists(Genre genre) {
         Map<String,String> params = new HashMap<>(1);
-        params.put("name", name);
-        return namedJdbc.queryForObject("select count(id) from genres where " +
-                        "lower(name) like lower('%'||:name||'%')",
+        params.put("name", genre.getName());
+        long count =  namedJdbc.queryForObject("select count(id) from genres where " +
+                        "lower(name) like lower(:name)",
                 params, Long.class);
+        return count!=0;
     }
 
     @Override
-    public long getIdByName(String name) {
+    public long getIdByName(Genre genre) {
         Map<String,String> params = new HashMap<>(1);
-        params.put("name", name);
+        params.put("name", genre.getName());
         return namedJdbc.queryForObject("select id from genres where " +
-                        "lower(name) like lower('%'||:name||'%')",
+                        "lower(name) like lower(:name)",
                 params, Long.class);
     }
 
     @Override
-    public long count() {
-        return namedJdbc.getJdbcOperations().queryForObject("select count(id) from genres", Long.class);
+    public long getNextId() {
+        return namedJdbc.getJdbcOperations().queryForObject("values next value for genres_sequence", Long.class);
     }
 
     @Override

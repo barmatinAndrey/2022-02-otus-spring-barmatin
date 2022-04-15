@@ -16,77 +16,42 @@ public class LibraryGetServiceImpl implements LibraryGetService {
     private final BookDao bookDao;
     private final AuthorDao authorDao;
     private final GenreDao genreDao;
-    private final OutputService outputService;
 
     @Autowired
-    public LibraryGetServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, OutputService outputService) {
+    public LibraryGetServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
         this.genreDao = genreDao;
-        this.outputService = outputService;
     }
 
     @Override
-    public void showAllAvailableBooks() {
-        outputBookList(bookDao.getAll());
+    public List<Book> getAllAvailableBooks() {
+        return bookDao.getAll();
     }
 
     @Override
-    public void showAllBooksByAuthorName(String textToSearch) {
-        outputBookList(bookDao.getAllByAuthorName(textToSearch));
+    public List<Book> getAllBooksByAuthorNameContains(String text) {
+        return bookDao.getAllByAuthorNameContains(text);
     }
 
     @Override
-    public void showAllBooksByBookName(String textToSearch) {
-        outputBookList(bookDao.getAllByBookName(textToSearch));
+    public List<Book> getAllBooksByBookNameContains(String text) {
+        return bookDao.getAllByBookNameContains(text);
     }
 
     @Override
-    public void showAllBooksByGenre(String genreName) {
-        outputBookList(bookDao.getAllByGenre(genreName));
+    public List<Book> getAllBooksByGenreNameContains(String text) {
+        return bookDao.getAllByGenreNameContains(text);
     }
 
     @Override
-    public void showAllGenres() {
-        outputGenreList(genreDao.getAll());
+    public List<Genre> getAllGenres() {
+        return genreDao.getAll();
     }
 
     @Override
-    public void showAllAuthors() {
-        outputAuthorList(authorDao.getAll());
-    }
-
-    private void outputBookList(List<Book> bookList) {
-        for (int i=0; i<bookList.size(); i++) {
-            String outputBook = (i+1) + ". " + bookList.get(i).getName();
-            String outputAuthor = bookList.get(i).getAuthor().getSurname() + " " + bookList.get(i).getAuthor().getName() +
-                    (bookList.get(i).getAuthor().getPatronym().isEmpty() ? "" : " "+bookList.get(i).getAuthor().getPatronym());
-            List<Genre> genreList = bookList.get(i).getGenreList();
-            StringBuilder outputGenresBuilder = new StringBuilder();
-            outputGenresBuilder.append("(");
-            for (int j = 0; j<genreList.size(); j++) {
-                outputGenresBuilder.append(genreList.get(j).getName());
-                outputGenresBuilder.append((j == genreList.size() - 1) ? "" : ", ");
-            }
-            outputGenresBuilder.append(") (id=");
-            outputGenresBuilder.append(bookList.get(i).getId());
-            outputGenresBuilder.append(")");
-            String outputGenres = outputGenresBuilder.toString();
-            outputService.outputStringLn(outputBook + " - " + outputAuthor + " "+ outputGenres);
-            outputService.outputStringLn("-------------------------------------------------------------------");
-        }
-    }
-
-    private void outputGenreList(List<Genre> genreList) {
-        for (int i=0; i<genreList.size(); i++) {
-            outputService.outputStringLn((i+1) +". "+ genreList.get(i).getName());
-        }
-    }
-
-    private void outputAuthorList(List<Author> authorList) {
-        for (int i=0; i<authorList.size(); i++) {
-            outputService.outputStringLn((i+1) +". "+ authorList.get(i).getSurname() +" "+ authorList.get(i).getName() +" "+ authorList.get(i).getPatronym());
-        }
+    public List<Author> getAllAuthors() {
+        return authorDao.getAll();
     }
 
 }

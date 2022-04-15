@@ -21,11 +21,13 @@ import java.util.stream.Collectors;
 @Repository
 public class BookDaoJdbc implements BookDao {
     private final NamedParameterJdbcOperations namedJdbc;
+    private final AuthorDao authorDao;
     private final GenreDao genreDao;
 
     @Autowired
-    public BookDaoJdbc(NamedParameterJdbcOperations namedJdbc, GenreDao genreDao) {
+    public BookDaoJdbc(NamedParameterJdbcOperations namedJdbc, AuthorDao authorDao, GenreDao genreDao) {
         this.namedJdbc = namedJdbc;
+        this.authorDao = authorDao;
         this.genreDao = genreDao;
     }
 
@@ -41,15 +43,15 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getAllByAuthorName(String textToSearch) {
+    public List<Book> getAllByAuthorNameContains(String text) {
         Map<String, String> params = new HashMap<>(1);
-        params.put("textToSearch", textToSearch);
+        params.put("text", text);
         List<Book> bookList = namedJdbc.query("select t.id as book_id, t.name as book_name, t1.id as author_id, " +
                 "t1.surname as author_surname, t1.name as author_name, t1.patronym as author_patronym from books t " +
                 "left join authors t1 on (t.author_id =t1.id) " +
-                "where lower(t1.surname) like lower('%'||:textToSearch||'%') " +
-                "or lower(t1.name) like lower('%'||:textToSearch||'%') " +
-                "or lower(t1.patronym) like lower('%'||:textToSearch||'%') " +
+                "where lower(t1.surname) like lower('%'||:text||'%') " +
+                "or lower(t1.name) like lower('%'||:text||'%') " +
+                "or lower(t1.patronym) like lower('%'||:text||'%') " +
                 "order by t.name", params, new BookMapper());
         List<Genre> genreList = genreDao.getAllUsed();
         List<BookGenreRelation> bookGenreRelationList = getAllRelations();
@@ -58,13 +60,13 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getAllByBookName(String textToSearch) {
+    public List<Book> getAllByBookNameContains(String text) {
         Map<String, String> params = new HashMap<>(1);
-        params.put("textToSearch", textToSearch);
+        params.put("text", text);
         List<Book> bookList = namedJdbc.query("select t.id as book_id, t.name as book_name, t1.id as author_id, " +
                 "t1.surname as author_surname, t1.name as author_name, t1.patronym as author_patronym from books t " +
                 "left join authors t1 on (t.author_id =t1.id) " +
-                "where lower(t.name) like lower('%'||:textToSearch||'%') " +
+                "where lower(t.name) like lower('%'||:text||'%') " +
                 "order by t.name", params, new BookMapper());
         List<Genre> genreList = genreDao.getAllUsed();
         List<BookGenreRelation> bookGenreRelationList = getAllRelations();
@@ -73,17 +75,17 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getAllByGenre(String textToSearch) {
+    public List<Book> getAllByGenreNameContains(String text) {
         Map<String, String> params = new HashMap<>(1);
-        params.put("textToSearch", textToSearch);
+        params.put("text", text);
         List<Book> bookList = namedJdbc.query("select t.id as book_id, t.name as book_name, t1.id as author_id, " +
                 "t1.surname as author_surname, t1.name as author_name, t1.patronym as author_patronym from books t " +
                 "left join authors t1 on (t.author_id =t1.id) " +
                 "left join books_genres t2 on (t.id = t2.book_id) " +
                 "left join genres t3 on (t3.id=t2.genre_id) " +
-                "where lower(t3.name) like lower('%'||:textToSearch||'%') group by t.id, t.name order by t.name",
+                "where lower(t3.name) like lower('%'||:text||'%') group by t.id, t.name order by t.name",
                 params, new BookMapper());
-        List<Genre> genreList = genreDao.getAllByName(textToSearch);
+        List<Genre> genreList = genreDao.getAllByName(text);
         List<BookGenreRelation> bookGenreRelationList = getAllRelations();
         mergedBooksGenresList(bookList, genreList, bookGenreRelationList);
         return bookList;
@@ -102,27 +104,58 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public long count() {
-        return namedJdbc.getJdbcOperations().queryForObject("select count(id) from books", Long.class);
+    public long getNextId() {
+        return namedJdbc.getJdbcOperations().queryForObject("values next value for books_sequence", Long.class);
     }
 
     @Override
-    public void insert (BookGenreRelation bookGenreRelation) {
-        Map<String,Object> params = new HashMap<>(2);
-        params.put("bookId", bookGenreRelation.getBookId());
-        params.put("genreId", bookGenreRelation.getGenreId());
-        namedJdbc.update("insert into books_genres (book_id, genre_id) " +
-                "values (:bookId, :genreId)", params);
-    }
-
-    @Override
-    public void insert (Book book) {
+    public void insert(Book book) {
+        book.setId(getNextId());
+        checkAuthor(book);
+        checkGenreList(book);
         Map<String,Object> params = new HashMap<>(3);
         params.put("id", book.getId());
         params.put("name", book.getName());
         params.put("authorId", book.getAuthor().getId());
         namedJdbc.update("insert into books (id, name, author_id) " +
                 "values (:id, :name, :authorId)", params);
+        for (Genre genre: book.getGenreList()) {
+            insert(new BookGenreRelation(book.getId(), genre.getId()));
+        }
+    }
+
+    private void checkAuthor(Book book) {
+        if (!authorDao.exists(book.getAuthor())) {
+            long authorId = authorDao.getNextId();
+            book.getAuthor().setId(authorId);
+            authorDao.insert(book.getAuthor());
+        }
+        else {
+            long authorId = authorDao.getIdByName(book.getAuthor());
+            book.getAuthor().setId(authorId);
+        }
+    }
+
+    private void checkGenreList(Book book) {
+        for (Genre genre: book.getGenreList()) {
+            if (!genreDao.exists(genre)) {
+                long genreId = genreDao.getNextId();
+                genre.setId(genreId);
+                genreDao.insert(genre);
+            }
+            else {
+                long genreId = genreDao.getIdByName(genre);
+                genre.setId(genreId);
+            }
+        }
+    }
+
+    private void insert(BookGenreRelation bookGenreRelation) {
+        Map<String,Object> params = new HashMap<>(2);
+        params.put("bookId", bookGenreRelation.getBookId());
+        params.put("genreId", bookGenreRelation.getGenreId());
+        namedJdbc.update("insert into books_genres (book_id, genre_id) " +
+                "values (:bookId, :genreId)", params);
     }
 
     public static class BookMapper implements RowMapper<Book>{
