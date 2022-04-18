@@ -2,19 +2,18 @@ package ru.barmatin.homework05.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.barmatin.homework05.domain.Author;
 import ru.barmatin.homework05.domain.Book;
-import ru.barmatin.homework05.domain.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LibraryOutputServiceImpl implements LibraryOutputService {
+public class BookOutputServiceImpl implements BookOutputService {
     private final OutputService outputService;
     private final ListConverterService listConverterService;
 
     @Autowired
-    public LibraryOutputServiceImpl(OutputService outputService, ListConverterService listConverterService) {
+    public BookOutputServiceImpl(OutputService outputService, ListConverterService listConverterService) {
         this.outputService = outputService;
         this.listConverterService = listConverterService;
     }
@@ -25,13 +24,10 @@ public class LibraryOutputServiceImpl implements LibraryOutputService {
     }
 
     @Override
-    public void showGenreList(List<Genre> genreList) {
-        outputService.outputStringLn(listConverterService.getStringFromGenreList(genreList));
-    }
-
-    @Override
-    public void showAuthorList(List<Author> authorList) {
-        outputService.outputStringLn(listConverterService.getStringFromAuthorList(authorList));
+    public void showBook(Book book) {
+        List<Book> bookList = new ArrayList<>();
+        bookList.add(book);
+        outputService.outputStringLn(listConverterService.getStringFromBookList(bookList));
     }
 
 }

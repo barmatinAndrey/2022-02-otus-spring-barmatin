@@ -10,14 +10,6 @@ public interface GenreDao {
 
     List<Genre> getAllUsed();
 
-    List<Genre> getAllByName(String textToSearch);
-
-    boolean exists(Genre genre);
-
-    long getIdByName(Genre genre);
-
-    long getNextId();
-
-    void insert (Genre genre);
+    List<Genre> getAllByBookId(long bookId);
 
 }

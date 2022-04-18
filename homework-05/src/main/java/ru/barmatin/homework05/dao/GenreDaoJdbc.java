@@ -31,44 +31,11 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public List<Genre> getAllByName(String textToSearch) {
-        Map<String, String> params = new HashMap<>(1);
-        params.put("textToSearch", textToSearch);
-        return namedJdbc.query("select id, name from genres " +
-                "where lower(name) like lower('%'||:textToSearch||'%')", params, new GenreMapper());
-    }
-
-    @Override
-    public boolean exists(Genre genre) {
-        Map<String,String> params = new HashMap<>(1);
-        params.put("name", genre.getName());
-        long count =  namedJdbc.queryForObject("select count(id) from genres where " +
-                        "lower(name) like lower(:name)",
-                params, Long.class);
-        return count!=0;
-    }
-
-    @Override
-    public long getIdByName(Genre genre) {
-        Map<String,String> params = new HashMap<>(1);
-        params.put("name", genre.getName());
-        return namedJdbc.queryForObject("select id from genres where " +
-                        "lower(name) like lower(:name)",
-                params, Long.class);
-    }
-
-    @Override
-    public long getNextId() {
-        return namedJdbc.getJdbcOperations().queryForObject("values next value for genres_sequence", Long.class);
-    }
-
-    @Override
-    public void insert (Genre genre) {
-        Map<String,Object> params = new HashMap<>(2);
-        params.put("id", genre.getId());
-        params.put("name", genre.getName());
-        namedJdbc.update("insert into genres (id, name) " +
-                "values (:id, :name)", params);
+    public List<Genre> getAllByBookId(long bookId) {
+        Map<String, Long> params = new HashMap<>(1);
+        params.put("bookId", bookId);
+        return namedJdbc.query("select t.id, t.name from genres t " +
+                "inner join books_genres t1 on (t.id = t1.genre_id and t1.book_id = :bookId) group by t.id, t.name", params, new GenreMapper());
     }
 
     public static class GenreMapper implements RowMapper<Genre>{

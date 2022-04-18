@@ -24,6 +24,13 @@ class BookDaoJdbcTest {
     @Autowired
     private BookDaoJdbc bookDao;
 
+    @DisplayName("возвращает книгу по id")
+    @Test
+    void getBookById() {
+        Book book = bookDao.getBookById(2);
+        assertThat(book.getName()).isEqualTo("100 лет одиночества");
+    }
+
     @DisplayName("возвращает книги в правильном порядке")
     @Test
     void getAll() {
@@ -31,38 +38,11 @@ class BookDaoJdbcTest {
         assertThat(book.getName()).isEqualTo("100 лет одиночества");
     }
 
-    @DisplayName("возвращает правильную книгу по части имени автора")
-    @Test
-    void getAllByAuthorName() {
-        List<Book> bookList = bookDao.getAllByAuthorNameContains("достоев");
-        assertThat(bookList.get(0).getName()).isEqualTo("Преступление и наказание");
-    }
-
-    @DisplayName("возвращает правильную книгу по части названия")
-    @Test
-    void getAllByBookName() {
-        List<Book> bookList = bookDao.getAllByBookNameContains("100 лет");
-        assertThat(bookList.get(0).getName()).isEqualTo("100 лет одиночества");
-    }
-
-    @DisplayName("возвращает правильное количество книг по части названия жанра")
-    @Test
-    void getAllByGenre() {
-        List<Book> bookList = bookDao.getAllByGenreNameContains("роман");
-        assertThat(bookList.size()).isEqualTo(4);
-    }
-
     @DisplayName("удаляет книгу по id")
     @Test
     void deleteById() {
         bookDao.deleteById(1);
         assertThat(bookDao.getAll().size()).isEqualTo(4);
-    }
-
-    @DisplayName("возвращает правильную секвенцию")
-    @Test
-    void getNextId() {
-        assertThat(bookDao.getNextId()).isEqualTo(6);
     }
 
     @DisplayName("добавляет книгу в БД")
@@ -73,5 +53,13 @@ class BookDaoJdbcTest {
         bookDao.insert(book);
         int bookCountAfterInsert = bookDao.getAll().size();
         assertThat(bookCountAfterInsert).isEqualTo(bookCountBeforeInsert+1);
+    }
+
+    @DisplayName("изменяет книгу")
+    @Test
+    void bookUpdate() {
+        Book book = new Book(5, "Адвокат Дьявола", new Author(1, "", "", ""), new ArrayList<>());
+        bookDao.update(book);
+        assertThat(bookDao.getBookById(5).getName()).isEqualTo(book.getName());
     }
 }

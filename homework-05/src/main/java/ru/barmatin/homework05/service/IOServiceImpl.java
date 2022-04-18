@@ -1,6 +1,7 @@
 package ru.barmatin.homework05.service;
 
 import org.springframework.stereotype.Service;
+import ru.barmatin.homework05.util.NumericUtils;
 
 import java.util.Scanner;
 
@@ -25,5 +26,20 @@ public class IOServiceImpl implements IOService {
     @Override
     public String readString() {
         return scanner.nextLine();
+    }
+
+    @Override
+    public int readInt(String notNumberError) {
+        String input;
+        while (true) {
+            input = scanner.nextLine();
+            if (NumericUtils.isInteger(input)) {
+                break;
+            }
+            else {
+                System.out.print(notNumberError+" ");
+            }
+        }
+        return Integer.parseInt(input);
     }
 }
