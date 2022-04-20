@@ -1,14 +1,30 @@
-DROP TABLE IF EXISTS AUTHORS;
-CREATE TABLE AUTHORS(ID BIGINT PRIMARY KEY, SURNAME VARCHAR(255), NAME VARCHAR(255), PATRONYM VARCHAR(255));
-DROP SEQUENCE IF EXISTS AUTHORS_SEQUENCE;
-CREATE SEQUENCE AUTHORS_SEQUENCE START WITH 1 INCREMENT BY 1;
-DROP TABLE IF EXISTS GENRES;
-CREATE TABLE GENRES(ID BIGINT PRIMARY KEY, NAME VARCHAR(255));
-DROP SEQUENCE IF EXISTS GENRES_SEQUENCE;
-CREATE SEQUENCE GENRES_SEQUENCE START WITH 1 INCREMENT BY 1;
-DROP TABLE IF EXISTS BOOKS;
-CREATE TABLE BOOKS(ID BIGINT PRIMARY KEY, NAME VARCHAR(255), AUTHOR_ID BIGINT);
-DROP SEQUENCE IF EXISTS BOOKS_SEQUENCE;
-CREATE SEQUENCE BOOKS_SEQUENCE START WITH 1 INCREMENT BY 1;
-DROP TABLE IF EXISTS BOOKS_GENRES;
-CREATE TABLE BOOKS_GENRES(BOOK_ID BIGINT, GENRE_ID BIGINT);
+drop table if exists authors;
+create table authors(
+    id bigserial,
+    surname varchar(255),
+    name varchar(255),
+    patronym varchar(255),
+    primary key(id)
+);
+
+drop table if exists genres;
+create table genres(
+    id bigserial,
+    name varchar(255),
+    primary key(id)
+);
+
+drop table if exists books;
+create table books(
+    id bigserial,
+    name varchar(255),
+    author_id bigint references authors(id),
+    primary key(id)
+);
+
+drop table if exists books_genres;
+create table books_genres(
+    book_id bigint references books(id) on delete cascade,
+    genre_id bigint references genres(id),
+    primary key (book_id, genre_id)
+);

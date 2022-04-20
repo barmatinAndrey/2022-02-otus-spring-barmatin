@@ -2,7 +2,10 @@ package ru.barmatin.homework05.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.barmatin.homework05.dao.ext.BookGenreRelation;
 import ru.barmatin.homework05.domain.Author;
@@ -66,21 +69,18 @@ public class BookDaoJdbc implements BookDao {
         namedJdbc.update("delete from books where id = :id", params);
     }
 
-    private long getNextId() {
-        return namedJdbc.getJdbcOperations().queryForObject("values next value for books_sequence", Long.class);
-    }
-
     @Override
     public void insert(Book book) {
-        book.setId(getNextId());
-        Map<String,Object> params = new HashMap<>(3);
-        params.put("id", book.getId());
-        params.put("name", book.getName());
-        params.put("authorId", book.getAuthor().getId());
-        namedJdbc.update("insert into books (id, name, author_id) " +
-                "values (:id, :name, :authorId)", params);
-        for (Genre genre: book.getGenreList()) {
-            insertBookGenreRelations(new BookGenreRelation(book.getId(), genre.getId()));
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("name", book.getName());
+        parameterSource.addValue("authorId", book.getAuthor().getId());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedJdbc.update("insert into books (name, author_id) " +
+                "values (:name, :authorId)", parameterSource, keyHolder);
+        if (keyHolder.getKey() != null) {
+            for (Genre genre: book.getGenreList()) {
+                insertBookGenreRelations(new BookGenreRelation(keyHolder.getKey().longValue(), genre.getId()));
+            }
         }
     }
 
