@@ -3,6 +3,7 @@ package ru.barmatin.homework06.shell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.transaction.annotation.Transactional;
 import ru.barmatin.homework06.domain.Book;
 import ru.barmatin.homework06.domain.Comment;
 import ru.barmatin.homework06.service.author.AuthorOutputService;
@@ -47,11 +48,13 @@ public class LibraryCommands {
         this.commentInputService = commentInputService;
     }
 
+    @Transactional(readOnly = true)
     @ShellMethod(value = "Show book by id", key = {"sb" ,"show-book-by-id"})
     public void showBookById(long id) {
         bookOutputService.showBook(bookService.getBookById(id));
     }
 
+    @Transactional(readOnly = true)
     @ShellMethod(value = "Show all available books", key = {"sab" ,"show-all-available-books"})
     public void showAllAvailableBooks() {
         bookOutputService.showBookList(bookService.getAllAvailableBooks());
@@ -67,40 +70,47 @@ public class LibraryCommands {
         authorOutputService.showAuthorList(authorService.getAllAuthors());
     }
 
+    @Transactional
     @ShellMethod(value = "Delete book by id", key = {"delete-book-by-id"})
     public void deleteBookById(long id) {
         bookService.deleteBookById(id);
     }
 
+    @Transactional
     @ShellMethod(value = "Add new book", key = {"anb", "add-new-book"})
     public void addNewBook() {
         Book book = bookInputService.getBookFromInput(true);
         bookService.addNewBook(book);
     }
 
+    @Transactional
     @ShellMethod(value = "Edit book", key = {"eb", "edit-book"})
     public void editBook() {
         Book book = bookInputService.getBookFromInput(false);
         bookService.editBook(book);
     }
 
+    @Transactional(readOnly = true)
     @ShellMethod(value = "Show comments by book id", key = {"scbb" ,"show-comments-by-book-id"})
     public void showCommentsByBookId(long bookId) {
         commentOutputService.showCommentList(commentService.getCommentsByBookId(bookId));
     }
 
+    @Transactional
     @ShellMethod(value = "Add new comment", key = {"anc", "add-new-comment"})
     public void addNewComment() {
         Comment comment = commentInputService.getCommentFromInput(true);
         commentService.addNewComment(comment);
     }
 
+    @Transactional
     @ShellMethod(value = "Edit comment", key = {"ec", "edit-comment"})
     public void editComment() {
         Comment comment = commentInputService.getCommentFromInput(false);
         commentService.editComment(comment);
     }
 
+    @Transactional
     @ShellMethod(value = "Delete comment by id", key = {"delete-comment-by-id"})
     public void deleteCommentById(long id) {
         commentService.deleteCommentById(id);

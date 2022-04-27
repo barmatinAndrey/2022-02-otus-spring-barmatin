@@ -22,12 +22,12 @@ public class Book {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(targetEntity = Author.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
     @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genreList;

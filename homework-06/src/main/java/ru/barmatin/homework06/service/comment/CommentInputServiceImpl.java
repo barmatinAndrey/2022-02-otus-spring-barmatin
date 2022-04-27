@@ -8,7 +8,6 @@ import ru.barmatin.homework06.domain.Comment;
 import ru.barmatin.homework06.service.IOService;
 import ru.barmatin.homework06.service.MessageService;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 @Service
@@ -22,7 +21,6 @@ public class CommentInputServiceImpl implements CommentInputService {
         this.ioService = ioService;
     }
 
-    @Transactional
     @Override
     public Comment getCommentFromInput(boolean isNewComment) {
         long commentId = 0;

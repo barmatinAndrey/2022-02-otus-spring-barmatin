@@ -23,6 +23,9 @@ class BookRepositoryJpaTest {
     @Autowired
     private BookRepositoryJpa bookRepositoryJpa;
 
+    @Autowired
+    private TestEntityManager em;
+
     @DisplayName("возвращает книгу по id")
     @Test
     void getBookById() {
@@ -40,8 +43,9 @@ class BookRepositoryJpaTest {
     @DisplayName("удаляет книгу по id")
     @Test
     void deleteById() {
+        assertThat(em.find(Book.class, 1L)).isNotNull();
         bookRepositoryJpa.deleteById(1);
-        assertThat(bookRepositoryJpa.getAll().size()).isEqualTo(4);
+        assertThat(em.find(Book.class, 1L)).isNull();
     }
 
     @DisplayName("добавляет книгу в БД")
