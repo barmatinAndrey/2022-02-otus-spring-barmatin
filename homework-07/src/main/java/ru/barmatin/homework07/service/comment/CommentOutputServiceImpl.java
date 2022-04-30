@@ -3,8 +3,8 @@ package ru.barmatin.homework07.service.comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.barmatin.homework07.domain.Comment;
-import ru.barmatin.homework07.service.ListConverterService;
-import ru.barmatin.homework07.service.OutputService;
+import ru.barmatin.homework07.service.listconverter.ListConverterService;
+import ru.barmatin.homework07.service.io.OutputService;
 
 import java.util.List;
 

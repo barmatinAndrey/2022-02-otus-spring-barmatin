@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.barmatin.homework07.domain.Author;
 import ru.barmatin.homework07.domain.Book;
 import ru.barmatin.homework07.domain.Genre;
-import ru.barmatin.homework07.service.IOService;
-import ru.barmatin.homework07.service.MessageService;
+import ru.barmatin.homework07.service.io.IOService;
+import ru.barmatin.homework07.service.message.MessageService;
 
 import java.util.ArrayList;
 import java.util.List;

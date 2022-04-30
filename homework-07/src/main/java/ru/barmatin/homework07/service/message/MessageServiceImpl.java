@@ -1,4 +1,4 @@
-package ru.barmatin.homework07.service;
+package ru.barmatin.homework07.service.message;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;

@@ -9,6 +9,8 @@ import ru.barmatin.homework07.domain.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +23,13 @@ class BookRepositoryTest {
 
     @Autowired
     private TestEntityManager em;
+
+    @Test
+    void findById() {
+        Optional<Book> book = bookRepository.findById(2L);
+        assertThat(book.get()).isNotNull();
+        assertThat(book.get().getName()).isEqualTo("100 лет одиночества");
+    }
 
     @Test
     void findAllByOrderByName() {

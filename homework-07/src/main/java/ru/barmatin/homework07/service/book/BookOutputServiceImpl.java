@@ -3,8 +3,8 @@ package ru.barmatin.homework07.service.book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.barmatin.homework07.domain.Book;
-import ru.barmatin.homework07.service.ListConverterService;
-import ru.barmatin.homework07.service.OutputService;
+import ru.barmatin.homework07.service.listconverter.ListConverterService;
+import ru.barmatin.homework07.service.io.OutputService;
 
 import java.util.ArrayList;
 import java.util.List;

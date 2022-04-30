@@ -1,4 +1,4 @@
-package ru.barmatin.homework07.service;
+package ru.barmatin.homework07.service.listconverter;
 
 import org.springframework.stereotype.Service;
 import ru.barmatin.homework07.domain.Author;
