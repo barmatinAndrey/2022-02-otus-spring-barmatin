@@ -3,7 +3,7 @@ package ru.barmatin.homework07.service.author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.barmatin.homework07.domain.Author;
-import ru.barmatin.homework07.service.listconverter.ListConverterService;
+import ru.barmatin.homework07.service.book.listconverter.ListConverterService;
 import ru.barmatin.homework07.service.io.OutputService;
 
 import java.util.List;

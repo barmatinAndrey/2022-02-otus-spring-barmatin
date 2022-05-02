@@ -9,7 +9,7 @@ public interface CommentService {
 
     Optional<Comment> getCommentById(long id);
 
-    List<Comment> getCommentsByBookId(long bookId);
+    List<String> getCommentsByBookId(long bookId);
 
     void deleteCommentById(long id);
 

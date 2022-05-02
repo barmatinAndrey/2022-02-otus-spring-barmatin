@@ -16,8 +16,6 @@ public interface LibraryService {
 
     void editBook();
 
-    void showCommentsByBookId(long bookId);
-
     void addNewComment();
 
     void editComment();

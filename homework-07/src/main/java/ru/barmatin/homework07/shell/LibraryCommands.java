@@ -50,11 +50,6 @@ public class LibraryCommands {
         libraryService.editBook();
     }
 
-    @ShellMethod(value = "Show comments by book id", key = {"scbb" ,"show-comments-by-book-id"})
-    public void showCommentsByBookId(long bookId) {
-       libraryService.showCommentsByBookId(bookId);
-    }
-
     @ShellMethod(value = "Add new comment", key = {"anc", "add-new-comment"})
     public void addNewComment() {
         libraryService.addNewComment();

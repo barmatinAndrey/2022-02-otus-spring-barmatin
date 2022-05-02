@@ -1,40 +1,40 @@
-package ru.barmatin.homework07.service.listconverter;
+package ru.barmatin.homework07.service.book.listconverter;
 
 import org.springframework.stereotype.Service;
 import ru.barmatin.homework07.domain.Author;
-import ru.barmatin.homework07.domain.Book;
-import ru.barmatin.homework07.domain.Comment;
 import ru.barmatin.homework07.domain.Genre;
-
-import java.util.ArrayList;
+import ru.barmatin.homework07.dto.BookDTO;
 import java.util.List;
 
 @Service
 public class ListConverterServiceImpl implements ListConverterService {
 
     @Override
-    public String getStringFromBookList(List<Book> bookList) {
+    public String getStringFromBookDTOList(List<BookDTO> bookDTOList) {
         StringBuilder outputBookListBuilder = new StringBuilder();
-        for (int i=0; i<bookList.size(); i++) {
-            String outputBook = (i+1) + ". " + bookList.get(i).getName();
-            String outputAuthor = bookList.get(i).getAuthor().getSurname() + " " + bookList.get(i).getAuthor().getName() +
-                    (bookList.get(i).getAuthor().getPatronym().isEmpty() ? "" : " "+bookList.get(i).getAuthor().getPatronym());
-            List<Genre> genreList = bookList.get(i).getGenreList();
+        for (int i=0; i<bookDTOList.size(); i++) {
+            String outputBook = (i+1) + ". " + bookDTOList.get(i).getName();
+            List<String> genreNameList = bookDTOList.get(i).getGenreNameList();
             StringBuilder outputGenresBuilder = new StringBuilder();
             outputGenresBuilder.append("(");
-            for (int j = 0; j<genreList.size(); j++) {
-                outputGenresBuilder.append(genreList.get(j).getName());
-                outputGenresBuilder.append((j == genreList.size() - 1) ? "" : ", ");
+            for (int j = 0; j<genreNameList.size(); j++) {
+                outputGenresBuilder.append(genreNameList.get(j));
+                outputGenresBuilder.append((j == genreNameList.size() - 1) ? "" : ", ");
             }
             outputGenresBuilder.append(") (id=");
-            outputGenresBuilder.append(bookList.get(i).getId());
+            outputGenresBuilder.append(bookDTOList.get(i).getId());
             outputGenresBuilder.append(")");
             String outputGenres = outputGenresBuilder.toString();
             outputBookListBuilder.append(outputBook);
             outputBookListBuilder.append(" - ");
-            outputBookListBuilder.append(outputAuthor);
+            outputBookListBuilder.append(bookDTOList.get(i).getAuthorName());
             outputBookListBuilder.append(" ");
             outputBookListBuilder.append(outputGenres);
+            for (String commentText: bookDTOList.get(i).getCommentTextList()) {
+                outputBookListBuilder.append("\n");
+                outputBookListBuilder.append(" - ");
+                outputBookListBuilder.append(commentText);
+            }
             outputBookListBuilder.append("\n");
         }
         return outputBookListBuilder.toString();
@@ -70,20 +70,4 @@ public class ListConverterServiceImpl implements ListConverterService {
         return outputAuthorListBuilder.toString();
     }
 
-    @Override
-    public String getStringFromCommentList(List<Comment> commentList) {
-        StringBuilder outputCommentListBuilder = new StringBuilder();
-        if (!commentList.isEmpty()) {
-            Book book = commentList.get(0).getBook();
-            List<Book> bookList = new ArrayList<>();
-            bookList.add(book);
-            outputCommentListBuilder.append(getStringFromBookList(bookList));
-            for (Comment comment : commentList) {
-                outputCommentListBuilder.append("- ");
-                outputCommentListBuilder.append(comment.getText());
-                outputCommentListBuilder.append("\n");
-            }
-        }
-        return outputCommentListBuilder.toString();
-    }
 }

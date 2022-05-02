@@ -24,9 +24,9 @@ class CommentRepositoryTest {
     private TestEntityManager em;
 
     @Test
-    void findAllByBookId() {
-        List<Comment> commentList = commentRepository.findAllByBookId(5);
-        assertThat(commentList.size()).isEqualTo(2);
+    void findAllTextByBookId() {
+        List<String> commentTextList = commentRepository.findAllTextByBookId(5);
+        assertThat(commentTextList.size()).isEqualTo(2);
     }
 
     @Test
@@ -34,7 +34,7 @@ class CommentRepositoryTest {
         Book book = new Book(5, "", new Author(0, "", "", ""), new ArrayList<>());
         long commentId = (long)em.persistAndGetId(new Comment(0, book, "Тестовый комментарий"));
         assertThat(em.find(Comment.class, commentId).getText()).isEqualTo("Тестовый комментарий");
-        assertThat(commentRepository.findAllByBookId(5).size()).isEqualTo(3);
+        assertThat(commentRepository.findAllTextByBookId(5).size()).isEqualTo(3);
     }
 
 }

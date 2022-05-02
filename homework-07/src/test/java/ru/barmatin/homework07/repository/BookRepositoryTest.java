@@ -10,7 +10,6 @@ import ru.barmatin.homework07.domain.Book;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,9 +45,9 @@ class BookRepositoryTest {
     void addNewBook() {
         long bookId = (long)em.persistAndGetId(new Book(0, "Идиот",
                 new Author(1, "", "", ""), new ArrayList<>()));
-        Book book1 = em.find(Book.class, bookId);
-        assertThat(book1.getName()).isEqualTo("Идиот");
-        assertThat(book1.getAuthor().getId()).isEqualTo(1);
+        Book book = em.find(Book.class, bookId);
+        assertThat(book.getName()).isEqualTo("Идиот");
+        assertThat(book.getAuthor().getId()).isEqualTo(1);
     }
 
 }

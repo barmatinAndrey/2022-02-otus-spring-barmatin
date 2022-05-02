@@ -1,15 +1,16 @@
 package ru.barmatin.homework07.service.book;
 
 import ru.barmatin.homework07.domain.Book;
+import ru.barmatin.homework07.dto.BookDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
 
-    Optional<Book> getBookById(long id);
+    BookDTO getBookById(long id);
 
-    List<Book> getAllAvailableBooks();
+    List<BookDTO> getAllAvailableBooks();
 
     void deleteBookById(long id);
 
