@@ -26,19 +26,17 @@ class BookRepositoryTest {
     @Test
     void findById() {
         Optional<Book> book = bookRepository.findById(2L);
-        assertThat(book.get()).isNotNull();
-        assertThat(book.get().getName()).isEqualTo("100 лет одиночества");
+        assertThat(book).isNotEmpty()
+                .get()
+                .extracting(Book::getName).isEqualTo("100 лет одиночества");
     }
 
     @Test
     void findAllByOrderByName() {
         List<Book> bookList = bookRepository.findAllByOrderByName();
-        assertThat(bookList.size()).isEqualTo(5);
-        assertThat(bookList.get(0).getName()).isEqualTo("100 лет одиночества");
-        assertThat(bookList.get(1).getName()).isEqualTo("Вы хотите поговорить об этом?");
-        assertThat(bookList.get(2).getName()).isEqualTo("Преступление и наказание");
-        assertThat(bookList.get(3).getName()).isEqualTo("Ребекка");
-        assertThat(bookList.get(4).getName()).isEqualTo("Щегол");
+        assertThat(bookList).hasSize(5).extracting(Book::getName)
+                .containsExactlyInAnyOrder("100 лет одиночества", "Вы хотите поговорить об этом?",
+                        "Преступление и наказание", "Ребекка", "Щегол");
     }
 
     @Test
