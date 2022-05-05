@@ -1,0 +1,17 @@
+spring:
+  messages:
+    basename: i18n/messages
+  main:
+    allow-circular-references: true
+  data:
+    mongodb:
+      database: library
+  mongodb:
+    embedded:
+      version: 3.4.5
+
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.barmatin.homework08.mongock.changelog
