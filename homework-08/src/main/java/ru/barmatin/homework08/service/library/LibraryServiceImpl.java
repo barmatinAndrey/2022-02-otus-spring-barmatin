@@ -69,7 +69,6 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public void deleteBookById(String id) {
         bookService.deleteBookById(id);
-        commentService.deleteCommentByBookId(id);
     }
 
     @Override

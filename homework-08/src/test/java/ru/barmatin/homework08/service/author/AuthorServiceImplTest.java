@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthorServiceImplTest {
 
     @Autowired
-    AuthorService authorService;
+    private AuthorService authorService;
 
     @Test
     void getAllAuthors() {

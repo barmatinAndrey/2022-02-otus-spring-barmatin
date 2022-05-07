@@ -51,6 +51,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(String id) {
         bookRepository.deleteById(id);
+        commentService.deleteCommentByBookId(id);
     }
 
     @Override
