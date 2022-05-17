@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book edit</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookList {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .bookList tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${bookDto.id})}" th:object="${bookDto}">
+<table class="bookList">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название книги</th>
+        <th>Автор</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text=*{id}>1</td>
+        <td>
+            <input id="book-name-input" name="name" type="text" value="Война и мир" th:value="*{name}"/>
+        </td>
+        <td>
+            <select>
+                <option
+                        th:each="authorDto: ${authorDtoList}"
+                        th:text="${authorDto.name}"
+                        th:selected="${authorDto.name==bookDto.authorName}">
+                    Пункт 1
+                </option>
+            </select>
+        </td>
+        <td>
+            <select multiple>
+                <option
+                        th:each="genre: ${genreList}"
+                        th:text="${genre.name}"
+                        th:selected="${bookDto.genreNameList.contains(genre.name)}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="row">
+    <button type="submit">Сохранить</button>
+    <a href="list.html" th:href="@{/}"><button type="button">Отменить</button></a>
+</div>
+
+</form>
+
+</body>
+</html>
