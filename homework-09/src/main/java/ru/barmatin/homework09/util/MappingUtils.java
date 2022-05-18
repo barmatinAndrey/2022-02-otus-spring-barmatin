@@ -1,9 +1,7 @@
 package ru.barmatin.homework09.util;
 
-import ru.barmatin.homework09.domain.Author;
 import ru.barmatin.homework09.domain.Book;
 import ru.barmatin.homework09.domain.Genre;
-import ru.barmatin.homework09.dto.AuthorDto;
 import ru.barmatin.homework09.dto.BookDto;
 
 import java.util.ArrayList;
@@ -19,12 +17,6 @@ public class MappingUtils {
             genreNameList.add(genre.getName());
         }
         return new BookDto(book.getId(), book.getName(), authorName, genreNameList, commentTextList);
-    }
-
-    public static AuthorDto mapAuthorToDto(Author author) {
-        String authorName = author.getSurname() + " " + author.getName() +
-                (author.getPatronym().isEmpty() ? "" : " "+author.getPatronym());
-        return new AuthorDto(author.getId(), authorName);
     }
 
 }

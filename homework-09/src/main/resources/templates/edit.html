@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${bookDto.id})}" th:object="${bookDto}">
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${book.id})}" th:object="${book}">
 <table class="bookList">
     <thead>
     <tr>
@@ -43,21 +43,24 @@
             <input id="book-name-input" name="name" type="text" value="Война и мир" th:value="*{name}"/>
         </td>
         <td>
-            <select>
+            <select th:field="*{author}">
                 <option
-                        th:each="authorDto: ${authorDtoList}"
-                        th:text="${authorDto.name}"
-                        th:selected="${authorDto.name==bookDto.authorName}">
+                        th:each="author: ${authorList}"
+                        th:text="${author.surname+' '+author.name+' '+author.patronym}"
+                        th:selected="${author.surname.equals(book.author.surname) && author.name.equals(book.author.name)
+                                    && author.patronym.equals(book.author.patronym)}"
+                        th:value="${author.id}">
                     Пункт 1
                 </option>
             </select>
         </td>
         <td>
-            <select multiple>
+            <select multiple th:field="*{genreList}">
                 <option
                         th:each="genre: ${genreList}"
                         th:text="${genre.name}"
-                        th:selected="${bookDto.genreNameList.contains(genre.name)}">
+                        th:selected="${book.genreList.contains(genre)}"
+                        th:value="${genre.id}">
                 </option>
             </select>
         </td>
