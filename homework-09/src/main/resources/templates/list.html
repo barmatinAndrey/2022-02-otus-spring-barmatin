@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookList {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .bookList tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .row {
+            margin-bottom: 10px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="row">
+    <a th:href="@{edit(id=0)}" href="edit.html"><button type="button">Добавить книгу</button></a>
+</div>
+
+<table class="bookList">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название книги</th>
+        <th>Автор</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="bookDto: ${bookDtoList}">
+        <td th:text=${bookDto.id}>1</td>
+        <td th:text=${bookDto.name}>Преступление и наказание</td>
+        <td th:text=${bookDto.authorName}>Достоевский Федор Михайлович</td>
+        <td th:text=${bookDto.genreNameList}>роман</td>
+        <td>
+            <a th:href="@{/edit(id=${bookDto.id})}" href="edit.html" th:text="Редактировать">Редактировать</a>
+        </td>
+        <td>
+            <a th:href="@{/delete(id=${bookDto.id})}" th:text="Удалить">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
