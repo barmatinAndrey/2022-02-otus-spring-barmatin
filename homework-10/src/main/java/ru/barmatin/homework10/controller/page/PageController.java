@@ -1,4 +1,4 @@
-package ru.barmatin.homework10.controller;
+package ru.barmatin.homework10.controller.page;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.barmatin.homework10.domain.Author;
 import ru.barmatin.homework10.domain.Book;
 import ru.barmatin.homework10.domain.Genre;
-import ru.barmatin.homework10.dto.BookDto;
 import ru.barmatin.homework10.exception.NotFoundException;
 import ru.barmatin.homework10.service.author.AuthorService;
 import ru.barmatin.homework10.service.book.BookService;
@@ -20,22 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class BookController {
+public class PageController {
     private final BookService bookService;
     private final AuthorService authorService;
     private final GenreService genreService;
 
     @Autowired
-    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
+    public PageController(BookService bookService, AuthorService authorService, GenreService genreService) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;
     }
 
     @GetMapping("/")
-    public String listPage(Model model) {
-        List<BookDto> bookDtoList = bookService.getAllAvailableBooksDto();
-        model.addAttribute("bookDtoList", bookDtoList);
+    public String listPage() {
         return "list";
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>List of books</title>
@@ -8,12 +8,12 @@
             padding: 50px;
         }
 
-        .bookList {
+        .bookTable {
             border: 1px solid steelblue;
             border-collapse: collapse;
         }
 
-        .bookList tr td, th {
+        .bookTable tr, td, th {
             padding: 5px;
             border: 1px solid steelblue;
         }
@@ -28,10 +28,10 @@
 <body>
 
 <div class="row">
-    <a th:href="@{edit(id=0)}" href="edit.html"><button type="button">Добавить книгу</button></a>
+    <a href="/edit?id=0"><button type="button">Добавить книгу</button></a>
 </div>
 
-<table class="bookList">
+<table class="bookTable">
     <thead>
     <tr>
         <th>ID</th>
@@ -40,21 +40,37 @@
         <th>Жанры</th>
     </tr>
     </thead>
-    <tbody>
-    <tr th:each="bookDto: ${bookDtoList}">
-        <td th:text=${bookDto.id}>1</td>
-        <td th:text=${bookDto.name}>Преступление и наказание</td>
-        <td th:text=${bookDto.authorName}>Достоевский Федор Михайлович</td>
-        <td th:text=${bookDto.genreNameList}>роман</td>
-        <td>
-            <a th:href="@{/edit(id=${bookDto.id})}" href="edit.html" th:text="Редактировать">Редактировать</a>
-        </td>
-        <td>
-            <a th:href="@{/delete(id=${bookDto.id})}" th:text="Удалить">Удалить</a>
-        </td>
-    </tr>
+    <tbody id="bookTableBody">
     </tbody>
 </table>
+
+<script>
+    fetch('/api/book')
+        .then(response => response.json())
+        .then(json => outputBookDtoList(json))
+</script>
+
+<script>
+    function outputBookDtoList(bookDtoList) {
+        const dataContainer = document.getElementById("bookTableBody")
+        bookDtoList.forEach(function (bookDto) {
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${bookDto.id}</td>
+                <td>${bookDto.name}</td>
+                <td>${bookDto.authorName}</td>
+                <td>${bookDto.genreNameList}</td>
+                <td>
+                    <a href="/edit?id=${bookDto.id}">Редактировать</a>
+                </td>
+                <td>
+                    <a href="/delete?id=${bookDto.id}">Удалить</a>
+                </td>
+            `;
+            dataContainer.appendChild(newRow);
+        });
+    }
+</script>
 
 </body>
 </html>
