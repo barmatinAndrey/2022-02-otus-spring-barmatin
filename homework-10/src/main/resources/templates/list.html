@@ -52,11 +52,11 @@
 
 <script>
     function outputBookDtoList(bookDtoList) {
-        const dataContainer = document.getElementById("bookTableBody")
+        const dataContainer = document.getElementById("bookTableBody");
         bookDtoList.forEach(function (bookDto) {
             var newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td>${bookDto.id}</td>
+                <td >${bookDto.id}</td>
                 <td>${bookDto.name}</td>
                 <td>${bookDto.authorName}</td>
                 <td>${bookDto.genreNameList}</td>
@@ -64,11 +64,29 @@
                     <a href="/edit?id=${bookDto.id}">Редактировать</a>
                 </td>
                 <td>
-                    <a href="/delete?id=${bookDto.id}">Удалить</a>
+                    <button onclick="deleteBook(${bookDto.id})">Удалить</button>
                 </td>
             `;
+
+            newRow.id = bookDto.id;
             dataContainer.appendChild(newRow);
         });
+    }
+</script>
+
+<script>
+    function deleteBook(id) {
+        fetch('/api/book/delete?id=' + id, {
+            method: 'DELETE',
+            })
+            .then(removeRow(id))
+    }
+</script>
+
+<script>
+    function removeRow(id) {
+        var row = document.getElementById(id);
+        row.parentNode.removeChild(row);
     }
 </script>
 

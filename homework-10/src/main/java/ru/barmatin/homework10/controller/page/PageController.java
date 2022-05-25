@@ -3,10 +3,7 @@ package ru.barmatin.homework10.controller.page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.barmatin.homework10.domain.Author;
 import ru.barmatin.homework10.domain.Book;
 import ru.barmatin.homework10.domain.Genre;
@@ -57,12 +54,6 @@ public class PageController {
     @PostMapping("/edit")
     public String saveBook(Book book) {
         bookService.saveBook(book);
-        return "redirect:/";
-    }
-
-    @RequestMapping("/delete")
-    public String deleteBook(@RequestParam("id") long id) {
-        bookService.deleteBookById(id);
         return "redirect:/";
     }
 
