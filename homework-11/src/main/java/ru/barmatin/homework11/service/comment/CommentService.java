@@ -7,11 +7,13 @@ import java.util.Optional;
 
 public interface CommentService {
 
-    Optional<Comment> getCommentById(long id);
+    Optional<Comment> getCommentById(String id);
 
-    List<String> getCommentsByBookId(long bookId);
+    List<Comment> getCommentsByBookId(String bookId);
 
-    void deleteCommentById(long id);
+    void deleteCommentById(String id);
+
+    void deleteCommentByBookId(String id);
 
     void saveComment(Comment comment);
 

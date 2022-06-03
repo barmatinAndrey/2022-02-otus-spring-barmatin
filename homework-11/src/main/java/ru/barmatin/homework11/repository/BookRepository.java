@@ -1,19 +1,10 @@
 package ru.barmatin.homework11.repository;
 
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.barmatin.homework11.domain.Book;
 
-import java.util.List;
-import java.util.Optional;
+public interface BookRepository extends MongoRepository<Book, String> {
 
-public interface BookRepository extends JpaRepository<Book, Long> {
-
-    @EntityGraph(attributePaths = "author")
-    @Override
-    Optional<Book> findById(Long id);
-
-    @EntityGraph(attributePaths = "author")
-    List<Book> findAllByOrderByName();
+    Book findAllByName(String name);
 
 }

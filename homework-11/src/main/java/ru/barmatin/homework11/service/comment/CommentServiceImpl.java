@@ -2,7 +2,6 @@ package ru.barmatin.homework11.service.comment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.barmatin.homework11.domain.Comment;
 import ru.barmatin.homework11.repository.CommentRepository;
 
@@ -19,22 +18,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> getCommentById(long id) {
+    public Optional<Comment> getCommentById(String id) {
         return commentRepository.findById(id);
     }
 
     @Override
-    public List<String> getCommentsByBookId(long bookId) {
-        return commentRepository.findAllTextByBookId(bookId);
+    public List<Comment> getCommentsByBookId(String bookId) {
+        return commentRepository.findAllByBookId(bookId);
     }
 
-    @Transactional
     @Override
-    public void deleteCommentById(long id) {
+    public void deleteCommentById(String id) {
         commentRepository.deleteById(id);
     }
 
-    @Transactional
+    @Override
+    public void deleteCommentByBookId(String id) {
+        commentRepository.deleteAllByBookId(id);
+    }
+
     @Override
     public void saveComment(Comment comment) {
         commentRepository.save(comment);

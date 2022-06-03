@@ -34,14 +34,14 @@ public class PageController {
     }
 
     @GetMapping("/edit")
-    public String editPage(@RequestParam("id") long id, Model model) {
+    public String editPage(@RequestParam("id") String id, Model model) {
         Book book;
-        if (id!=0) {
+        if (!id.equals("0")) {
             book = bookService.getBookById(id).orElseThrow(NotFoundException::new);
         }
         else {
-            Author author = new Author(0, "", "", "");
-            book = new Book(0, "", author, new ArrayList<>());
+            Author author = new Author("", "", "");
+            book = new Book("", author, new ArrayList<>());
         }
         List<Author> authorList = authorService.getAllAuthors();
         List<Genre> genreList = genreService.getAllGenres();
@@ -53,6 +53,9 @@ public class PageController {
 
     @PostMapping("/edit")
     public String saveBook(Book book) {
+        if (book.getId().isEmpty()) {
+            book.setId(null);
+        }
         bookService.saveBook(book);
         return "redirect:/";
     }

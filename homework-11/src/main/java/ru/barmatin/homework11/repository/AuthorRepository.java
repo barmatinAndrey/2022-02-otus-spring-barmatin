@@ -1,12 +1,9 @@
 package ru.barmatin.homework11.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.barmatin.homework11.domain.Author;
 
-import java.util.List;
 
-public interface AuthorRepository extends JpaRepository<Author, Long> {
-
-    List<Author> getAllByOrderBySurname();
+public interface AuthorRepository extends MongoRepository<Author, String> {
 
 }

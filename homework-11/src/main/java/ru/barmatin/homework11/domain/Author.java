@@ -2,30 +2,26 @@ package ru.barmatin.homework11.domain;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
-@Entity
-@Table(name = "authors")
+@NoArgsConstructor
+@Document(collection = "authors")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "surname")
+    private String id;
     private String surname;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "patronym")
     private String patronym;
+
+    public Author(String surname, String name, String patronym) {
+        this.surname = surname;
+        this.name = name;
+        this.patronym = patronym;
+    }
 
 }

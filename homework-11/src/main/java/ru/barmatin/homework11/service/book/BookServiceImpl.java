@@ -1,11 +1,12 @@
 package ru.barmatin.homework11.service.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import ru.barmatin.homework11.domain.Book;
+import ru.barmatin.homework11.domain.Comment;
 import ru.barmatin.homework11.dto.BookDto;
 import ru.barmatin.homework11.repository.BookRepository;
-import ru.barmatin.homework11.domain.Book;
 import ru.barmatin.homework11.service.comment.CommentService;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static ru.barmatin.homework11.util.MappingUtils.mapBookToDto;
+
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -25,42 +27,38 @@ public class BookServiceImpl implements BookService {
         this.commentService = commentService;
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public BookDto getBookDtoById(long id) {
-        Optional<Book> book = bookRepository.findById(id);
-        BookDto bookDTO = null;
-        if (book.isPresent()) {
-            List<String> commentTextList = commentService.getCommentsByBookId(id);
-            bookDTO = mapBookToDto(book.get(), commentTextList);
-        }
-        return bookDTO;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Book> getBookById(long id) {
+    public Optional<Book> getBookById(String id) {
         return bookRepository.findById(id);
     }
 
-    @Transactional(readOnly = true)
+    @Override
+    public BookDto getBookDtoById(String id) {
+        Optional<Book> book = bookRepository.findById(id);
+        BookDto bookDto = null;
+        if (book.isPresent()) {
+            List<Comment> commentList = commentService.getCommentsByBookId(id);
+            bookDto = mapBookToDto(book.get(), commentList);
+        }
+        return bookDto;
+    }
+
     @Override
     public List<BookDto> getAllAvailableBooksDto() {
-        List<Book> bookList = bookRepository.findAllByOrderByName();
-        List<BookDto> bookDtoList = new ArrayList<>();
+        List<Book> bookList = bookRepository.findAll(Sort.by("name"));
+        List<BookDto> bookDTOList = new ArrayList<>();
         for (Book book: bookList) {
-            bookDtoList.add(mapBookToDto(book, new ArrayList<>()));
+            bookDTOList.add(mapBookToDto(book, new ArrayList<>()));
         }
-        return bookDtoList;
+        return bookDTOList;
     }
 
-    @Transactional
     @Override
-    public void deleteBookById(long id) {
+    public void deleteBookById(String id) {
         bookRepository.deleteById(id);
+        commentService.deleteCommentByBookId(id);
     }
 
-    @Transactional
     @Override
     public void saveBook(Book book) {
         bookRepository.save(book);

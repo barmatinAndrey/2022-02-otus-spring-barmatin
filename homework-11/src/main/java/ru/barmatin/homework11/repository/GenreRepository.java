@@ -1,12 +1,9 @@
 package ru.barmatin.homework11.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.barmatin.homework11.domain.Genre;
 
-import java.util.List;
 
-public interface GenreRepository extends JpaRepository<Genre, Long> {
-
-    List<Genre> findAllByOrderByName();
+public interface GenreRepository extends MongoRepository<Genre, String> {
 
 }

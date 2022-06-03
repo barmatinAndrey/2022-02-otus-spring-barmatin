@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.barmatin.homework11.dto.BookDto;
 import ru.barmatin.homework11.service.book.BookService;
+
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class BookController {
     }
 
     @DeleteMapping("/api/book/delete")
-    public void deleteBook(@RequestParam("id") long id) {
+    public void deleteBook(@RequestParam("id") String id) {
         bookService.deleteBookById(id);
     }
 

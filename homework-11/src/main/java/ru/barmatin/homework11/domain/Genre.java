@@ -1,25 +1,23 @@
 package ru.barmatin.homework11.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
-@Entity
-@Table(name = "genres")
+@NoArgsConstructor
+@Document(collection = "genres")
 public class Genre {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "name", nullable = false, unique = true)
+    private String id;
     private String name;
+
+    public Genre(String name) {
+        this.name = name;
+    }
 
 
 }

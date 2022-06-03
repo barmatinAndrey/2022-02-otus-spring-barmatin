@@ -1,11 +1,13 @@
 package ru.barmatin.homework11.service.author;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.barmatin.homework11.domain.Author;
 import ru.barmatin.homework11.repository.AuthorRepository;
 
-import ru.barmatin.homework11.domain.Author;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -18,7 +20,11 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> getAllAuthors() {
-        return authorRepository.getAllByOrderBySurname();
+        return authorRepository.findAll(Sort.by("surname"));
     }
 
+    @Override
+    public Optional<Author> getAuthorById(String id) {
+        return authorRepository.findById(id);
+    }
 }
