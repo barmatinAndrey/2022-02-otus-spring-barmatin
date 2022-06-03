@@ -21,7 +21,7 @@ public class BookController {
         return bookService.getAllAvailableBooksDto();
     }
 
-    @DeleteMapping("/api/book/delete")
+    @DeleteMapping("/api/book")
     public void deleteBook(@RequestParam("id") String id) {
         bookService.deleteBookById(id);
     }

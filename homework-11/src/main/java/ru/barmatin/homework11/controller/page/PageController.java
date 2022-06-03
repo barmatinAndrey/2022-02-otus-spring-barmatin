@@ -33,16 +33,9 @@ public class PageController {
         return "list";
     }
 
-    @GetMapping("/edit")
-    public String editPage(@RequestParam("id") String id, Model model) {
-        Book book;
-        if (!id.equals("0")) {
-            book = bookService.getBookById(id).orElseThrow(NotFoundException::new);
-        }
-        else {
-            Author author = new Author("", "", "");
-            book = new Book("", author, new ArrayList<>());
-        }
+    @GetMapping("/book/edit")
+    public String editBook(@RequestParam("id") String id, Model model) {
+        Book book = bookService.getBookById(id).orElseThrow(NotFoundException::new);
         List<Author> authorList = authorService.getAllAuthors();
         List<Genre> genreList = genreService.getAllGenres();
         model.addAttribute("book", book);
@@ -51,7 +44,19 @@ public class PageController {
         return "edit";
     }
 
-    @PostMapping("/edit")
+    @GetMapping("/book/add")
+    public String addBook(Model model) {
+        Author author = new Author("", "", "");
+        Book book = new Book("", author, new ArrayList<>());
+        List<Author> authorList = authorService.getAllAuthors();
+        List<Genre> genreList = genreService.getAllGenres();
+        model.addAttribute("book", book);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("genreList", genreList);
+        return "edit";
+    }
+
+    @PostMapping("/book/edit")
     public String saveBook(Book book) {
         if (book.getId().isEmpty()) {
             book.setId(null);
