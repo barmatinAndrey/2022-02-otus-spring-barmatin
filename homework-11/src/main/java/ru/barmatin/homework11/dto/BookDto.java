@@ -16,5 +16,4 @@ public class BookDto {
     private String name;
     private String authorName;
     private List<String> genreNameList;
-    private List<String> commentTextList;
 }
