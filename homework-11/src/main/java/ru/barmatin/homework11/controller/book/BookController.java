@@ -28,8 +28,8 @@ public class BookController {
     }
 
     @DeleteMapping("/api/book")
-    public void deleteBook(@RequestParam("id") String id) {
-        bookRepository.deleteById(id);
+    public Mono<Void> deleteBook(@RequestParam("id") String id) {
+        return bookRepository.deleteById(id);
     }
 
 //    @PostMapping(value = "/book/edit", consumes = {"application/json"})

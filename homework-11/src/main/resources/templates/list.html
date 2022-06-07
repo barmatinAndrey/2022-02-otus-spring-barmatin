@@ -64,7 +64,7 @@
                     <a href="/book/edit?id=${bookDto.id}">Редактировать</a>
                 </td>
                 <td>
-                    <button onclick="deleteBook(${bookDto.id})">Удалить</button>
+                    <button onclick="deleteBook('${bookDto.id}')">Удалить</button>
                 </td>
             `;
 
@@ -76,6 +76,7 @@
 
 <script>
     function deleteBook(id) {
+   console.log(id);
         fetch('/api/book/?id=' + id, {
             method: 'DELETE',
             })
