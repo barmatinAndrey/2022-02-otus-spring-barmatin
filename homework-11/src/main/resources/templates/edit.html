@@ -8,12 +8,12 @@
             padding: 50px;
         }
 
-        .bookList {
+        .bookTable {
             border: 1px solid steelblue;
             border-collapse: collapse;
         }
 
-        .bookList tr td, th {
+        .bookTable tr td, th {
             padding: 5px;
             border: 1px solid steelblue;
         }
@@ -26,8 +26,7 @@
 </head>
 <body>
 
-<form id="edit-form" action="edit.html" th:method="post" th:action="@{/book/edit}" th:object="${book}">
-<table class="bookList">
+<table class="bookTable">
     <thead>
     <tr>
         <th>ID</th>
@@ -36,44 +35,102 @@
         <th>Жанры</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td th:text=*{id}>1</td>
-        <td>
-            <input id="book-name-input" name="name" type="text" value="Война и мир" th:value="*{name}"/>
-        </td>
-        <td>
-            <select th:field="*{author}">
-                <option
-                        th:each="author: ${authorList}"
-                        th:text="${author.surname+' '+author.name+' '+author.patronym}"
-                        th:selected="${author.surname.equals(book.author.surname) && author.name.equals(book.author.name)
-                                    && author.patronym.equals(book.author.patronym)}"
-                        th:value="${author}">
-                    Пункт 1
-                </option>
-            </select>
-        </td>
-        <td>
-            <select multiple th:field="*{genreList}">
-                <option
-                        th:each="genre: ${genreList}"
-                        th:text="${genre.name}"
-                        th:selected="${book.genreList.contains(genre)}"
-                        th:value="${genre}">
-                </option>
-            </select>
-        </td>
-    </tr>
+    <tbody id="bookTableBody">
     </tbody>
 </table>
 
-<div class="row">
-    <button type="submit">Сохранить</button>
-    <a href="list.html" th:href="@{/}"><button type="button">Отменить</button></a>
-</div>
+<script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var paramValue = url.searchParams.get("id");
+    fetch('/api/book/?id=' + paramValue)
+    .then(response => response.json())
+    .then(json => outputBook(json))
 
-</form>
+
+</script>
+
+<script>
+    function outputBook(book) {
+        const dataContainer = document.getElementById("bookTableBody");
+        var newRow = document.createElement('tr');
+        var stringifiedObj = encodeURIComponent(JSON.stringify(book));
+            newRow.innerHTML = `
+                <td>${book.id}</td>
+                <td>
+                    <input id="bookNameInput" type="text" value="${book.name}" text="${book.name}"/>
+                </td>
+                <td>
+                    <select id="authorSelect">
+                    </select>
+                </td>
+                <td>
+                    <select multiple id="genreSelect">
+                    </select>
+                </td>
+                <td>
+                    <button onclick="saveBook('${stringifiedObj}')">Сохранить</button>
+                </td>
+            `;
+        dataContainer.appendChild(newRow);
+
+        fetch('/api/authors')
+        .then(response => response.json())
+        .then(json => fillAuthors(json, book))
+
+        fetch('/api/genres')
+        .then(response => response.json())
+        .then(json => fillGenres(json, book))
+    }
+</script>
+
+<script>
+    function fillAuthors(authorList, book) {
+        const authorSelect = document.getElementById("authorSelect");
+        authorList.forEach(function (author) {
+            var newOption = document.createElement('option');
+            newOption.value = encodeURIComponent(JSON.stringify(author));
+            newOption.text = author.surname+' '+author.name+' '+author.patronym;
+            newOption.selected = author.id == book.author.id ? true : false;
+            authorSelect.appendChild(newOption);
+        });
+    }
+</script>
+
+<script>
+    function fillGenres(genreList, book) {
+        const genreSelect = document.getElementById("genreSelect");
+        genreList.forEach(function (genre) {
+            var newOption = document.createElement('option');
+            newOption.value = genre;
+            newOption.text = genre.name;
+            book.genreList.forEach(function (genre1) {
+                if (genre.id == genre1.id) {
+                    newOption.selected = true;
+                }
+            });
+            genreSelect.appendChild(newOption);
+        });
+    }
+</script>
+
+<script>
+    function saveBook(book) {
+        book = JSON.parse(decodeURIComponent(book))
+        book.name = document.getElementById('bookNameInput').value;
+        book.author = JSON.parse(decodeURIComponent(document.getElementById('authorSelect').value));
+        book = JSON.stringify(book);
+        fetch('/book/edit/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: book
+            })
+            .then()
+    }
+</script>
 
 </body>
 </html>

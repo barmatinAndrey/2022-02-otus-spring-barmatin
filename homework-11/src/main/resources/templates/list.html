@@ -45,7 +45,7 @@
 </table>
 
 <script>
-    fetch('/api/book')
+    fetch('/api/books')
         .then(response => response.json())
         .then(json => outputBookDtoList(json))
 </script>
@@ -76,7 +76,6 @@
 
 <script>
     function deleteBook(id) {
-   console.log(id);
         fetch('/api/book/?id=' + id, {
             method: 'DELETE',
             })
