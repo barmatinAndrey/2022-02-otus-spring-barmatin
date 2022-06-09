@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Book edit</title>
@@ -38,17 +38,6 @@
     <tbody id="bookTableBody">
     </tbody>
 </table>
-
-<script>
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var paramValue = url.searchParams.get("id");
-    fetch('/api/book/?id=' + paramValue)
-    .then(response => response.json())
-    .then(json => outputBook(json))
-
-
-</script>
 
 <script>
     function outputBook(book) {
@@ -136,6 +125,26 @@
             })
             .then()
     }
+</script>
+
+<script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var paramValue = url.searchParams.get("id");
+    if (paramValue == null) {
+        outputBook({
+            "id": null,
+            "name": "",
+            "author": {},
+            "genreList": []
+        });
+    }
+    else {
+        fetch('/api/book/?id=' + paramValue)
+        .then(response => response.json())
+        .then(json => outputBook(json))
+    }
+
 </script>
 
 </body>
