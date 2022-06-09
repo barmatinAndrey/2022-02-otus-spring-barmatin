@@ -102,7 +102,7 @@
         const genreSelect = document.getElementById("genreSelect");
         genreList.forEach(function (genre) {
             var newOption = document.createElement('option');
-            newOption.value = genre;
+            newOption.value = encodeURIComponent(JSON.stringify(genre));
             newOption.text = genre.name;
             book.genreList.forEach(function (genre1) {
                 if (genre.id == genre1.id) {
@@ -119,7 +119,13 @@
         book = JSON.parse(decodeURIComponent(book))
         book.name = document.getElementById('bookNameInput').value;
         book.author = JSON.parse(decodeURIComponent(document.getElementById('authorSelect').value));
+
+        const selectedGenreOptionList = document.querySelectorAll('#genreSelect option:checked');
+        const selectedGenreValueList = Array.from(selectedGenreOptionList).map(element => JSON.parse(decodeURIComponent(element.value)));
+        book.genreList = selectedGenreValueList;
+
         book = JSON.stringify(book);
+
         fetch('/book/edit/', {
             method: 'POST',
             headers: {
