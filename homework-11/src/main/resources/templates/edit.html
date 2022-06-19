@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book edit</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookTable {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .bookTable tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<table class="bookTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название книги</th>
+        <th>Автор</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody id="bookTableBody">
+    </tbody>
+</table>
+
+<div class="row">
+    <a href="/"><button type="button">Назад</button></a>
+</div>
+
+<script>
+    function outputBook(book) {
+        const dataContainer = document.getElementById("bookTableBody");
+        var newRow = document.createElement('tr');
+        var stringifiedObj = encodeURIComponent(JSON.stringify(book));
+            newRow.innerHTML = `
+                <td>${book.id}</td>
+                <td>
+                    <input id="bookNameInput" type="text" value="${book.name}" text="${book.name}"/>
+                </td>
+                <td>
+                    <select id="authorSelect">
+                    </select>
+                </td>
+                <td>
+                    <select multiple id="genreSelect">
+                    </select>
+                </td>
+                <td>
+                    <button onclick="saveBook('${stringifiedObj}')">Сохранить</button>
+                </td>
+            `;
+        dataContainer.appendChild(newRow);
+
+        fetch('/api/authors')
+        .then(response => response.json())
+        .then(json => fillAuthors(json, book))
+
+        fetch('/api/genres')
+        .then(response => response.json())
+        .then(json => fillGenres(json, book))
+    }
+</script>
+
+<script>
+    function fillAuthors(authorList, book) {
+        const authorSelect = document.getElementById("authorSelect");
+        authorList.forEach(function (author) {
+            var newOption = document.createElement('option');
+            newOption.value = encodeURIComponent(JSON.stringify(author));
+            newOption.text = author.surname+' '+author.name+' '+author.patronym;
+            newOption.selected = author.id == book.author.id ? true : false;
+            authorSelect.appendChild(newOption);
+        });
+    }
+</script>
+
+<script>
+    function fillGenres(genreList, book) {
+        const genreSelect = document.getElementById("genreSelect");
+        genreList.forEach(function (genre) {
+            var newOption = document.createElement('option');
+            newOption.value = encodeURIComponent(JSON.stringify(genre));
+            newOption.text = genre.name;
+            book.genreList.forEach(function (genre1) {
+                if (genre.id == genre1.id) {
+                    newOption.selected = true;
+                }
+            });
+            genreSelect.appendChild(newOption);
+        });
+    }
+</script>
+
+<script>
+    function saveBook(book) {
+        book = JSON.parse(decodeURIComponent(book))
+        book.name = document.getElementById('bookNameInput').value;
+        book.author = JSON.parse(decodeURIComponent(document.getElementById('authorSelect').value));
+
+        const selectedGenreOptionList = document.querySelectorAll('#genreSelect option:checked');
+        const selectedGenreValueList = Array.from(selectedGenreOptionList).map(element => JSON.parse(decodeURIComponent(element.value)));
+        book.genreList = selectedGenreValueList;
+
+        book = JSON.stringify(book);
+
+        fetch('/book/edit/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: book
+            })
+            .then()
+    }
+</script>
+
+<script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var paramValue = url.searchParams.get("id");
+    if (paramValue == null) {
+        outputBook({
+            "id": null,
+            "name": "",
+            "author": {},
+            "genreList": []
+        });
+    }
+    else {
+        fetch('/api/book/?id=' + paramValue)
+        .then(response => response.json())
+        .then(json => outputBook(json))
+    }
+
+</script>
+
+</body>
+</html>

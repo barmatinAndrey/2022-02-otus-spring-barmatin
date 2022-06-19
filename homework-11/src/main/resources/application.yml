@@ -1,0 +1,16 @@
+spring:
+  messages:
+    basename: i18n/messages
+  data:
+    mongodb:
+      port: 0
+      database: library
+  mongodb:
+    embedded:
+      version: 3.4.5
+
+
+#mongock:
+#  runner-type: "InitializingBean"
+#  change-logs-scan-package:
+#    - ru.barmatin.homework11.mongock.changelog

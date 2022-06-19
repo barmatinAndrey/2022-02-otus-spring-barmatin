@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookTable {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .bookTable tr, td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .row {
+            margin-bottom: 10px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="row">
+    <a href="/book/add"><button type="button">Добавить книгу</button></a>
+</div>
+
+<table class="bookTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название книги</th>
+        <th>Автор</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody id="bookTableBody">
+    </tbody>
+</table>
+
+<script>
+    fetch('/api/books')
+        .then(response => response.json())
+        .then(json => outputBookDtoList(json))
+</script>
+
+<script>
+    function outputBookDtoList(bookDtoList) {
+        const dataContainer = document.getElementById("bookTableBody");
+        bookDtoList.forEach(function (bookDto) {
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td >${bookDto.id}</td>
+                <td>${bookDto.name}</td>
+                <td>${bookDto.authorName}</td>
+                <td>${bookDto.genreNameList}</td>
+                <td>
+                    <a href="/book/edit?id=${bookDto.id}">Редактировать</a>
+                </td>
+                <td>
+                    <button onclick="deleteBook('${bookDto.id}')">Удалить</button>
+                </td>
+            `;
+
+            newRow.id = bookDto.id;
+            dataContainer.appendChild(newRow);
+        });
+    }
+</script>
+
+<script>
+    function deleteBook(id) {
+        fetch('/api/book/?id=' + id, {
+            method: 'DELETE',
+            })
+            .then(removeRow(id))
+    }
+</script>
+
+<script>
+    function removeRow(id) {
+        var row = document.getElementById(id);
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+</body>
+</html>
