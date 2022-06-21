@@ -3,10 +3,7 @@ package ru.barmatin.homework12.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.barmatin.homework12.domain.Author;
 import ru.barmatin.homework12.domain.Book;
 import ru.barmatin.homework12.domain.Genre;
@@ -40,15 +37,20 @@ public class BookController {
     }
 
     @GetMapping("/edit")
-    public String editPage(@RequestParam("id") long id, Model model) {
-        Book book;
-        if (id!=0) {
-            book = bookService.getBookById(id).orElseThrow(NotFoundException::new);
-        }
-        else {
-            Author author = new Author(0, "", "", "");
-            book = new Book(0, "", author, new ArrayList<>());
-        }
+    public String editBook(@RequestParam("id") long id, Model model) {
+        Book book = bookService.getBookById(id).orElseThrow(NotFoundException::new);
+        List<Author> authorList = authorService.getAllAuthors();
+        List<Genre> genreList = genreService.getAllGenres();
+        model.addAttribute("book", book);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("genreList", genreList);
+        return "edit";
+    }
+
+    @GetMapping("/new")
+    public String addNewBook(Model model) {
+        Author author = new Author(0, "", "", "");
+        Book book = new Book(0, "", author, new ArrayList<>());
         List<Author> authorList = authorService.getAllAuthors();
         List<Genre> genreList = genreService.getAllGenres();
         model.addAttribute("book", book);
@@ -63,7 +65,7 @@ public class BookController {
         return "redirect:/";
     }
 
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     public String deleteBook(@RequestParam("id") long id) {
         bookService.deleteBookById(id);
         return "redirect:/";

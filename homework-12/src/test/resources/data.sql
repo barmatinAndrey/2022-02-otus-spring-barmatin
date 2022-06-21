@@ -14,3 +14,8 @@ values (1, 6), (2, 1), (2, 2), (3, 7), (3, 1), (3, 3), (3, 5), (4, 1), (4, 3), (
 
 insert into comments(book_id, text)
 values (5, 'Очень интересная книга'), (5, 'Это классика');
+
+insert into users(username, password, role)
+values ('Ivanov', '$2a$10$m1eWIiEvfd2K8YFhXupoM.cKNHLm67ILiu3BcoFnVvdjJjOFUUvGS', 'USER'),
+('Petrov', '$2a$10$rXFAmbbs1ohzts41xXmnrevIX3foNbvnF7.v/SPslDAiN0ONKNzbe', 'USER'),
+('Sidorov', '$2a$10$X3IJNLZlu0plVUJ3TTu0EeEfEwx5QtSwov2oM0aaS9uKLD3mstqau', 'USER');

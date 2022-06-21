@@ -28,7 +28,9 @@
 <body>
 
 <div class="row">
-    <a th:href="@{edit(id=0)}" href="edit.html"><button type="button">Добавить книгу</button></a>
+    <a th:href="@{/new}" href="edit.html">
+        <button type="button">Добавить книгу</button>
+    </a>
 </div>
 
 <table class="bookList">
@@ -47,10 +49,14 @@
         <td th:text=${bookDto.authorName}>Достоевский Федор Михайлович</td>
         <td th:text=${bookDto.genreNameList}>роман</td>
         <td>
-            <a th:href="@{/edit(id=${bookDto.id})}" href="edit.html" th:text="Редактировать">Редактировать</a>
+            <a th:href="@{/edit(id=${bookDto.id})}" href="edit.html">
+                <button type="button">Редактировать</button>
+            </a>
         </td>
         <td>
-            <a th:href="@{/delete(id=${bookDto.id})}" th:text="Удалить">Удалить</a>
+            <form id="list-form" th:method="delete" th:action="@{/delete(id=${bookDto.id})}">
+                <button type="submit">Удалить</button>
+            </form>
         </td>
     </tr>
     </tbody>
