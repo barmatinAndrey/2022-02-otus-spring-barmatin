@@ -71,4 +71,10 @@ public class BookController {
         return "redirect:/";
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public String handleException(Model model) {
+        model.addAttribute("status", "Такой книги в библиотеке нет.");
+        return "error";
+    }
+
 }

@@ -25,7 +25,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().
                 antMatchers("/", "/edit", "/new", "/delete").authenticated().
-//                antMatchers("/edit", "/new", "/delete").hasRole("ADMIN").
+                antMatchers("/edit", "/new", "/delete").hasRole("ADMIN").
                 and().
                 formLogin();
     }
