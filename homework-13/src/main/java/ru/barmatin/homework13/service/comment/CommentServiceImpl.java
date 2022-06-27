@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.barmatin.homework13.domain.Comment;
-import ru.barmatin.homework13.exception.repository.CommentRepository;
+import ru.barmatin.homework13.repository.CommentRepository;
 
 import java.util.List;
 import java.util.Optional;

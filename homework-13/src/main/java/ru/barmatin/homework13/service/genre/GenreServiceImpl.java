@@ -2,7 +2,7 @@ package ru.barmatin.homework13.service.genre;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.barmatin.homework13.exception.repository.GenreRepository;
+import ru.barmatin.homework13.repository.GenreRepository;
 import ru.barmatin.homework13.domain.Genre;
 
 import java.util.List;

@@ -1,7 +1,8 @@
-package ru.barmatin.homework13.exception.repository;
+package ru.barmatin.homework13.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.access.prepost.PostFilter;
 import ru.barmatin.homework13.domain.Book;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findById(Long id);
 
     @EntityGraph(attributePaths = "author")
+    @PostFilter("hasPermission(filterObject, 'READ')")
     List<Book> findAllByOrderByName();
 
 }

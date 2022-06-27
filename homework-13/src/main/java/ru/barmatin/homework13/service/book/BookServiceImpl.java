@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.barmatin.homework13.dto.BookDto;
-import ru.barmatin.homework13.exception.repository.BookRepository;
+import ru.barmatin.homework13.repository.BookRepository;
 import ru.barmatin.homework13.domain.Book;
 import ru.barmatin.homework13.service.comment.CommentService;
 

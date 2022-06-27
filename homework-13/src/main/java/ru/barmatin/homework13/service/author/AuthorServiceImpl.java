@@ -2,7 +2,7 @@ package ru.barmatin.homework13.service.author;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.barmatin.homework13.exception.repository.AuthorRepository;
+import ru.barmatin.homework13.repository.AuthorRepository;
 
 import ru.barmatin.homework13.domain.Author;
 import java.util.List;

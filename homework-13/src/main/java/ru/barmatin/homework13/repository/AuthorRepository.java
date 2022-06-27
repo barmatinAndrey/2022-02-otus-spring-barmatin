@@ -1,4 +1,4 @@
-package ru.barmatin.homework13.exception.repository;
+package ru.barmatin.homework13.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.barmatin.homework13.domain.Author;
