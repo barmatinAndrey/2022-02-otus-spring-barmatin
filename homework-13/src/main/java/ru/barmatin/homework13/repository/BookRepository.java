@@ -15,7 +15,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findById(Long id);
 
     @EntityGraph(attributePaths = "author")
-    @PostFilter("hasPermission(filterObject, 'READ')")
     List<Book> findAllByOrderByName();
 
 }
