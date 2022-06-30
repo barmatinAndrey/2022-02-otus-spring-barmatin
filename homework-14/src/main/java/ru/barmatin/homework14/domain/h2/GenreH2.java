@@ -19,5 +19,8 @@ public class GenreH2 {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    public GenreH2(String name) {
+        this.name = name;
+    }
 
 }

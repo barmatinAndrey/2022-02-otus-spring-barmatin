@@ -16,12 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.barmatin.homework14.domain.h2.AuthorH2;
 import ru.barmatin.homework14.domain.h2.BookH2;
-import ru.barmatin.homework14.domain.h2.GenreH2;
-import ru.barmatin.homework14.domain.mongo.AuthorMongo;
 import ru.barmatin.homework14.domain.mongo.BookMongo;
-import ru.barmatin.homework14.domain.mongo.GenreMongo;
 import ru.barmatin.homework14.service.MappingService;
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
@@ -40,32 +36,6 @@ public class JobConfig {
 
     @StepScope
     @Bean
-    public MongoItemReader<AuthorMongo> authorReader(MongoTemplate mongoTemplate) {
-        return new MongoItemReaderBuilder<AuthorMongo>()
-                .name("authorItemReader")
-                .template(mongoTemplate)
-                .collection("authors")
-                .jsonQuery("{}")
-                .targetType(AuthorMongo.class)
-                .sorts(new HashMap<>())
-                .build();
-    }
-
-    @StepScope
-    @Bean
-    public MongoItemReader<GenreMongo> genreReader(MongoTemplate mongoTemplate) {
-        return new MongoItemReaderBuilder<GenreMongo>()
-                .name("genreItemReader")
-                .template(mongoTemplate)
-                .collection("genres")
-                .jsonQuery("{}")
-                .targetType(GenreMongo.class)
-                .sorts(new HashMap<>())
-                .build();
-    }
-
-    @StepScope
-    @Bean
     public MongoItemReader<BookMongo> bookReader(MongoTemplate mongoTemplate) {
         return new MongoItemReaderBuilder<BookMongo>()
                 .name("bookItemReader")
@@ -79,36 +49,8 @@ public class JobConfig {
 
     @StepScope
     @Bean
-    public ItemProcessor<AuthorMongo, AuthorH2> authorProcessor(MappingService mappingService) {
-        return mappingService::authorMongoToH2;
-    }
-
-    @StepScope
-    @Bean
-    public ItemProcessor<GenreMongo, GenreH2> genreProcessor(MappingService mappingService) {
-        return mappingService::genreMongoToH2;
-    }
-
-    @StepScope
-    @Bean
     public ItemProcessor<BookMongo, BookH2> bookProcessor(MappingService mappingService) {
         return mappingService::bookMongoToH2;
-    }
-
-    @StepScope
-    @Bean
-    public JpaItemWriter<AuthorH2> authorWriter(EntityManagerFactory entityManagerFactory) {
-        return new JpaItemWriterBuilder<AuthorH2>()
-                .entityManagerFactory(entityManagerFactory)
-                .build();
-    }
-
-    @StepScope
-    @Bean
-    public JpaItemWriter<GenreH2> genreWriter(EntityManagerFactory entityManagerFactory) {
-        return new JpaItemWriterBuilder<GenreH2>()
-                .entityManagerFactory(entityManagerFactory)
-                .build();
     }
 
     @StepScope
@@ -120,31 +62,9 @@ public class JobConfig {
     }
 
     @Bean
-    public Step addAuthorsStep(MongoItemReader<AuthorMongo> authorReader, JpaItemWriter<AuthorH2> authorWriter,
-                                     ItemProcessor<AuthorMongo, AuthorH2> authorProcessor) {
-        return stepBuilderFactory.get("step1")
-                .<AuthorMongo, AuthorH2>chunk(CHUNK_SIZE)
-                .reader(authorReader)
-                .processor(authorProcessor)
-                .writer(authorWriter)
-                .build();
-    }
-
-    @Bean
-    public Step addGenresStep(MongoItemReader<GenreMongo> genreReader, JpaItemWriter<GenreH2> genreWriter,
-                               ItemProcessor<GenreMongo, GenreH2> genreProcessor) {
-        return stepBuilderFactory.get("step2")
-                .<GenreMongo, GenreH2>chunk(CHUNK_SIZE)
-                .reader(genreReader)
-                .processor(genreProcessor)
-                .writer(genreWriter)
-                .build();
-    }
-
-    @Bean
     public Step addBooksStep(MongoItemReader<BookMongo> bookReader, JpaItemWriter<BookH2> bookWriter,
                               ItemProcessor<BookMongo, BookH2> bookProcessor) {
-        return stepBuilderFactory.get("step3")
+        return stepBuilderFactory.get("step1")
                 .<BookMongo, BookH2>chunk(CHUNK_SIZE)
                 .reader(bookReader)
                 .processor(bookProcessor)
@@ -152,14 +72,11 @@ public class JobConfig {
                 .build();
     }
 
-
     @Bean
-    public Job importBookJob(Step addAuthorsStep, Step addGenresStep, Step addBooksStep) {
+    public Job importBookJob(Step addBooksStep) {
         return jobBuilderFactory.get(IMPORT_BOOK_JOB_NAME)
                 .incrementer(new RunIdIncrementer())
-                .flow(addAuthorsStep)
-                .next(addGenresStep)
-                .next(addBooksStep)
+                .flow(addBooksStep)
                 .end()
                 .build();
     }

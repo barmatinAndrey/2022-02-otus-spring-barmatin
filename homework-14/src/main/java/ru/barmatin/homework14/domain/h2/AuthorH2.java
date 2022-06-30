@@ -26,4 +26,10 @@ public class AuthorH2 {
     @Column(name = "patronym")
     private String patronym;
 
+    public AuthorH2(String surname, String name, String patronym) {
+        this.surname = surname;
+        this.name = name;
+        this.patronym = patronym;
+    }
+
 }
