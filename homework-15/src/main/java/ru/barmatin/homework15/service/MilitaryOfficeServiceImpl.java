@@ -8,7 +8,9 @@ import ru.barmatin.homework15.domain.Soldier;
 public class MilitaryOfficeServiceImpl implements MilitaryOfficeService {
 
     public Soldier draft(Person person) {
-        return new Soldier(person);
+        Soldier soldier = new Soldier(person);
+        System.out.println("Person " + soldier.getName() + " is fit for military service");
+        return soldier;
     }
 
 }

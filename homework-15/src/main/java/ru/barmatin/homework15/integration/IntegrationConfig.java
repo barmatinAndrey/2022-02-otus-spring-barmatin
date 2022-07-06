@@ -9,6 +9,7 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
+import ru.barmatin.homework15.domain.Person;
 import ru.barmatin.homework15.service.MilitaryOfficeService;
 
 @Configuration
@@ -33,6 +34,7 @@ public class IntegrationConfig {
     @Bean
     public IntegrationFlow militaryOfficeFlow(MilitaryOfficeService militaryOfficeService) {
         return IntegrationFlows.from(peopleChannel())
+                .<Person>filter(person -> person.getAge()>=18 && person.getAge()<=27 && !person.isIll())
                 .handle(militaryOfficeService, "draft")
                 .channel(soldiersChannel())
                 .get();
