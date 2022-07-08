@@ -61,8 +61,10 @@ public class PageController {
 
     @PostMapping("/edit")
     public String saveBook(Book book) {
+        if (book.getId() == 0L) {
+            customMetric.incrementAddBookCounter();
+        }
         bookService.saveBook(book);
-        customMetric.incrementAddBookCounter();
         return "redirect:/";
     }
 
