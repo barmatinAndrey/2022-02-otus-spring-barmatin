@@ -14,3 +14,16 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  file:
+    name: "file_for_logs"
