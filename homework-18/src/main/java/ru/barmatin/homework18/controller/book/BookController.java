@@ -51,7 +51,7 @@ public class BookController {
                 System.out.println("Start sleeping...." + System.currentTimeMillis());
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                System.out.println("Hystrix thread interupted...." + System.currentTimeMillis());
+                System.out.println("Hystrix thread interrupted...." + System.currentTimeMillis());
                 e.printStackTrace();
             }
         }

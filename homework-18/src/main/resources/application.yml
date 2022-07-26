@@ -7,14 +7,24 @@ spring:
     platform: postgres
     initialization-mode: always
     continue-on-error: true
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: data
-#      schema-locations: schema
+  sql:
+    init:
+      mode: always
+      data.sql-locations: data.sql
+      schema.sql-locations: schema.sql
   jpa:
     show-sql: true
     generate-ddl: false
     hibernate:
       ddl-auto: none
     database: postgresql
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
