@@ -28,10 +28,10 @@
 <body>
 
 <div class="row">
-    <a href="/new"><button type="button">Добавить книгу</button></a>
+    <a href="/new"><button type="button" id="addNewBook">Добавить книгу</button></a>
 </div>
 
-<table class="bookTable">
+<table class="bookTable" id="bookTable">
     <thead>
     <tr>
         <th>ID</th>
@@ -52,25 +52,30 @@
 
 <script>
     function outputBookDtoList(bookDtoList) {
-        const dataContainer = document.getElementById("bookTableBody");
-        bookDtoList.forEach(function (bookDto) {
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td >${bookDto.id}</td>
-                <td>${bookDto.name}</td>
-                <td>${bookDto.authorName}</td>
-                <td>${bookDto.genreNameList}</td>
-                <td>
-                    <a href="/edit?id=${bookDto.id}">Редактировать</a>
-                </td>
-                <td>
-                    <button onclick="deleteBook(${bookDto.id})">Удалить</button>
-                </td>
-            `;
+        if (bookDtoList.length == 1 && bookDtoList[0].id == 0) {
+            document.write('<div>Не удалось получить список книг, пожалуйста, попробуйте снова</div>');
+        }
+        else {
+            const dataContainer = document.getElementById("bookTableBody");
+            bookDtoList.forEach(function (bookDto) {
+                var newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td >${bookDto.id}</td>
+                    <td>${bookDto.name}</td>
+                    <td>${bookDto.authorName}</td>
+                    <td>${bookDto.genreNameList}</td>
+                    <td>
+                        <a href="/edit?id=${bookDto.id}">Редактировать</a>
+                    </td>
+                    <td>
+                        <button onclick="deleteBook(${bookDto.id})">Удалить</button>
+                    </td>
+                `;
 
-            newRow.id = bookDto.id;
-            dataContainer.appendChild(newRow);
-        });
+                newRow.id = bookDto.id;
+                dataContainer.appendChild(newRow);
+            });
+        }
     }
 </script>
 
