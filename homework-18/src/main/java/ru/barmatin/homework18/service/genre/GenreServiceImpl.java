@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.barmatin.homework18.repository.GenreRepository;
 import ru.barmatin.homework18.domain.Genre;
-
 import java.util.List;
 
 @Service

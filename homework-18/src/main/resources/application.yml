@@ -7,18 +7,21 @@ spring:
     platform: postgres
     initialization-mode: always
     continue-on-error: true
-  sql:
-    init:
-      mode: always
-      data.sql-locations: data.sql
-      schema.sql-locations: schema.sql
+#  sql:
+#    init:
+#      mode: always
+#      data.sql.sql-locations: data.sql
+#      schema.sql.sql-locations: schema.sql
   jpa:
     show-sql: true
     generate-ddl: false
     hibernate:
       ddl-auto: none
     database: postgresql
-
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 management:
   endpoints:
     web:
@@ -28,3 +31,8 @@ management:
 hystrix:
   dashboard:
     proxy-stream-allow-list: "*"
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: "SEMAPHORE"
