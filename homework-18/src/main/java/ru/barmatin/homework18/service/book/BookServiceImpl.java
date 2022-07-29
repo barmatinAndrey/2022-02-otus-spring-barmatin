@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
         List<Book> bookList = bookRepository.findAllByOrderByName();
         List<BookDto> bookDtoList = new ArrayList<>();
         for (Book book: bookList) {
-            bookDtoList.add(mapBookToDto(book, new ArrayList<>()));
+            bookDtoList.add(mapBookToDto(book));
         }
         return bookDtoList;
     }

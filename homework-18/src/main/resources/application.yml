@@ -7,11 +7,11 @@ spring:
     platform: postgres
     initialization-mode: always
     continue-on-error: true
-#  sql:
-#    init:
-#      mode: always
-#      data.sql.sql-locations: data.sql
-#      schema.sql.sql-locations: schema.sql
+  sql:
+    init:
+      mode: always
+      data.sql.sql-locations: data.sql
+      schema.sql.sql-locations: schema.sql
   jpa:
     show-sql: true
     generate-ddl: false

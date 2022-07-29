@@ -36,7 +36,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000")
     }, fallbackMethod = "getFallbackBook")
     public Optional<Book> getBookById(long id) {
-        threadSleepService.sleepRandomly("getBookById");
+//        threadSleepService.sleepRandomly("getBookById");
         return bookService.getBookById(id);
     }
 
@@ -45,7 +45,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
     }, fallbackMethod = "getFallbackBooksDto")
     @Override
     public List<BookDto> getAllBooksDto() {
-        threadSleepService.sleepRandomly("getAllBooksDto");
+//        threadSleepService.sleepRandomly("getAllBooksDto");
         return bookService.getAllAvailableBooksDto();
     }
 
@@ -54,7 +54,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
     }, fallbackMethod = "callEmptyFallbackDelete")
     @Override
     public void deleteBook(long id) {
-        threadSleepService.sleepRandomly("deleteBook");
+//        threadSleepService.sleepRandomly("deleteBook");
         bookService.deleteBookById(id);
     }
 
@@ -63,7 +63,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
     }, fallbackMethod = "callEmptyFallbackSave")
     @Override
     public void saveBook(Book book) {
-        threadSleepService.sleepRandomly("saveBook");
+//        threadSleepService.sleepRandomly("saveBook");
         bookService.saveBook(book);
     }
 
@@ -72,7 +72,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
     }, fallbackMethod = "getFallbackAuthors")
     @Override
     public List<Author> getAllAuthors() {
-        threadSleepService.sleepRandomly("getAllAuthors");
+//        threadSleepService.sleepRandomly("getAllAuthors");
         return authorService.getAllAuthors();
     }
 
@@ -81,7 +81,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
     }, fallbackMethod = "getFallbackGenres")
     @Override
     public List<Genre> getAllGenres() {
-        threadSleepService.sleepRandomly("getAllGenres");
+//        threadSleepService.sleepRandomly("getAllGenres");
         return genreService.getAllGenres();
     }
 
@@ -90,7 +90,7 @@ public class HystrixCallServiceImpl implements HystrixCallService {
     }
 
     private List<BookDto> getFallbackBooksDto() {
-        BookDto bookDto = new BookDto(0, "", "", new ArrayList<>(), new ArrayList<>());
+        BookDto bookDto = new BookDto(0, "N/A", "N/A", new ArrayList<>());
         List<BookDto> bookDtoList = new ArrayList<>();
         bookDtoList.add(bookDto);
         return bookDtoList;

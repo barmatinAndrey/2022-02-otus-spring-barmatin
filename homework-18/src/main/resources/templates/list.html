@@ -53,7 +53,7 @@
 <script>
     function outputBookDtoList(bookDtoList) {
         if (bookDtoList.length == 1 && bookDtoList[0].id == 0) {
-            document.write('<div>Не удалось получить список книг, пожалуйста, попробуйте снова</div>');
+            document.write('<h2>Не удалось получить список книг</h2>');
         }
         else {
             const dataContainer = document.getElementById("bookTableBody");

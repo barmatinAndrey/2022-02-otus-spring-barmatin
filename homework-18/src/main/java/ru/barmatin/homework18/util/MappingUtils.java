@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MappingUtils {
 
-    public static BookDto mapBookToDto(Book book, List<String> commentTextList) {
+    public static BookDto mapBookToDto(Book book) {
         String authorName = "N/A";
         if (book.getAuthor() != null) {
             authorName = book.getAuthor().getSurname() + " " + book.getAuthor().getName() +
@@ -18,7 +18,7 @@ public class MappingUtils {
         for (Genre genre: book.getGenreList()) {
             genreNameList.add(genre.getName());
         }
-        return new BookDto(book.getId(), book.getName(), authorName, genreNameList, commentTextList);
+        return new BookDto(book.getId(), book.getName(), authorName, genreNameList);
     }
 
 }
