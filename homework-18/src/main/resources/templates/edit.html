@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book edit</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookList {
+            border: 1px solid steelblue;
+            border-collapse: collapse;
+        }
+
+        .bookList tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/edit(id=${book.id})}" th:object="${book}">
+<table class="bookList" th:if="${book.name != 'N/A'}" th:unless="${#lists.isEmpty(authorList)}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название книги</th>
+        <th>Автор</th>
+        <th>Жанры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text=*{id}>1</td>
+        <td>
+            <input id="book-name-input" name="name" type="text" value="Война и мир" th:value="*{name}"/>
+        </td>
+        <td>
+            <select th:field="*{author}">
+                <option
+                        th:each="author: ${authorList}"
+                        th:text="${author.surname+' '+author.name+' '+author.patronym}"
+                        th:selected="${author.surname.equals(book.author.surname) && author.name.equals(book.author.name)
+                                    && author.patronym.equals(book.author.patronym)}"
+                        th:value="${author.id}">
+                    Пункт 1
+                </option>
+            </select>
+        </td>
+        <td>
+            <select multiple th:field="*{genreList}">
+                <option
+                        th:each="genre: ${genreList}"
+                        th:text="${genre.name}"
+                        th:selected="${book.genreList.contains(genre)}"
+                        th:value="${genre.id}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="row" th:if="${book.name != 'N/A'}" th:unless="${#lists.isEmpty(authorList)}">
+    <button type="submit">Сохранить</button>
+    <a href="list.html" th:href="@{/}"><button type="button">Отменить</button></a>
+</div>
+
+    <div th:if="${book.name == 'N/A'}">
+        <h2>Не удалось получить книгу</h2>
+    </div>
+
+    <div th:if="${#lists.isEmpty(authorList)}">
+        <h2>Не удалось получить список авторов</h2>
+    </div>
+
+
+</form>
+
+</body>
+</html>
