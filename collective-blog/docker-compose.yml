@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.jdbc.Driver
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/collective_blog_db
       - SPRING_DATASOURCE_USERNAME=myusername
       - SPRING_DATASOURCE_PASSWORD=mypassword
@@ -19,10 +19,11 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_DB=collective_blog_db
+      - MYSQL_ROOT_USER=myusername
+      - MYSQL_ROOT_PASSWORD=mypassword
+      - MYSQL_DATABASE=collective_blog_db
       - MYSQL_USER=myusername
       - MYSQL_PASSWORD=mypassword
-      - MYSQL_ROOT_PASSWORD=mypassword
     networks:
       - nw
 networks:
