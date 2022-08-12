@@ -3,6 +3,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: myusername
     password: mypassword
+#когда приложение в отдельном контейнере
+#    url: jdbc:mysql://host.docker.internal:3306/collective_blog_db
     url: jdbc:mysql://localhost:3306/collective_blog_db
     platform: mysql
     initialization-mode: always
