@@ -1,0 +1,2 @@
+insert into blog_users(username, password, role, surname, name, email)
+values ('barmatin', '$2a$10$m1eWIiEvfd2K8YFhXupoM.cKNHLm67ILiu3BcoFnVvdjJjOFUUvGS', 'ADMIN', 'Барматин', 'Андрей', 'barmatin.andrey@mail.ru');

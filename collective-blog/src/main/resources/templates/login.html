@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<h1>Вход в систему</h1>
+<div>
+    <form name="f" th:action="@{/perform-login}" method="post">
+        <div>
+            <input type="text" name="username" placeholder="Введите логин"/>
+            <input type="password" name="password" placeholder="Введите пароль"/>
+            <button type="submit" class="btn">Войти</button>
+        </div>
+        <br>
+        <div th:if="${param.error}" class="alert alert-error">
+            Неверный логин или пароль
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success">
+            Был произведен выход из сиситемы
+        </div>
+    </form>
+</div>
+</body>
+</html>

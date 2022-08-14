@@ -1,6 +1,6 @@
 drop table if exists blog_users;
 create table blog_users(
-    id int,
+    id int auto_increment,
     username varchar(255),
     password varchar(255),
     role varchar(255),

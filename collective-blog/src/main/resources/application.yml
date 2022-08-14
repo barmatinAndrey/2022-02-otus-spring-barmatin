@@ -12,7 +12,7 @@ spring:
   sql:
     init:
       mode: always
-#      data.sql.sql-locations: data.sql
+      data.sql.sql-locations: data.sql
       schema.sql.sql-locations: schema.sql
   jpa:
     show-sql: true
