@@ -15,10 +15,13 @@ public class PageController {
 
     @GetMapping("/registration")
     public String registrationPage(Model model) {
-        BlogUser blogUser = new BlogUser();
-        blogUser.setUsername("AAAAAAAAAAAAAAA");
-        model.addAttribute("blogUser", blogUser);
+        model.addAttribute("blogUser", new BlogUser());
         return "registration";
+    }
+
+    @GetMapping("/")
+    public String listPage() {
+        return "list";
     }
 
 }

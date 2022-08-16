@@ -19,7 +19,7 @@ public class BlogUserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping(path = "/registration", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @PostMapping(path = "/api/registration", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public void saveBlogUser(BlogUser blogUser) {
         blogUser.setPassword(passwordEncoder.encode(blogUser.getPassword()));
         blogUser.setRole("USER");
