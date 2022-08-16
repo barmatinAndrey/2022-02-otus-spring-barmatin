@@ -15,8 +15,7 @@ import ru.barmatin.homework11.repository.BookRepository;
 import ru.barmatin.homework11.repository.GenreRepository;
 
 @RestController
-public class
-BookController {
+public class BookController {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
