@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<h1>Регистрация</h1>
+<div>
+    <form th:action="@{/registration}" th:object="${blogUser}" method="post">
+        <table>
+            <tr>
+                <td><label>Логин</label></td>
+                <td><input type="text" th:name="username"/></td>
+            </tr>
+            <tr>
+                <td><label>Пароль</label></td>
+                <td><input type="password" name="password"/></td>
+            </tr>
+            <tr>
+                <td><label>Фамилия</label></td>
+                <td><input type="text" name="surname"/></td>
+            </tr>
+            <tr>
+                <td><label>Имя</label></td>
+                <td><input type="text" name="name"/></td>
+            </tr>
+            <tr>
+                <td><label>Email</label></td>
+                <td><input type="text" name="email"/></td>
+            </tr>
+        </table>
+        <br>
+        <div>
+            <button type="submit">Зарегистрироваться</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

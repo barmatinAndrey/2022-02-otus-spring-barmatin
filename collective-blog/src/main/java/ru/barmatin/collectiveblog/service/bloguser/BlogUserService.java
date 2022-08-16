@@ -6,4 +6,6 @@ public interface BlogUserService {
 
     BlogUser getBlogUserByUsername(String username);
 
+    void saveBlogUser(BlogUser blogUser);
+
 }

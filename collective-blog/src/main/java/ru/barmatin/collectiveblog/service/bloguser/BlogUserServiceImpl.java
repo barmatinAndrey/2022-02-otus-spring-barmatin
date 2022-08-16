@@ -18,4 +18,10 @@ public class BlogUserServiceImpl implements BlogUserService {
     public BlogUser getBlogUserByUsername(String username) {
         return blogUserRepository.findByUsername(username);
     }
+
+    @Override
+    public void saveBlogUser(BlogUser blogUser) {
+        blogUserRepository.save(blogUser);
+    }
+
 }
