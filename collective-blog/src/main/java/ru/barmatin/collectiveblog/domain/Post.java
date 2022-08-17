@@ -25,8 +25,11 @@ public class Post {
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "content")
+    private String content;
 
     @Column(name = "post_date")
     private String postDate;

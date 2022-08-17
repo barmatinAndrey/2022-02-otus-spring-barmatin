@@ -27,23 +27,34 @@
 
     </div>
 </nav>
+
+
+
+<div id="postContainer"></div>
+
+<script>
+    fetch('/api/post')
+        .then(response => response.json())
+        .then(json => outputPostList(json))
+</script>
+
+<script>
+    function outputPostList(postList) {
+        const postContainer = document.getElementById("postContainer");
+        postList.forEach(function (post) {
+            var postLayout = document.createElement('div');
+            postLayout.innerHTML = `
     <div class="container page">
         <div class="row">
             <div class="col-12">
                 <div class="card" style="">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-6"><b>Автор:</b> Бро</div>
-                            <div class="col-6 ta-right"><b>Дата:</b> 16.08.2022</div>
+                            <div class="col-6"><b>Автор: </b>${post.blogUser.surname} ${post.blogUser.name}</div>
+                            <div class="col-6 ta-right"><b>Дата: </b>${post.postDate}</div>
                         </div>
-                        <h5 class="card-title">Название статьи</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up the bulk of the card's content.
-                            Some quick example text to build on the card title and make up the bulk of the card's content.
-                            Some quick example text to build on the card title and make up the bulk of the card's content.
-                            Some quick example text to build on the card title and make up the bulk of the card's content.
-                            Some quick example text to build on the card title and make up the bulk of the card's content.
-                        </p>
+                        <h5 class="card-title">${post.title}</h5>
+                        <p class="card-text">${post.content}</p>
                         <div class="row">
                             <div class="col-12"><b>Теги:</b>
                                 <a href="http://localhost:66/">Раз</a>,
@@ -52,7 +63,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6"><b>Категория:</b> Личный блог</div>
+                            <div class="col-6"><b>Категория: </b>${post.postCategory.name}</div>
                             <div class="col-6 ta-right"><b>Просмотры:</b> 20</div>
                         </div>
                     </div>
@@ -60,6 +71,14 @@
             </div>
         </div>
     </div>
+    <br>
+            `;
+
+            postLayout.id = post.id;
+            postContainer.appendChild(postLayout);
+        });
+    }
+</script>
 
 
 </body></html>

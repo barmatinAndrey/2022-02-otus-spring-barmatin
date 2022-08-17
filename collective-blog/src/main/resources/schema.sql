@@ -22,7 +22,7 @@ create table posts(
     id int auto_increment,
     blog_user_id int references blog_users(id),
     post_category_id int references post_categories(id),
-    name varchar(255),
+    title varchar(255),
     content text,
     post_date datetime,
     is_visible bool,
