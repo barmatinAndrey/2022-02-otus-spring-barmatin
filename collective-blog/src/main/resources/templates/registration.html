@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head></head>
+<head>
+
+    <!-- Bootstrap core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="css/main.css" rel="stylesheet">
+	<link href="css/all.css" rel="stylesheet"> <!--load all styles -->
+	<!-- Bootstrap core JavaScript
+	   ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<script src="js/loadingoverlay.min.js"></script>
+	<link href="css/login.css" rel="stylesheet">
+</head>
 <body>
-<h1>Регистрация</h1>
-<div>
-    <form th:action="@{/api/registration}" th:object="${blogUser}" method="post">
-        <table>
-            <tr>
-                <td><label>Логин</label></td>
-                <td><input type="text" th:name="username"/></td>
-            </tr>
-            <tr>
-                <td><label>Пароль</label></td>
-                <td><input type="password" name="password"/></td>
-            </tr>
-            <tr>
-                <td><label>Фамилия</label></td>
-                <td><input type="text" name="surname"/></td>
-            </tr>
-            <tr>
-                <td><label>Имя</label></td>
-                <td><input type="text" name="name"/></td>
-            </tr>
-            <tr>
-                <td><label>Email</label></td>
-                <td><input type="text" name="email"/></td>
-            </tr>
-        </table>
-        <br>
-        <div>
-            <button type="submit">Зарегистрироваться</button>
-        </div>
-    </form>
-</div>
+	<div class="form">		
+		<div>			
+			<form th:action="@{/api/registration}" th:object="${blogUser}" method="post">
+				<h4>Регистрация</h4>
+				<table class="w-100 mt-2">
+					<tr>
+						<td><input class="m-1" style="width: 295px;" type="text" th:name="username" placeholder="Логин"/></td>
+					</tr>
+					<tr>
+						<td><input class="m-1" style="width: 295px;" type="password" name="password" placeholder="Пароль"/></td>
+					</tr>
+					<tr>
+						<td><input class="m-1" style="width: 295px;" type="text" name="surname" placeholder="Фамилия"/></td>
+					</tr>
+					<tr>
+						<td><input class="m-1" style="width: 295px;" type="text" name="name" placeholder="Имя"/></td>
+					</tr>
+					<tr>
+						<td><input class="m-1" style="width: 295px;" type="text" name="email" placeholder="Email"/></td>
+					</tr>
+				</table>
+				<br>
+				<div class="w-100" style="text-align: right;">
+					<button class="btn btn-primary bg-viola bg-viola_text pull-right" type="submit">Зарегистрироваться</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
