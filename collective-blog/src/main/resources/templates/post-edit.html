@@ -37,7 +37,7 @@
       </table>
       <br>
       <div class="w-100" style="text-align: right;">
-        <button type="submit">Отправить</button>
+        <button id="save">Сохранить</button>
       </div>
     </form>
   </div>
@@ -52,11 +52,28 @@
 
 <script>
     function outputPost(post) {
-        console.log(post);
         const postTitle = document.getElementById("title");
         const postContent = document.getElementById("content");
+        const savePost = document.getElementById("save");
         postTitle.value = post.title;
         postContent.value = post.content;
+        save.onclick = function() {
+            post.postCategory = JSON.parse(decodeURIComponent(document.getElementById('postCategorySelect').value));
+            post.title = document.getElementById("title").value;
+            post.content = document.getElementById("content").value;
+            post = JSON.stringify(post);
+            console.log(post);
+
+            fetch('/api/post/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: post
+                })
+                .then()
+            }
     }
 </script>
 

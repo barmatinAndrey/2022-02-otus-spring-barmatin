@@ -15,6 +15,7 @@ public class PostServiceImpl implements PostService {
         this.postRepository = postRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Post> getAll() {
         return postRepository.findAllByOrderByPostDate();
@@ -25,4 +26,10 @@ public class PostServiceImpl implements PostService {
     public Optional<Post> getById(long id) {
         return postRepository.findById(id);
     }
+
+    @Override
+    public void savePost(Post post) {
+        postRepository.save(post);
+    }
+
 }

@@ -11,4 +11,6 @@ public interface PostService {
 
     Optional<Post> getById(long id);
 
+    void savePost(Post post);
+
 }

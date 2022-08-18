@@ -2,10 +2,13 @@ package ru.barmatin.collectiveblog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.barmatin.collectiveblog.domain.BlogUser;
 import ru.barmatin.collectiveblog.domain.Post;
+import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
 
 import java.util.List;
@@ -13,10 +16,12 @@ import java.util.List;
 
 @RestController
 public class PostController {
+    private final BlogUserService blogUserService;
     private final PostService postService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(BlogUserService blogUserService, PostService postService) {
+        this.blogUserService = blogUserService;
         this.postService = postService;
     }
 
@@ -27,22 +32,22 @@ public class PostController {
 
     @GetMapping("/api/post/{id}")
     public Post getPost(@PathVariable String id) {
-//        Post p = new Post();
-//        p.setTitle("AAAAdasdasddddddddsaAAa");
         if (id.equals("new")) {
-            return new Post();
+            String login = SecurityContextHolder.getContext().getAuthentication().getName();
+            BlogUser blogUser = blogUserService.getBlogUserByUsername(login);
+            Post post = new Post();
+            post.setBlogUser(blogUser);
+            return post;
         }
         else {
             return postService.getById(Long.parseLong(id)).get();
         }
     }
 
-    @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public RedirectView savePost(Post post) {
-        Post p = post;
-//        blogUser.setPassword(passwordEncoder.encode(blogUser.getPassword()));
-//        blogUser.setRole("USER");
-//        blogUserService.saveBlogUser(blogUser);
+        post.setPostDate("2022-08-16 15:39:59");
+        postService.savePost(post);
         return new RedirectView("/");
     }
 }
