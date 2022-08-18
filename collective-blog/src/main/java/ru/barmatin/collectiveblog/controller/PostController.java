@@ -45,7 +45,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public RedirectView savePost(Post post) {
+    public RedirectView savePost(@RequestBody Post post) {
         post.setPostDate("2022-08-16 15:39:59");
         postService.savePost(post);
         return new RedirectView("/");

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <!-- default header name is X-CSRF-TOKEN -->
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -15,6 +18,7 @@
   <script src="js/bootstrap.bundle.js"></script>
   <script src="js/loadingoverlay.min.js"></script>
   <link href="css/login.css" rel="stylesheet">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
 <div class="form">
@@ -64,9 +68,13 @@
             post = JSON.stringify(post);
             console.log(post);
 
-            fetch('/api/post/', {
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+
+            fetch('/api/post', {
                 method: 'POST',
                 headers: {
+                    [header]: token,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
