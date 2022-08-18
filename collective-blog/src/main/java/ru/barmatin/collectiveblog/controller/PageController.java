@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.barmatin.collectiveblog.domain.BlogUser;
+import ru.barmatin.collectiveblog.domain.Post;
 
 @Controller
 public class PageController {
@@ -20,8 +21,14 @@ public class PageController {
     }
 
     @GetMapping("/")
-    public String listPage() {
-        return "list";
+    public String postListPage() {
+        return "post-list";
+    }
+
+    @GetMapping("/post-edit")
+    public String postEditPage(Model model) {
+        model.addAttribute("post", new Post());
+        return "post-edit";
     }
 
 }
