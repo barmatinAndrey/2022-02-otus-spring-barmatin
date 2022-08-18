@@ -3,6 +3,8 @@ package ru.barmatin.collectiveblog.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.barmatin.collectiveblog.domain.BlogUser;
 import ru.barmatin.collectiveblog.domain.Post;
 
@@ -25,9 +27,8 @@ public class PageController {
         return "post-list";
     }
 
-    @GetMapping("/post-edit")
-    public String postEditPage(Model model) {
-        model.addAttribute("post", new Post());
+    @GetMapping("/post-edit/{id}")
+    public String postEditPage(@PathVariable String id) {
         return "post-edit";
     }
 

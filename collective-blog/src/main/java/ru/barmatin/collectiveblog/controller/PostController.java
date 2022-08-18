@@ -2,9 +2,7 @@ package ru.barmatin.collectiveblog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.barmatin.collectiveblog.domain.BlogUser;
 import ru.barmatin.collectiveblog.domain.Post;
@@ -25,6 +23,18 @@ public class PostController {
     @GetMapping("/api/post")
     public List<Post> getAll() {
         return postService.getAll();
+    }
+
+    @GetMapping("/api/post/{id}")
+    public Post getPost(@PathVariable String id) {
+//        Post p = new Post();
+//        p.setTitle("AAAAdasdasddddddddsaAAa");
+        if (id.equals("new")) {
+            return new Post();
+        }
+        else {
+            return postService.getById(Long.parseLong(id)).get();
+        }
     }
 
     @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})

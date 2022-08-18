@@ -19,29 +19,46 @@
 <body>
 <div class="form">
   <div>
-    <form th:action="@{/api/post}" th:object="${post}" method="post">
+    <form>
       <h4>Добавить пост</h4>
       <table class="w-100 mt-2">
         <tr>
           <td style="width: 600px;">
             <div class="form-group">
-              <select class="form-control" name="postCategory" id="postCategorySelect"></select>
+              <select id="postCategorySelect"></select>
             </div></td>
         </tr>
         <tr>
-          <td><input class="m-1" style="width: 600px;" type="text" name="title" placeholder="Заголовок"/></td>
+          <td><input class="m-1" style="width: 600px;" type="text" id="title" placeholder="Заголовок"/></td>
         </tr>
         <tr>
-          <td><textarea class="m-1" rows = "5" style="width: 600px;" name="content" placeholder="Контент"></textarea></td>
+          <td><textarea class="m-1" rows = "5" style="width: 600px;" id="content" placeholder="Текст"></textarea></td>
         </tr>
       </table>
       <br>
       <div class="w-100" style="text-align: right;">
-        <button class="btn btn-primary bg-viola bg-viola_text pull-right" type="submit">Отправить</button>
+        <button type="submit">Отправить</button>
       </div>
     </form>
   </div>
 </div>
+
+<script>
+    var id = window.location.pathname.split('/').pop();
+    fetch('/api/post/'+id)
+        .then(response => response.json())
+        .then(json => outputPost(json))
+</script>
+
+<script>
+    function outputPost(post) {
+        console.log(post);
+        const postTitle = document.getElementById("title");
+        const postContent = document.getElementById("content");
+        postTitle.value = post.title;
+        postContent.value = post.content;
+    }
+</script>
 
 <script>
     fetch('/api/post-category')
