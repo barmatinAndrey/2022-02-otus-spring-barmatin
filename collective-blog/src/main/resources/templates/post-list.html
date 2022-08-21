@@ -101,7 +101,6 @@
             postLayout.id = post.id;
             postContainer.appendChild(postLayout);
             var editButton = document.getElementById("edit");
-            console.log(editButton);
             if (post.blogUser.id != userId) {
                 editButton.parentNode.removeChild(editButton);
             }

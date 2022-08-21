@@ -85,22 +85,23 @@
                    }
                 })
             }
+
+        fetch('/api/post-category')
+            .then(response => response.json())
+            .then(json => outputPostCategories(json, post))
     }
 </script>
 
 <script>
-    fetch('/api/post-category')
-        .then(response => response.json())
-        .then(json => outputPostCategories(json))
-</script>
-
-<script>
-    function outputPostCategories(postCategoryList) {
+    function outputPostCategories(postCategoryList, post) {
         const postCategorySelect = document.getElementById("postCategorySelect");
         postCategoryList.forEach(function (postCategory) {
             var newOption = document.createElement('option');
             newOption.value = encodeURIComponent(JSON.stringify(postCategory));
             newOption.text = postCategory.name;
+            if (post.postCategory != null) {
+                newOption.selected = postCategory.id == post.postCategory.id ? true : false;
+            }
             postCategorySelect.appendChild(newOption);
         });
     }
