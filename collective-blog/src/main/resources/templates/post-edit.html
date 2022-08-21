@@ -21,9 +21,9 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
-<div class="form">
+
   <div>
-    <form>
+
       <h4>Добавить пост</h4>
       <table class="w-100 mt-2">
         <tr>
@@ -43,9 +43,8 @@
       <div class="w-100" style="text-align: right;">
         <button id="save">Сохранить</button>
       </div>
-    </form>
   </div>
-</div>
+
 
 <script>
     var id = window.location.pathname.split('/').pop();
@@ -65,8 +64,9 @@
             post.postCategory = JSON.parse(decodeURIComponent(document.getElementById('postCategorySelect').value));
             post.title = document.getElementById("title").value;
             post.content = document.getElementById("content").value;
-            post = JSON.stringify(post);
-            console.log(post);
+            var post1 = post;
+            post1 = JSON.stringify(post1);
+            console.log(post1);
 
             let token = $("meta[name='_csrf']").attr("content");
             let header = $("meta[name='_csrf_header']").attr("content");
@@ -78,9 +78,13 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: post
+                body: post1
                 })
-                .then()
+                .then(response => {
+                   if (response.status == 200) {
+                       window.location.href = '/';
+                   }
+                })
             }
     }
 </script>
