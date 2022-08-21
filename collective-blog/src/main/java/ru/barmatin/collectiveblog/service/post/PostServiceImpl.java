@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.repository.PostRepository;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -23,7 +22,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Post> getById(long id) {
+    public Post getById(long id) {
         return postRepository.findById(id);
     }
 

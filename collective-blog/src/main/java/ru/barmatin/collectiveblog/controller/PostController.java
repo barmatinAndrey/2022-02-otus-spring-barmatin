@@ -41,7 +41,7 @@ public class PostController {
             return post;
         }
         else {
-            return postService.getById(Long.parseLong(id)).get();
+            return postService.getById(Long.parseLong(id));
         }
     }
 
