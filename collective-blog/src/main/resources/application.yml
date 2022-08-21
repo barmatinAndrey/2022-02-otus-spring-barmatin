@@ -21,6 +21,8 @@ spring:
       ddl-auto: none
     database: mysql
   mvc:
+    format:
+      date-time: dd.MM.yyyy HH:mm
     hiddenmethod:
       filter:
         enabled: true

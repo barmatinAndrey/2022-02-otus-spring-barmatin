@@ -1,10 +1,12 @@
 package ru.barmatin.collectiveblog.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +34,9 @@ public class Post {
     private String content;
 
     @Column(name = "post_date")
-    private String postDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm", timezone = "Asia/Novosibirsk")
+    private Date postDate;
 
     @Column(name = "is_visible")
     private boolean isVisible;

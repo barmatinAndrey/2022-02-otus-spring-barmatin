@@ -11,6 +11,7 @@ import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -46,7 +47,7 @@ public class PostController {
 
     @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public RedirectView savePost(@RequestBody Post post) {
-        post.setPostDate("2022-08-16 15:39:59");
+        post.setPostDate(new Date());
         postService.savePost(post);
         return new RedirectView("/");
     }
