@@ -18,19 +18,16 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-sm navbar-dark bg-viola">
-    <div class="container" style="max-width: 100%">
-        <a href="http://localhost:66/#" class="navbar-brand"> uncleTales.ru </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-    </div>
+<nav class="menu">
+    <ul>
+        <li><a href="/login">Авторизоваться</a></li>
+        <li id="addPost"><a href="/post-edit/new">Добавить пост</a></li>
+    </ul>
 </nav>
 
-<div class="w-100 mt-2" style="text-align: left;">
-    <a id="addPost" href="post-edit.html" th:href="@{/post-edit/new}">Добавить пост</a>
-</div>
+<!--<div class="w-100 mt-2" style="text-align: left;">-->
+<!--    <a href="post-edit.html" th:href="@{/post-edit/new}"></a>-->
+<!--</div>-->
 
 <div id="postContainer"></div>
 
@@ -55,8 +52,8 @@
 
                 break;
             case 'ANONYMOUS':
-                const addPost = document.getElementById("addPost");
-                addPost.style.visibility='hidden'
+                var addPost = document.getElementById("addPost");
+                addPost.parentNode.removeChild(addPost);
                 break;
         }
     }

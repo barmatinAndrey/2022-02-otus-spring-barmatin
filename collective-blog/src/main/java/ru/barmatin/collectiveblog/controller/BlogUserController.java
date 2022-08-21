@@ -6,14 +6,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.barmatin.collectiveblog.domain.BlogUser;
-import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
-
-import java.util.List;
 
 @RestController
 public class BlogUserController {
