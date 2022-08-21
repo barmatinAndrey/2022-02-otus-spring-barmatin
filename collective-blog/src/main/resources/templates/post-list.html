@@ -25,26 +25,24 @@
     </ul>
 </nav>
 
-<!--<div class="w-100 mt-2" style="text-align: left;">-->
-<!--    <a href="post-edit.html" th:href="@{/post-edit/new}"></a>-->
-<!--</div>-->
-
 <div id="postContainer"></div>
 
 <script>
     fetch('api/current-role')
         .then(response => response.json())
-        .then(json => showAddNewPostButton(json));
+        .then(blogUser => {
+            showAddNewPostButton(blogUser.role)
+            fetch('/api/post')
+                .then(response => response.json())
+                .then(json => outputPostList(json, blogUser.id));
+  })
 
-    fetch('/api/post')
-        .then(response => response.json())
-        .then(json => outputPostList(json));
+
 </script>
 
 <script>
-    function showAddNewPostButton(blogUser) {
-        console.log(blogUser.role);
-        switch (blogUser.role) {
+    function showAddNewPostButton(userRole) {
+        switch (userRole) {
             case 'ADMIN':
 
                 break;
@@ -60,7 +58,7 @@
 </script>
 
 <script>
-    function outputPostList(postList) {
+    function outputPostList(postList, userId) {
         const postContainer = document.getElementById("postContainer");
         postList.forEach(function (post) {
             var postLayout = document.createElement('div');
@@ -86,6 +84,13 @@
                         <div class="row">
                             <div class="col-6"><b>Категория: </b>${post.postCategory.name}</div>
                         </div>
+                        <div id="edit" class="w-100 mt-2">
+                            <a href="/post-edit/${post.id}">
+                                <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Редактировать
+                                </button>
+                            </a>
+					    </div>
                     </div>
                 </div>
             </div>
@@ -93,9 +98,13 @@
     </div>
     <br>
             `;
-
             postLayout.id = post.id;
             postContainer.appendChild(postLayout);
+            var editButton = document.getElementById("edit");
+            console.log(editButton);
+            if (post.blogUser.id != userId) {
+                editButton.parentNode.removeChild(editButton);
+            }
         });
     }
 </script>
