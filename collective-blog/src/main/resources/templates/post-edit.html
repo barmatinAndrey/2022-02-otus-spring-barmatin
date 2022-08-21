@@ -64,9 +64,8 @@
             post.postCategory = JSON.parse(decodeURIComponent(document.getElementById('postCategorySelect').value));
             post.title = document.getElementById("title").value;
             post.content = document.getElementById("content").value;
-            var post1 = post;
-            post1 = JSON.stringify(post1);
-            console.log(post1);
+            var postCopy = post;
+            postCopy = JSON.stringify(postCopy);
 
             let token = $("meta[name='_csrf']").attr("content");
             let header = $("meta[name='_csrf_header']").attr("content");
@@ -78,7 +77,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: post1
+                body: postCopy
                 })
                 .then(response => {
                    if (response.status == 200) {
