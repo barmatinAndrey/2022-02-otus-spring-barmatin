@@ -18,11 +18,38 @@
 </head>
 
 <body>
-<nav class="menu">
-    <ul>
-        <li><a href="/login">Авторизоваться</a></li>
-        <li id="addPost"><a href="/post-edit/new">Добавить пост</a></li>
-    </ul>
+<nav class="navbar navbar-expand-sm navbar-dark bg-viola">
+    <div class="container" style="max-width: 100%">
+        <a class="navbar-brand" id="navbarTitle"></a>
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Авторизоваться
+                    </a>
+<!--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
+<!--                        <a class="dropdown-item" href="http://localhost:66/calc/wood">Сказки</a>-->
+<!--                    </div>-->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/post-edit/new" role="button" id="addPost" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Добавить пост
+                    </a>
+<!--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
+<!--                        <a class="dropdown-item" href="http://localhost:66/calc/wood">Сказки</a>-->
+<!--                    </div>-->
+                </li>
+            </ul>
+            <form action="http://localhost:66/" class="d-flex ">
+                <input type="searh" placeholder="Поиск" class="form-control me-2">
+                <button class="btn btn-outline-white">Поиск</button>
+            </form>
+        </div>
+
+    </div>
 </nav>
 
 <div id="postContainer"></div>
@@ -31,13 +58,24 @@
     fetch('api/current-role')
         .then(response => response.json())
         .then(blogUser => {
-            showAddNewPostButton(blogUser.role)
+            showNavbarTitle(blogUser);
+            showAddNewPostButton(blogUser.role);
             fetch('/api/post')
                 .then(response => response.json())
                 .then(json => outputPostList(json, blogUser.id));
   })
+</script>
 
-
+<script>
+    function showNavbarTitle(blogUser) {
+        var navbarTitle = document.getElementById("navbarTitle");
+        if (blogUser.role == 'ANONYMOUS') {
+            navbarTitle.text = 'Гость';
+        }
+        else {
+            navbarTitle.text = blogUser.surname + ' ' + blogUser.name;
+        }
+    }
 </script>
 
 <script>
