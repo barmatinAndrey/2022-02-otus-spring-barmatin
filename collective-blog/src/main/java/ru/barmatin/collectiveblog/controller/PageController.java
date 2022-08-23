@@ -32,4 +32,9 @@ public class PageController {
         return "post-edit";
     }
 
+    @GetMapping("/post-view/{id}")
+    public String postViewPage(@PathVariable String id) {
+        return "post-view";
+    }
+
 }

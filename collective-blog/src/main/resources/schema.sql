@@ -28,3 +28,11 @@ create table posts(
     is_visible bool,
     primary key(id)
 );
+
+drop table if exists post_comments;
+create table post_comments(
+    id int auto_increment,
+    post_id int references posts(id) on delete cascade,
+    content text,
+    primary key (id)
+);

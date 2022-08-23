@@ -122,10 +122,15 @@
                         <div class="row">
                             <div class="col-6"><b>Категория: </b>${post.postCategory.name}</div>
                         </div>
-                        <div id="edit" class="w-100 mt-2">
-                            <a href="/post-edit/${post.id}">
+                        <div class="w-100 mt-2">
+                            <a id="edit" href="/post-edit/${post.id}">
                                 <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
                                     Редактировать
+                                </button>
+                            </a>
+                            <a href="/post-view/${post.id}">
+                                <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Просмотр
                                 </button>
                             </a>
 					    </div>
