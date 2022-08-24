@@ -6,50 +6,60 @@
   <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
   <!-- Bootstrap core CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link href="css/main.css" rel="stylesheet">
-  <link href="css/all.css" rel="stylesheet"> <!--load all styles -->
+  <link href="/css/main.css" rel="stylesheet">
+  <link href="/css/all.css" rel="stylesheet"> <!--load all styles -->
   <!-- Bootstrap core JavaScript
      ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.bundle.js"></script>
-  <script src="js/loadingoverlay.min.js"></script>
-  <link href="css/login.css" rel="stylesheet">
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.bundle.js"></script>
+  <script src="/js/loadingoverlay.min.js"></script>
+  <link href="/css/main(1).css" rel="stylesheet">
+  <script type="/text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
-
+<br>
 <div>
-  <table class="w-100 mt-2">
-    <tr>
-        <td id="name"></td>
-    </tr>
-    <tr>
-      <td id="postDate"></td>
-    </tr>
-    <tr>
-      <td id="postTitle"></td>
-    </tr>
-    <tr>
-      <td id="postContent"></td>
-    </tr>
-    <tr>
-      <td id="postCategory"></td>
-    </tr>
-
-  </table>
-  <br>
-  <div id="inputComment">
-    <div>
-      <textarea class="m-1" rows = "5" style="width: 600px;" id="comment" placeholder="Комментарий"></textarea>
-    </div>
-    <div>
-      <button id="addComment">Сохранить</button>
+  <div class="container page">
+    <div class="row">
+      <div class="col-12">
+        <div class="card" style="">
+          <div class="card-body">
+            <div class="row mb-2">
+              <div id="name" class="col-6"><b>Автор: </b></div>
+              <div id="postDate" class="col-6 ta-right"><b>Дата: </b></div>
+            </div>
+            <h5 id="postTitle" class="card-title"></h5>
+            <p id="postContent" class="card-text"></p>
+            <div class="row">
+              <div class="col-12"><b>Теги:</b>
+                <a href="http://localhost:66/">Раз</a>,
+                <a href="http://localhost:66/">Два</a>,
+                <a href="http://localhost:66/">Три</a>
+              </div>
+            </div>
+            <div class="row">
+              <div id="postCategory" class="col-6"><b>Категория: </b></div>
+            </div>
+            <br>
+            <div id="inputComment">
+              <div>
+                <textarea class="form-control me-2" rows = "5" id="comment" placeholder="Комментарий"></textarea>
+              </div>
+              <br>
+              <div>
+                <button id="addComment" type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 </div>
 
 <script>
@@ -84,11 +94,11 @@
         const comment = document.getElementById("comment");
         const addComment = document.getElementById("addComment");
 
-        name.text = post.blogUser.surname + ' '+ post.blogUser.name;
-        postDate.innerHTML = post.postDate;
-        postTitle.innerHTML = post.title;
-        postContent.innerHTML = post.content;
-        postCategory.innerHTML = post.postCategory.name;
+        name.innerHTML += post.blogUser.surname + ' '+ post.blogUser.name;
+        postDate.innerHTML += post.postDate;
+        postTitle.innerHTML += post.title;
+        postContent.innerHTML += post.content;
+        postCategory.innerHTML += post.postCategory.name;
 
         addComment.onclick = function() {
 <!--            const postComment = {-->
