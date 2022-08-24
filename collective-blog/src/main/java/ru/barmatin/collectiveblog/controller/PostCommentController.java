@@ -21,7 +21,7 @@ public class PostCommentController {
     }
 
     @GetMapping("/api/post-comment")
-    public List<String> getAll(@RequestParam("postId") long postId) {
+    public List<String> getAllContentByPostId(@RequestParam("postId") long postId) {
         return postCommentService.getAllContentByPostId(postId);
     }
 
