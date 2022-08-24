@@ -33,6 +33,8 @@ drop table if exists post_comments;
 create table post_comments(
     id int auto_increment,
     post_id int references posts(id) on delete cascade,
+    blog_user_id int references blog_users(id) on delete cascade,
+    post_comment_date datetime,
     content text,
     primary key (id)
 );

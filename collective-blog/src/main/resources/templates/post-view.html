@@ -44,7 +44,7 @@
   <br>
   <div id="inputComment">
     <div>
-      <textarea class="m-1" rows = "5" style="width: 600px;" id="content" placeholder="Комментарий"></textarea>
+      <textarea class="m-1" rows = "5" style="width: 600px;" id="comment" placeholder="Комментарий"></textarea>
     </div>
     <div>
       <button id="addComment">Сохранить</button>
@@ -61,7 +61,7 @@
             var id = window.location.pathname.split('/').pop();
             fetch('/api/post/'+id)
                 .then(response => response.json())
-                .then(json => outputPost(json));
+                .then(json => outputPost(blogUser, json));
   })
 </script>
 
@@ -75,18 +75,61 @@
 </script>
 
 <script>
-    function outputPost(post) {
+    function outputPost(blogUser, post) {
         const name = document.getElementById("name");
         const postDate = document.getElementById("postDate");
         const postTitle = document.getElementById("postTitle");
         const postContent = document.getElementById("postContent");
         const postCategory = document.getElementById("postCategory");
+        const comment = document.getElementById("comment");
+        const addComment = document.getElementById("addComment");
 
         name.text = post.blogUser.surname + ' '+ post.blogUser.name;
         postDate.innerHTML = post.postDate;
         postTitle.innerHTML = post.title;
         postContent.innerHTML = post.content;
         postCategory.innerHTML = post.postCategory.name;
+
+        addComment.onclick = function() {
+<!--            const postComment = {-->
+<!--                id: 0,-->
+<!--                post: post,-->
+<!--                blogUser: blogUser,-->
+<!--                content: ''-->
+<!--            };-->
+
+            var postComment = new Object();
+            postComment.id = 0;
+            postComment.post = post;
+            postComment.blogUser = blogUser;
+            postComment.content = comment.value;
+
+
+            postComment = JSON.stringify(postComment);
+
+<!--            post.title = document.getElementById("title").value;-->
+<!--            post.content = document.getElementById("content").value;-->
+<!--            var postCopy = post;-->
+<!--            postCopy = JSON.stringify(postCopy);-->
+
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+
+            fetch('/api/post-comment', {
+                method: 'POST',
+                headers: {
+                    [header]: token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: postComment
+                })
+                .then(response => {
+                   if (response.status == 200) {
+                       window.location.href = '/';
+                   }
+                })
+            }
     }
 </script>
 
