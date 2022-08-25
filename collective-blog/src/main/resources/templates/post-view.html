@@ -72,9 +72,9 @@
             var id = window.location.pathname.split('/').pop();
             fetch('/api/post/'+id)
                 .then(response => response.json())
-                .then(json => {
-                    outputPost(blogUser, json)
-                    fetch('/api/post-comment/?postId='+id)
+                .then(post => {
+                    outputPost(blogUser, post);
+                    fetch('/api/post-comment?postId='+id)
                         .then(response => response.json())
                         .then(postCommentList => outputPostComments(postCommentList))
                 });
@@ -133,6 +133,34 @@
         if (blogUser.role == 'ANONYMOUS') {
             inputComment.parentNode.removeChild(inputComment);
         }
+    }
+</script>
+
+<script>
+    function outputPostComments(postCommentList) {
+        console.log(postCommentList);
+        const postCommentContainer = document.getElementById("postCommentContainer");
+        postCommentList.forEach(function (postComment) {
+            var postCommentLayout = document.createElement('div');
+            postCommentLayout.innerHTML = `
+    <div class="container page">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-6"><b>Автор: </b>${postComment.blogUser.surname} ${postComment.blogUser.name}</div>
+                            <div class="col-6 ta-right"><b>Дата: </b>${postComment.postCommentDate}</div>
+                        </div>
+                        <p class="card-text">${postComment.content}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+            `;
+        });
     }
 </script>
 
