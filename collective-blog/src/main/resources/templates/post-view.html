@@ -76,7 +76,7 @@
                     outputPost(blogUser, post);
                     fetch('/api/post-comment?postId='+id)
                         .then(response => response.json())
-                        .then(postCommentList => outputPostComments(postCommentList))
+                        .then(postCommentDtoList => outputPostComments(postCommentDtoList))
                 });
   })
 </script>
@@ -97,33 +97,35 @@
         postContent.innerHTML += post.content;
         postCategory.innerHTML += post.postCategory.name;
 
-        addComment.onclick = function() {
-            var postComment = new Object();
-            postComment.id = 0;
-            postComment.post = post;
-            postComment.blogUser = blogUser;
-            postComment.content = comment.value;
+        if (blogUser.role != 'ANONYMOUS') {
+            addComment.onclick = function() {
+                var postComment = new Object();
+                postComment.id = 0;
+                postComment.post = post;
+                postComment.blogUser = blogUser;
+                postComment.content = comment.value;
+                postComment = JSON.stringify(postComment);
 
-            postComment = JSON.stringify(postComment);
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
 
-            let token = $("meta[name='_csrf']").attr("content");
-            let header = $("meta[name='_csrf_header']").attr("content");
-
-            fetch('/api/post-comment', {
-                method: 'POST',
-                headers: {
-                    [header]: token,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: postComment
-                })
-                .then(response => {
-                   if (response.status == 200) {
-                       window.location.href = '/';
-                   }
+                fetch('/api/post-comment', {
+                    method: 'POST',
+                    headers: {
+                        [header]: token,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: postComment
+                    })
+                    .then(response => {
+                       if (response.status == 200) {
+                           window.location.href = '/';
+                       }
                 })
             }
+        }
+
     }
 </script>
 
@@ -137,10 +139,10 @@
 </script>
 
 <script>
-    function outputPostComments(postCommentList) {
-        console.log(postCommentList);
+    function outputPostComments(postCommentDtoList) {
+        console.log(postCommentDtoList);
         const postCommentContainer = document.getElementById("postCommentContainer");
-        postCommentList.forEach(function (postComment) {
+        postCommentDtoList.forEach(function (postCommentDto) {
             var postCommentLayout = document.createElement('div');
             postCommentLayout.innerHTML = `
     <div class="container page">
@@ -149,10 +151,10 @@
                 <div class="card" style="">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-6"><b>Автор: </b>${postComment.blogUser.surname} ${postComment.blogUser.name}</div>
-                            <div class="col-6 ta-right"><b>Дата: </b>${postComment.postCommentDate}</div>
+                            <div class="col-6"><b>Автор: </b>${postCommentDto.authorName}</div>
+                            <div class="col-6 ta-right"><b>Дата: </b>${postCommentDto.postCommentDate}</div>
                         </div>
-                        <p class="card-text">${postComment.content}</p>
+                        <p class="card-text">${postCommentDto.content}</p>
                     </div>
                 </div>
             </div>
@@ -160,6 +162,7 @@
     </div>
     <br>
             `;
+            postCommentContainer.appendChild(postCommentLayout);
         });
     }
 </script>

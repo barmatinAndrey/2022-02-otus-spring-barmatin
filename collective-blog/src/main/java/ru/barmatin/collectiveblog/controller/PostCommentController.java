@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.domain.PostComment;
+import ru.barmatin.collectiveblog.dto.PostCommentDto;
 import ru.barmatin.collectiveblog.service.postcomment.PostCommentService;
 
 import java.util.Date;
@@ -21,9 +22,9 @@ public class PostCommentController {
     }
 
     @GetMapping("/api/post-comment")
-    public List<String> getAllContentByPostId(@RequestParam("postId") long postId) {
-        List<String> bb = postCommentService.getAllContentByPostId(postId);
-        return postCommentService.getAllContentByPostId(postId);
+    public List<PostCommentDto> getAllContentByPostId(@RequestParam("postId") long postId) {
+        List<PostCommentDto> bb = postCommentService.getAllByPostId(postId);
+        return postCommentService.getAllByPostId(postId);
     }
 
     @PostMapping(path = "/api/post-comment", consumes = {MediaType.APPLICATION_JSON_VALUE})
