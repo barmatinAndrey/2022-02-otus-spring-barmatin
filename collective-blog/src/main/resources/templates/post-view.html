@@ -121,8 +121,8 @@
                     .then(response => {
                        if (response.status == 200) {
                            fetch('/api/post-comment?postId='+post.id)
-                        .then(response => response.json())
-                        .then(postCommentDtoList => outputPostComments(postCommentDtoList))
+                              .then(response => response.json())
+                              .then(postCommentDtoList => outputPostComments(postCommentDtoList))
                        }
                 })
             }
