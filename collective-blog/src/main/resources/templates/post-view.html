@@ -120,7 +120,9 @@
                     })
                     .then(response => {
                        if (response.status == 200) {
-                           window.location.href = '/';
+                           fetch('/api/post-comment?postId='+post.id)
+                        .then(response => response.json())
+                        .then(postCommentDtoList => outputPostComments(postCommentDtoList))
                        }
                 })
             }
@@ -142,6 +144,7 @@
     function outputPostComments(postCommentDtoList) {
         console.log(postCommentDtoList);
         const postCommentContainer = document.getElementById("postCommentContainer");
+        postCommentContainer.innerHTML = "";
         postCommentDtoList.forEach(function (postCommentDto) {
             var postCommentLayout = document.createElement('div');
             postCommentLayout.innerHTML = `
