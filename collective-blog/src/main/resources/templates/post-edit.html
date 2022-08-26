@@ -1,52 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <!-- default header name is X-CSRF-TOKEN -->
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-  <!-- Bootstrap core CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom styles for this template -->
-  <link href="css/main.css" rel="stylesheet">
-  <link href="css/all.css" rel="stylesheet"> <!--load all styles -->
-  <!-- Bootstrap core JavaScript
-     ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.bundle.js"></script>
-  <script src="/js/loadingoverlay.min.js"></script>
-  <link href="/css/login.css" rel="stylesheet">
-  <script type="/text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/all.css" rel="stylesheet"> <!--load all styles -->
+    <!-- Bootstrap core JavaScript
+       ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/loadingoverlay.min.js"></script>
+    <link href="/css/login.css" rel="stylesheet">
+    <link href="/css/main(1).css" rel="stylesheet">
+    <script type="/text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
 
-  <div>
-      <h4>Добавить пост</h4>
-      <table class="w-100 mt-2">
-        <tr>
-          <td style="width: 600px;">
-            <div class="form-group">
-              <select id="postCategorySelect"></select>
-            </div></td>
-        </tr>
-        <tr>
-          <td><input class="m-1" style="width: 600px;" type="text" id="title" placeholder="Заголовок"/></td>
-        </tr>
-        <tr>
-          <td><textarea class="m-1" rows = "5" style="width: 600px;" id="content" placeholder="Текст"></textarea></td>
-        </tr>
-      </table>
-      <br>
-      <div class="w-100">
-        <button id="save">Сохранить</button>
-      </div>
-  </div>
+<br>
+<div>
+    <div class="container page">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="">
+                    <div class="card-body">
+                          <h4 id="mainTitle">Добавить пост</h4>
+                          <table class="w-100 mt-2">
+                            <tr>
+                              <td>
+                                <div class="form-group">
+                                  <select id="postCategorySelect" class="form-control me-2"></select>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                  <input class="form-control me-2" type="text" id="title" placeholder="Заголовок"/>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                  <textarea class="form-control me-2" rows = "5" id="content" placeholder="Текст"></textarea>
+                              </td>
+                            </tr>
+                          </table>
+                          <br>
+                          <div class="w-100">
+                            <button id="save" class="btn btn-primary bg-viola bg-viola_text pull-center">Сохранить</button>
+                          </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 
 <script>
     var id = window.location.pathname.split('/').pop();
+    const mainTitle = document.getElementById("mainTitle");
+    title.value = id == 'new' ? 'Добавить пост' : 'Редактировать пост';
+
     fetch('/api/post/'+id)
         .then(response => response.json())
         .then(json => outputPost(json))

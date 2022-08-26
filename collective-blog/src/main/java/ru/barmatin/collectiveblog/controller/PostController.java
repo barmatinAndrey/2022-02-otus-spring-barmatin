@@ -52,4 +52,9 @@ public class PostController {
         post.setPostDate(new Date());
         postService.savePost(post);
     }
+
+    @DeleteMapping("/api/post/{id}")
+    public void deletePostById(@PathVariable long id) {
+        postService.deletePostById(id);
+    }
 }

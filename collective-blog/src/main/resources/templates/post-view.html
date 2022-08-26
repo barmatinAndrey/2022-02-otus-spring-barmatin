@@ -120,6 +120,7 @@
                     })
                     .then(response => {
                        if (response.status == 200) {
+                           comment.value = '';
                            fetch('/api/post-comment?postId='+post.id)
                               .then(response => response.json())
                               .then(postCommentDtoList => outputPostComments(postCommentDtoList))
@@ -163,7 +164,6 @@
             </div>
         </div>
     </div>
-    <br>
             `;
             postCommentContainer.appendChild(postCommentLayout);
         });

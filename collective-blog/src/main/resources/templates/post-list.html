@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -48,10 +51,9 @@
                 <button class="btn btn-outline-white">Поиск</button>
             </form>
         </div>
-
     </div>
 </nav>
-
+<br>
 <div id="postContainer"></div>
 
 <script>
@@ -96,6 +98,28 @@
 </script>
 
 <script>
+    function deletePost(id) {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        fetch('/api/post/' +id, {
+            method: 'DELETE',
+            headers: {
+                [header]: token
+            }
+            })
+            .then(removeRow(id))
+    }
+</script>
+
+<script>
+    function removeRow(id) {
+        var row = document.getElementById(id);
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+<script>
     function outputPostList(postList, userId) {
         const postContainer = document.getElementById("postContainer");
         postList.forEach(function (post) {
@@ -123,14 +147,19 @@
                             <div class="col-6"><b>Категория: </b>${post.postCategory.name}</div>
                         </div>
                         <div class="w-100 mt-2">
+                            <a href="/post-view/${post.id}">
+                                <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Читать
+                                </button>
+                            </a>
                             <a id="edit" href="/post-edit/${post.id}">
                                 <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
                                     Редактировать
                                 </button>
                             </a>
-                            <a href="/post-view/${post.id}">
-                                <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
-                                    Просмотр
+                            <a id="delete">
+                                <button type="button" onclick="deletePost(${post.id})" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Удалить
                                 </button>
                             </a>
 					    </div>
@@ -139,13 +168,14 @@
             </div>
         </div>
     </div>
-    <br>
             `;
             postLayout.id = post.id;
             postContainer.appendChild(postLayout);
             var editButton = document.getElementById("edit");
+            var deleteButton = document.getElementById("delete");
             if (post.blogUser.id != userId) {
                 editButton.parentNode.removeChild(editButton);
+                deleteButton.parentNode.removeChild(deleteButton);
             }
         });
     }
