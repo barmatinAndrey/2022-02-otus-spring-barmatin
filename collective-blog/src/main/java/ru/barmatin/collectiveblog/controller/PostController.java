@@ -11,6 +11,7 @@ import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
 import ru.barmatin.collectiveblog.service.posttag.PostTagService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class PostController {
                 post.setVisible(blogUser.getRole().equals("ADMIN"));
             }
             post.setBlogUser(blogUser);
+            post.setPostTagList(new ArrayList<>());
             return post;
         }
         else {

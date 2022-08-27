@@ -169,7 +169,7 @@
             postContainer.appendChild(postLayout);
 
             var tagContainer = document.getElementById("tagContainer");
-            tagContainer.id = 'tg' + post.id;
+            tagContainer.id = 'tagContainer' + post.id;
             post.postTagList.forEach((postTag, key, array) => {
                 var tag = document.createElement('a');
                 tag.textContent = postTag.name;
@@ -181,7 +181,9 @@
             });
 
             var editButton = document.getElementById("edit");
+            editButton.id = 'editButton' + post.id;
             var deleteButton = document.getElementById("delete");
+            deleteButton.id = 'deleteButton' + post.id;
             if (post.blogUser.id != userId) {
                 editButton.parentNode.removeChild(editButton);
                 deleteButton.parentNode.removeChild(deleteButton);
