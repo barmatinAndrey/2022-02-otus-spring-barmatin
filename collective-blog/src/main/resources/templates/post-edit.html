@@ -64,7 +64,7 @@
                             </tr>
                             <tr>
                               <td>
-                                  <input class="form-control me-2" type="text" id="tags" placeholder="Тэги"/>
+                                  <input class="form-control me-2" type="text" id="tags" placeholder="Теги"/>
                               </td>
                             </tr>
                           </table>
@@ -107,9 +107,17 @@
     function outputPost(post) {
         const postTitle = document.getElementById("title");
         const postContent = document.getElementById("content");
+        var postTags = document.getElementById("tags");
         const savePost = document.getElementById("save");
+
         postTitle.value = post.title;
         postContent.value = post.content;
+        post.postTagList.forEach((postTag, key, array) => {
+            postTags.value += postTag.name;
+            if (!Object.is(array.length - 1, key)) {
+                postTags.value += ', ';
+            }
+        });
         save.onclick = function() {
             post.postCategory = JSON.parse(decodeURIComponent(document.getElementById('postCategorySelect').value));
             post.title = document.getElementById("title").value;
