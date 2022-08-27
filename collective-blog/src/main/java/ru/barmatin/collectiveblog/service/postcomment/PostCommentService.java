@@ -11,4 +11,6 @@ public interface PostCommentService {
 
     void savePostComment(PostComment postComment);
 
+    void deletePostCommentById(long id);
+
 }

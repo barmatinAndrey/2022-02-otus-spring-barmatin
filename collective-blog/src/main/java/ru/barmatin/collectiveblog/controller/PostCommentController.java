@@ -32,4 +32,9 @@ public class PostCommentController {
         postComment.setPostCommentDate(new Date());
         postCommentService.savePostComment(postComment);
     }
+
+    @DeleteMapping("/api/post-comment/{id}")
+    public void deletePostCommentById(@PathVariable long id) {
+        postCommentService.deletePostCommentById(id);
+    }
 }

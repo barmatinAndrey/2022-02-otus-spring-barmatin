@@ -39,4 +39,9 @@ public class PostCommentServiceImpl implements PostCommentService {
        postCommentRepository.save(postComment);
     }
 
+    @Override
+    public void deletePostCommentById(long id) {
+        postCommentRepository.deleteById(id);
+    }
+
 }
