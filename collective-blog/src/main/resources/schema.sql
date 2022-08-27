@@ -38,3 +38,17 @@ create table post_comments(
     content text,
     primary key (id)
 );
+
+drop table if exists tags;
+create table tags(
+    id int auto_increment,
+    name varchar(255),
+    primary key(id)
+);
+
+drop table if exists posts_tags;
+create table posts_tags(
+    post_id int references posts(id) on delete cascade,
+    tag_id int references tags(id),
+    primary key (post_id, tag_id)
+);

@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,6 +41,12 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm", timezone = "Asia/Novosibirsk")
     private Date postDate;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(targetEntity = PostTag.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "posts_tags", joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<PostTag> postTagList;
 
     @Column(name = "is_visible")
     private boolean isVisible;

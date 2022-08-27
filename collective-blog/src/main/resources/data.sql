@@ -10,3 +10,9 @@ values (1, 5, 'Аксенов сообщил о двух пострадавши�
 
 insert into post_comments(post_id, blog_user_id, post_comment_date, content)
 values (1, 1, '2022-08-17 22:06:59', 'ТЕСТОВЫЙ КОММЕНТАРИЙ');
+
+insert into tags(name)
+values ('Крым'), ('Россия');
+
+insert into posts_tags(post_id, tag_id)
+values (1, 1), (1, 2);
