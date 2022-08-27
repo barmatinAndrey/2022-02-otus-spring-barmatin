@@ -48,12 +48,8 @@
             </div>
             <h5 id="postTitle" class="card-title"></h5>
             <p id="postContent" class="card-text"></p>
-            <div class="row">
-              <div class="col-12"><b>Теги:</b>
-                <a href="http://localhost:66/">Раз</a>,
-                <a href="http://localhost:66/">Два</a>,
-                <a href="http://localhost:66/">Три</a>
-              </div>
+            <div id="tagContainer" class="col-12">
+              <b>Теги:</b>
             </div>
             <div class="row">
               <div id="postCategory" class="col-6"><b>Категория: </b></div>
@@ -103,6 +99,7 @@
         const postDate = document.getElementById("postDate");
         const postTitle = document.getElementById("postTitle");
         const postContent = document.getElementById("postContent");
+        var tagContainer = document.getElementById("tagContainer");
         const postCategory = document.getElementById("postCategory");
         const comment = document.getElementById("comment");
         const addComment = document.getElementById("addComment");
@@ -111,6 +108,14 @@
         postDate.innerHTML += post.postDate;
         postTitle.innerHTML += post.title;
         postContent.innerHTML += post.content;
+        post.postTagList.forEach((postTag, key, array) => {
+            var tag = document.createElement('a');
+            tag.textContent = postTag.name;
+            tagContainer.appendChild(tag);
+            if (!Object.is(array.length - 1, key)) {
+                tagContainer.innerHTML += ', ';
+            }
+        });
         postCategory.innerHTML += post.postCategory.name;
 
         if (blogUser.role != 'ANONYMOUS') {
