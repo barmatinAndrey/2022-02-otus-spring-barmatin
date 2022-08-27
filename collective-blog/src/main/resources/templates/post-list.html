@@ -136,12 +136,8 @@
                         </div>
                         <h5 class="card-title">${post.title}</h5>
                         <p class="card-text">${post.content}</p>
-                        <div class="row">
-                            <div class="col-12"><b>Теги:</b>
-                                <a href="http://localhost:66/">Раз</a>,
-                                <a href="http://localhost:66/">Два</a>,
-                                <a href="http://localhost:66/">Три</a>
-                            </div>
+                        <div id="tagContainer" class="col-12">
+                            <b>Теги:</b>
                         </div>
                         <div class="row">
                             <div class="col-6"><b>Категория: </b>${post.postCategory.name}</div>
@@ -171,6 +167,19 @@
             `;
             postLayout.id = post.id;
             postContainer.appendChild(postLayout);
+
+            var tagContainer = document.getElementById("tagContainer");
+
+            post.postTagList.forEach((postTag, key, array) => {
+                var tag = document.createElement('a');
+                tag.textContent = postTag.name;
+                tag.href = "somelink url";
+                tagContainer.appendChild(tag);
+                if (!Object.is(array.length - 1, key)) {
+                    tagContainer.innerHTML += ', ';
+                }
+            });
+
             var editButton = document.getElementById("edit");
             var deleteButton = document.getElementById("delete");
             if (post.blogUser.id != userId) {
