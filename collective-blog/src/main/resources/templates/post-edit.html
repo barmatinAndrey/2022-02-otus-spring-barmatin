@@ -122,6 +122,14 @@
             post.postCategory = JSON.parse(decodeURIComponent(document.getElementById('postCategorySelect').value));
             post.title = document.getElementById("title").value;
             post.content = document.getElementById("content").value;
+
+            post.postTagList = [];
+            var tagList = document.getElementById("tags").value.split(/\s*,\s*/);
+            console.log(tagList);
+            tagList.forEach(function (tag) {
+                post.postTagList.push(JSON.parse('{"name": "' + tag +'"}'))
+            });
+
             var postCopy = post;
             postCopy = JSON.stringify(postCopy);
 

@@ -43,7 +43,7 @@ public class Post {
     private Date postDate;
 
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = PostTag.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = PostTag.class, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "posts_tags", joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<PostTag> postTagList;

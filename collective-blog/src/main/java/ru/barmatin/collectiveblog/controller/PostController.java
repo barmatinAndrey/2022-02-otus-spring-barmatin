@@ -9,6 +9,7 @@ import ru.barmatin.collectiveblog.domain.BlogUser;
 import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
+import ru.barmatin.collectiveblog.service.posttag.PostTagService;
 
 import java.util.Date;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
 public class PostController {
     private final BlogUserService blogUserService;
     private final PostService postService;
+    private final PostTagService postTagService;
 
     @Autowired
-    public PostController(BlogUserService blogUserService, PostService postService) {
+    public PostController(BlogUserService blogUserService, PostService postService, PostTagService postTagService) {
         this.blogUserService = blogUserService;
         this.postService = postService;
+        this.postTagService = postTagService;
     }
 
     @GetMapping("/api/post")
@@ -50,6 +53,7 @@ public class PostController {
     @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void savePost(@RequestBody Post post) {
         post.setPostDate(new Date());
+        post.setPostTagList(postTagService.getPostTagList(post.getPostTagList()));
         postService.savePost(post);
     }
 

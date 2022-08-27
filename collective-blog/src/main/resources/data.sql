@@ -15,4 +15,4 @@ insert into tags(name)
 values ('Крым'), ('Россия');
 
 insert into posts_tags(post_id, tag_id)
-values (1, 1), (1, 2);
+values (2, 1), (2, 2);
