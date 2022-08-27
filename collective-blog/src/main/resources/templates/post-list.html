@@ -169,6 +169,7 @@
             postContainer.appendChild(postLayout);
 
             var tagContainer = document.getElementById("tagContainer");
+            tagContainer.id = 'tg' + post.id;
             post.postTagList.forEach((postTag, key, array) => {
                 var tag = document.createElement('a');
                 tag.textContent = postTag.name;
