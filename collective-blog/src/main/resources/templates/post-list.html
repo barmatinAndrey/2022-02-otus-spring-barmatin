@@ -57,7 +57,7 @@
 <div id="postContainer"></div>
 
 <script>
-    fetch('api/current-role')
+    fetch('/api/current-role')
         .then(response => response.json())
         .then(blogUser => {
             showNavbarTitle(blogUser);
