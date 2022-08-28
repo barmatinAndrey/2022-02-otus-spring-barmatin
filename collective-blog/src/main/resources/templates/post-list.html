@@ -183,16 +183,16 @@
             tagContainer.id = 'tagContainer' + post.id;
             post.postTagList.forEach((postTag, key, array) => {
                 var tag = document.createElement('a');
-                tag.id = 'tag' + postTag.id;
-                console.log(tag.id);
                 tag.textContent = postTag.name;
+                tag.href = "javascript:void(0)";
                 tag.onclick = function() {
-                    console.log("gggggggggggggggggggggggggggggggggggggg");
                     showPostList(postTag.name);
                 }
                 tagContainer.appendChild(tag);
                 if (!Object.is(array.length - 1, key)) {
-                    tagContainer.innerHTML += ', ';
+                    var p = document.createElement('a');
+                    p.textContent = ', ';
+                    tagContainer.appendChild(p);
                 }
             });
 
