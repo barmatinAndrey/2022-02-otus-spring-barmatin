@@ -7,6 +7,8 @@ public interface PostService {
 
     List<Post> getAll();
 
+    List<Post> getAllByTagName(String tagName);
+
     Post getById(long id);
 
     void savePost(Post post);

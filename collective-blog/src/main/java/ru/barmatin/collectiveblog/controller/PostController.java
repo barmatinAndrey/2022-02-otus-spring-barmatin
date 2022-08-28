@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 import ru.barmatin.collectiveblog.domain.BlogUser;
 import ru.barmatin.collectiveblog.domain.Post;
+import ru.barmatin.collectiveblog.dto.PostCommentDto;
 import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
 import ru.barmatin.collectiveblog.service.posttag.PostTagService;
@@ -32,6 +32,11 @@ public class PostController {
     @GetMapping("/api/post")
     public List<Post> getAll() {
         return postService.getAll();
+    }
+
+    @GetMapping("/api/post")
+    public List<Post> getAllContentByPostId(@RequestParam("tagName") String tagName) {
+        return postService.getAllByTagName(tagName);
     }
 
     @GetMapping("/api/post/{id}")

@@ -22,6 +22,12 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<Post> getAllByTagName(String tagName) {
+        return postRepository.findAllByPostTagListName(tagName);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Post getById(long id) {
         return postRepository.findById(id);
     }

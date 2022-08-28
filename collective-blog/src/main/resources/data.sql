@@ -12,7 +12,7 @@ insert into post_comments(post_id, blog_user_id, post_comment_date, content)
 values (1, 1, '2022-08-17 22:06:59', 'ТЕСТОВЫЙ КОММЕНТАРИЙ');
 
 insert into tags(name)
-values ('Крым'), ('Россия');
+values ('Крым'), ('Россия'), ('Тест');
 
 insert into posts_tags(post_id, tag_id)
-values (2, 1), (2, 2);
+values (2, 1), (2, 2), (1,3);
