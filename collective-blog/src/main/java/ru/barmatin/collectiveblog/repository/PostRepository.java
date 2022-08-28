@@ -14,6 +14,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByPostDate();
 
     @EntityGraph(attributePaths = {"blogUser", "postCategory"})
+    List<Post> findAllByPostCategoryId(long id);
+
+    @EntityGraph(attributePaths = {"blogUser", "postCategory"})
     List<Post> findAllByPostTagListName(String name);
 
 }

@@ -30,12 +30,16 @@ public class PostController {
     }
 
     @GetMapping("/api/post")
-    public List<Post> getAll(@RequestParam(name = "tagName", required = false) String tagName) {
-        if (tagName==null || tagName.isEmpty()) {
-            return postService.getAll();
+    public List<Post> getAll(@RequestParam(name = "postCategoryId", required = false) Long postCategoryId,
+                             @RequestParam(name = "tagName", required = false) String tagName) {
+        if (postCategoryId != null) {
+            return postService.getAllByPostCategoryId(postCategoryId);
+        }
+        else if (tagName!=null && !tagName.isEmpty()) {
+            return postService.getAllByTagName(tagName);
         }
         else {
-            return postService.getAllByTagName(tagName);
+            return postService.getAll();
         }
     }
 

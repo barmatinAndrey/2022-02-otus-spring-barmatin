@@ -7,6 +7,8 @@ public interface PostService {
 
     List<Post> getAll();
 
+    List<Post> getAllByPostCategoryId(long postCategoryId);
+
     List<Post> getAllByTagName(String tagName);
 
     Post getById(long id);

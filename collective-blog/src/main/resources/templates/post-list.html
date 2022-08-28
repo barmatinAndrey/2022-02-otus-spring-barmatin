@@ -47,6 +47,7 @@
                 </li>
             </ul>
             <form action="http://localhost:66/" class="d-flex ">
+                <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null);"></select>
                 <input type="searh" placeholder="Поиск" class="form-control me-2">
                 <button class="btn btn-outline-white">Поиск</button>
             </form>
@@ -57,24 +58,45 @@
 <div id="postContainer"></div>
 
 <script>
-    function showPostList(tagName) {
+    function showPostList(postCategory, tagName) {
+        if (postCategory != null) {
+            postCategoryId = JSON.parse(decodeURIComponent(postCategory)).id;
+        }
+        else {
+            postCategoryId = null;
+        }
         const postContainer = document.getElementById("postContainer");
         postContainer.innerHTML = '';
-        fetch('/api/current-role')
+        fetch('/api/post-category')
             .then(response => response.json())
-            .then(blogUser => {
-                showNavbarTitle(blogUser);
-                showAddNewPostButton(blogUser.role);
-                var url = tagName == null ? '/api/post' : '/api/post?tagName='+tagName;
-                fetch(url)
+            .then(postCategoryList => {
+                outputPostCategories(postCategoryList);
+                fetch('/api/current-role')
                     .then(response => response.json())
-                    .then(json => outputPostList(json, blogUser.id));
-            })
+                    .then(blogUser => {
+                        showNavbarTitle(blogUser);
+                        showAddNewPostButton(blogUser.role);
+                        if (postCategoryId != null) {
+                            var url = '/api/post?postCategoryId='+postCategoryId;
+                        }
+                        else if (tagName != null) {
+                            var url = '/api/post?tagName='+tagName;
+                        }
+                        else {
+                            var url = '/api/post';
+                        }
+                        console.log(url);
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(json => outputPostList(json, blogUser.id));
+                    })
+                })
+
     }
 </script>
 
 <script>
-    showPostList(null);
+    showPostList(null, null);
 </script>
 
 <script>
@@ -105,6 +127,22 @@
                 }
                 break;
         }
+    }
+</script>
+
+<script>
+    function outputPostCategories(postCategoryList) {
+        const postCategorySelect = document.getElementById("postCategorySelect");
+        postCategorySelect.innerHTML = '';
+        postCategoryList.forEach(function (postCategory) {
+            var newOption = document.createElement('option');
+            newOption.value = encodeURIComponent(JSON.stringify(postCategory));
+            newOption.text = postCategory.name;
+<!--            if (post.postCategory != null) {-->
+<!--                newOption.selected = postCategory.id == post.postCategory.id ? true : false;-->
+<!--            }-->
+            postCategorySelect.appendChild(newOption);
+        });
     }
 </script>
 
@@ -186,7 +224,7 @@
                 tag.textContent = postTag.name;
                 tag.href = "javascript:void(0)";
                 tag.onclick = function() {
-                    showPostList(postTag.name);
+                    showPostList(null, postTag.name);
                 }
                 tagContainer.appendChild(tag);
                 if (!Object.is(array.length - 1, key)) {
