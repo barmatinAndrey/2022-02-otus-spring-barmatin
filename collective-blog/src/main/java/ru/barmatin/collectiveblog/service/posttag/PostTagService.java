@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PostTagService {
 
-    List<PostTag> getPostTagList(List<PostTag> postTagList);
+    List<PostTag> getExistingPostTagList(List<PostTag> postTagList);
 
 }

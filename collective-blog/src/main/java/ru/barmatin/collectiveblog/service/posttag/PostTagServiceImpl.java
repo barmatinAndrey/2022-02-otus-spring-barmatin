@@ -18,7 +18,7 @@ public class PostTagServiceImpl implements PostTagService {
     }
 
     @Override
-    public List<PostTag> getPostTagList(List<PostTag> postTags) {
+    public List<PostTag> getExistingPostTagList(List<PostTag> postTags) {
         List<String> nameList = new ArrayList<>();
         for (PostTag postTag: postTags) {
             nameList.add(postTag.getName());

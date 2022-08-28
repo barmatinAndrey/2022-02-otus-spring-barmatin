@@ -55,7 +55,7 @@ public class PostController {
     @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void savePost(@RequestBody Post post) {
         post.setPostDate(new Date());
-        post.setPostTagList(postTagService.getPostTagList(post.getPostTagList()));
+        post.setPostTagList(postTagService.getExistingPostTagList(post.getPostTagList()));
         postService.savePost(post);
     }
 
