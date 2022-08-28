@@ -57,15 +57,24 @@
 <div id="postContainer"></div>
 
 <script>
-    fetch('/api/current-role')
-        .then(response => response.json())
-        .then(blogUser => {
-            showNavbarTitle(blogUser);
-            showAddNewPostButton(blogUser.role);
-            fetch('/api/post')
-                .then(response => response.json())
-                .then(json => outputPostList(json, blogUser.id));
-  })
+    function showPostList(tagName) {
+        const postContainer = document.getElementById("postContainer");
+        postContainer.innerHTML = '';
+        fetch('/api/current-role')
+            .then(response => response.json())
+            .then(blogUser => {
+                showNavbarTitle(blogUser);
+                showAddNewPostButton(blogUser.role);
+                var url = tagName == null ? '/api/post' : '/api/post?tagName='+tagName;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(json => outputPostList(json, blogUser.id));
+            })
+    }
+</script>
+
+<script>
+    showPostList(null);
 </script>
 
 <script>
@@ -91,7 +100,9 @@
                 break;
             case 'ANONYMOUS':
                 var addPost = document.getElementById("addPost");
-                addPost.parentNode.removeChild(addPost);
+                if (addPost == null) {
+                    addPost.parentNode.removeChild(addPost);
+                }
                 break;
         }
     }
@@ -172,8 +183,13 @@
             tagContainer.id = 'tagContainer' + post.id;
             post.postTagList.forEach((postTag, key, array) => {
                 var tag = document.createElement('a');
+                tag.id = 'tag' + postTag.id;
+                console.log(tag.id);
                 tag.textContent = postTag.name;
-                tag.href = "somelink url";
+                tag.onclick = function() {
+                    console.log("gggggggggggggggggggggggggggggggggggggg");
+                    showPostList(postTag.name);
+                }
                 tagContainer.appendChild(tag);
                 if (!Object.is(array.length - 1, key)) {
                     tagContainer.innerHTML += ', ';

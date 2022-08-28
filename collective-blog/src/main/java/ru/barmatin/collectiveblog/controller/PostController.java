@@ -30,13 +30,13 @@ public class PostController {
     }
 
     @GetMapping("/api/post")
-    public List<Post> getAll() {
-        return postService.getAll();
-    }
-
-    @GetMapping("/api/post")
-    public List<Post> getAllContentByPostId(@RequestParam("tagName") String tagName) {
-        return postService.getAllByTagName(tagName);
+    public List<Post> getAll(@RequestParam(name = "tagName", required = false) String tagName) {
+        if (tagName==null || tagName.isEmpty()) {
+            return postService.getAll();
+        }
+        else {
+            return postService.getAllByTagName(tagName);
+        }
     }
 
     @GetMapping("/api/post/{id}")
