@@ -77,7 +77,7 @@
                         console.log(url);
                         fetch(url)
                             .then(response => response.json())
-                            .then(json => outputPostList(json, blogUser.id));
+                            .then(json => outputPostList(json, blogUser));
                     })
                 })
 
@@ -102,6 +102,7 @@
 
 <script>
     function showAddNewPostButton(userRole) {
+        var addPost = document.getElementById("addPost");
         switch (userRole) {
             case 'ADMIN':
 
@@ -110,8 +111,7 @@
 
                 break;
             case 'ANONYMOUS':
-                var addPost = document.getElementById("addPost");
-                if (addPost == null) {
+                if (addPost != null) {
                     addPost.parentNode.removeChild(addPost);
                 }
                 break;
@@ -162,7 +162,7 @@
 </script>
 
 <script>
-    function outputPostList(postList, userId) {
+    function outputPostList(postList, blogUser) {
         const postContainer = document.getElementById("postContainer");
         postList.forEach(function (post) {
             var postLayout = document.createElement('div');
@@ -172,6 +172,12 @@
             <div class="col-12">
                 <div class="card" style="">
                     <div class="card-body">
+                        <div id="switchContainer">
+                            <div>
+                                <input id="switchToggle" type="checkbox" class="form-check-input">  разместить</input>
+                            </div>
+                            <br>
+                        </div>
                         <div class="row mb-2">
                             <div class="col-6"><b>Автор: </b>${post.blogUser.surname} ${post.blogUser.name}</div>
                             <div class="col-6 ta-right"><b>Дата: </b>${post.postDate}</div>
@@ -227,11 +233,22 @@
                 }
             });
 
+            var switchContainer = document.getElementById("switchContainer");
+            switchContainer.id = 'switchContainer' + post.id;
             var editButton = document.getElementById("edit");
             editButton.id = 'editButton' + post.id;
             var deleteButton = document.getElementById("delete");
             deleteButton.id = 'deleteButton' + post.id;
-            if (post.blogUser.id != userId) {
+
+            if (blogUser.role != 'ADMIN') {
+                switchContainer.parentNode.removeChild(switchContainer);
+            }
+            else {
+                var switchToggle = document.getElementById("switchToggle");
+                switchToggle.id = 'switchToggle' + post.id;
+            }
+
+            if (post.blogUser.id != blogUser.id) {
                 editButton.parentNode.removeChild(editButton);
                 deleteButton.parentNode.removeChild(deleteButton);
             }

@@ -46,15 +46,7 @@ public class PostController {
     @GetMapping("/api/post/{id}")
     public Post getPost(@PathVariable String id) {
         if (id.equals("new")) {
-            String login = SecurityContextHolder.getContext().getAuthentication().getName();
-            BlogUser blogUser = blogUserService.getBlogUserByUsername(login);
-            Post post = new Post();
-            if (blogUser != null) {
-                post.setVisible(blogUser.getRole().equals("ADMIN"));
-            }
-            post.setBlogUser(blogUser);
-            post.setPostTagList(new ArrayList<>());
-            return post;
+            return postService.getNew();
         }
         else {
             return postService.getById(Long.parseLong(id));

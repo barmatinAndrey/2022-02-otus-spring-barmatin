@@ -13,6 +13,8 @@ public interface PostService {
 
     Post getById(long id);
 
+    Post getNew();
+
     void savePost(Post post);
 
     void deletePostById(long id);
