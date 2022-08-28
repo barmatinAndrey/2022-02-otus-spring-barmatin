@@ -37,7 +37,7 @@
                     </a>
                 </li>
             </ul>
-            <form class="d-flex ">
+            <form class="d-flex">
                 <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null);"></select>
             </form>
         </div>
@@ -48,7 +48,7 @@
 
 <script>
     function showPostList(postCategory, tagName) {
-        if (postCategory != null) {
+        if (postCategory!=null && postCategory!=0) {
             postCategoryId = JSON.parse(decodeURIComponent(postCategory)).id;
         }
         else {
@@ -123,6 +123,10 @@
     function outputPostCategories(postCategoryList, postCategoryId) {
         const postCategorySelect = document.getElementById("postCategorySelect");
         postCategorySelect.innerHTML = '';
+        var newOption = document.createElement('option');
+        newOption.value = 0;
+        newOption.text = 'Все категории';
+        postCategorySelect.appendChild(newOption);
         postCategoryList.forEach(function (postCategory) {
             var newOption = document.createElement('option');
             newOption.value = encodeURIComponent(JSON.stringify(postCategory));
