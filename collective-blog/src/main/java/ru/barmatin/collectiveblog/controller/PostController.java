@@ -23,8 +23,12 @@ public class PostController {
     }
 
     @GetMapping("/api/post")
-    public List<Post> getAll(@RequestParam(name = "postCategoryId", required = false) Long postCategoryId,
+    public List<Post> getAll(@RequestParam(name = "isVisible", required = false) Boolean isVisible,
+                             @RequestParam(name = "postCategoryId", required = false) Long postCategoryId,
                              @RequestParam(name = "tagName", required = false) String tagName) {
+        if (isVisible == null) {
+            isVisible = true;
+        }
         if (postCategoryId != null) {
             return postService.getAllByPostCategoryId(postCategoryId);
         }
@@ -32,7 +36,7 @@ public class PostController {
             return postService.getAllByTagName(tagName);
         }
         else {
-            return postService.getAll();
+            return postService.getAllByVisibility(isVisible);
         }
     }
 

@@ -1,5 +1,6 @@
 package ru.barmatin.collectiveblog.service.post;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final BlogUserService blogUserService;
 
+    @Autowired
     public PostServiceImpl(PostRepository postRepository, BlogUserService blogUserService) {
         this.postRepository = postRepository;
         this.blogUserService = blogUserService;
@@ -23,20 +25,20 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Post> getAll() {
-        return postRepository.findAllByOrderByPostDate();
+    public List<Post> getAllByVisibility(boolean isVisible) {
+        return postRepository.findAllByIsVisibleOrderByPostDateDesc(isVisible);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Post> getAllByPostCategoryId(long postCategoryId) {
-        return postRepository.findAllByPostCategoryId(postCategoryId);
+        return postRepository.findAllByPostCategoryIdOrderByPostDateDesc(postCategoryId);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Post> getAllByTagName(String tagName) {
-        return postRepository.findAllByPostTagListName(tagName);
+        return postRepository.findAllByPostTagListNameOrderByPostDateDesc(tagName);
     }
 
     @Transactional(readOnly = true)
@@ -47,12 +49,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getNew() {
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        BlogUser blogUser = blogUserService.getBlogUserByUsername(login);
         Post post = new Post();
-        if (blogUser != null) {
-            post.setVisible(blogUser.getRole().equals("ADMIN"));
-        }
+        BlogUser blogUser = getBlogUser();
+        post.setVisible(blogUser.getRole().equals("ADMIN"));
         post.setBlogUser(blogUser);
         post.setPostTagList(new ArrayList<>());
         return post;
@@ -66,6 +65,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePostById(long id) {
         postRepository.deleteById(id);
+    }
+
+    private BlogUser getBlogUser() {
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+        return blogUserService.getBlogUserByUsername(login);
     }
 
 }
