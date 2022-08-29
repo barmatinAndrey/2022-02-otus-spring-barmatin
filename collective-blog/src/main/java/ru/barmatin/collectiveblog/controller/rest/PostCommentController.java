@@ -1,10 +1,8 @@
-package ru.barmatin.collectiveblog.controller;
+package ru.barmatin.collectiveblog.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
-import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.domain.PostComment;
 import ru.barmatin.collectiveblog.dto.PostCommentDto;
 import ru.barmatin.collectiveblog.service.postcomment.PostCommentService;

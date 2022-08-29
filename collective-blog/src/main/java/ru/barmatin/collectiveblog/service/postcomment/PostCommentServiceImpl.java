@@ -3,7 +3,6 @@ package ru.barmatin.collectiveblog.service.postcomment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.barmatin.collectiveblog.domain.Post;
 import ru.barmatin.collectiveblog.domain.PostComment;
 import ru.barmatin.collectiveblog.dto.PostCommentDto;
 import ru.barmatin.collectiveblog.repository.PostCommentRepository;

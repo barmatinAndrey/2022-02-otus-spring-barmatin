@@ -17,8 +17,7 @@
   <script src="/js/popper.min.js"></script>
   <script src="/js/bootstrap.bundle.js"></script>
   <script src="/js/loadingoverlay.min.js"></script>
-  <link href="/css/main(1).css" rel="stylesheet">
-  <script type="/text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-sm navbar-dark bg-viola">
@@ -198,7 +197,6 @@
 
 <script>
     function outputPostComments(postCommentDtoList, userId) {
-        console.log(postCommentDtoList);
         const postCommentContainer = document.getElementById("postCommentContainer");
         postCommentContainer.innerHTML = "";
         postCommentDtoList.forEach(function (postCommentDto) {

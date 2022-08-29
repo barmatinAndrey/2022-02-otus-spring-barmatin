@@ -6,18 +6,18 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="css/main.css" rel="stylesheet">
-    <link href="css/all.css" rel="stylesheet"> <!--load all styles -->
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/all.css" rel="stylesheet"> <!--load all styles -->
     <!-- Bootstrap core JavaScript
        ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/loadingoverlay.min.js"></script>
-    <link href="css/main(1).css" rel="stylesheet">
+    <script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/loadingoverlay.min.js"></script>
+    <link href="/css/main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -87,7 +87,6 @@
                         else {
                             var url = '/api/post';
                         }
-                        console.log(url);
                         fetch(url)
                             .then(response => response.json())
                             .then(json => outputPostList(json, blogUser));
@@ -338,7 +337,6 @@
                 switchToggle.id = 'switchToggle' + post.id;
                 switchToggle.checked = post.visible;
                 switchToggle.onclick = function() {
-                    console.log(switchToggle.checked);
                     post.visible = switchToggle.checked;
                     savePost(post);
                 }

@@ -18,7 +18,7 @@
     <script src="/js/bootstrap.bundle.js"></script>
     <script src="/js/loadingoverlay.min.js"></script>
     <link href="/css/login.css" rel="stylesheet">
-    <link href="/css/main(1).css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
     <script type="/text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
@@ -125,7 +125,6 @@
 
             post.postTagList = [];
             var tagList = document.getElementById("tags").value.split(/\s*,\s*/);
-            console.log(tagList);
             tagList.forEach(function (tag) {
                 post.postTagList.push(JSON.parse('{"name": "' + tag +'"}'))
             });
