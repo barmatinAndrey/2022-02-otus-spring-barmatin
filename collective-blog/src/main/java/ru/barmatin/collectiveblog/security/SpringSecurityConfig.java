@@ -26,7 +26,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.csrf().disable();
         http.authorizeRequests().
                 antMatchers("/post-edit/**").authenticated().
-                antMatchers("/edit", "/new", "/delete").hasRole("ADMIN").
+                regexMatchers("\\A/api/post\\?isVisible=false\\Z").hasRole("ADMIN").
                 and()
                 .formLogin()
                 .loginPage("/login")
@@ -34,6 +34,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login")
         ;
     }
 

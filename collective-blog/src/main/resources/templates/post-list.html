@@ -27,8 +27,8 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2">
                 <li class="nav-item">
-                    <a class="nav-link" href="/login" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Авторизоваться
+                    <a class="nav-link" role="button" id="authorize" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
                     </a>
                 </li>
                 <li class="nav-item">
@@ -104,11 +104,32 @@
 <script>
     function showNavbarTitle(blogUser) {
         var navbarTitle = document.getElementById("navbarTitle");
+        var authorize = document.getElementById("authorize");
         if (blogUser.role == 'ANONYMOUS') {
             navbarTitle.text = 'Гость';
+            authorize.text = 'Авторизоваться';
+            authorize.href= '/login';
         }
         else {
             navbarTitle.text = blogUser.surname + ' ' + blogUser.name;
+            authorize.text = 'Выйти';
+            authorize.onclick = function() {
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        [header]: token
+                    }
+                    })
+                    .then(response => {
+                       if (response.status == 200) {
+                           window.location.href = '/login';
+                       }
+                    })
+
+            }
         }
     }
 </script>
