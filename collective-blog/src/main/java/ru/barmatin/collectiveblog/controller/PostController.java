@@ -2,29 +2,22 @@ package ru.barmatin.collectiveblog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.barmatin.collectiveblog.domain.BlogUser;
 import ru.barmatin.collectiveblog.domain.Post;
-import ru.barmatin.collectiveblog.dto.PostCommentDto;
 import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
 import ru.barmatin.collectiveblog.service.posttag.PostTagService;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @RestController
 public class PostController {
-    private final BlogUserService blogUserService;
     private final PostService postService;
     private final PostTagService postTagService;
 
     @Autowired
-    public PostController(BlogUserService blogUserService, PostService postService, PostTagService postTagService) {
-        this.blogUserService = blogUserService;
+    public PostController(PostService postService, PostTagService postTagService) {
         this.postService = postService;
         this.postTagService = postTagService;
     }
@@ -55,7 +48,9 @@ public class PostController {
 
     @PostMapping(path = "/api/post", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void savePost(@RequestBody Post post) {
-        post.setPostDate(new Date());
+        if (post.getPostDate() == null) {
+            post.setPostDate(new Date());
+        }
         post.setPostTagList(postTagService.getExistingPostTagList(post.getPostTagList()));
         postService.savePost(post);
     }

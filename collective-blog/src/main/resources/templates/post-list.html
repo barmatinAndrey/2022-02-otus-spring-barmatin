@@ -162,6 +162,31 @@
 </script>
 
 <script>
+    function savePost(post) {
+        var postCopy = post;
+        postCopy = JSON.stringify(postCopy);
+
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        fetch('/api/post', {
+            method: 'POST',
+            headers: {
+                [header]: token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: postCopy
+            })
+            .then(response => {
+               if (response.status == 200) {
+
+               }
+            })
+    }
+</script>
+
+<script>
     function outputPostList(postList, blogUser) {
         const postContainer = document.getElementById("postContainer");
         postList.forEach(function (post) {
@@ -246,6 +271,12 @@
             else {
                 var switchToggle = document.getElementById("switchToggle");
                 switchToggle.id = 'switchToggle' + post.id;
+                switchToggle.checked = post.visible;
+                switchToggle.onclick = function() {
+                    console.log(switchToggle.checked);
+                    post.visible = switchToggle.checked;
+                    savePost(post);
+                }
             }
 
             if (post.blogUser.id != blogUser.id) {
