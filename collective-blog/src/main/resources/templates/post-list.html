@@ -38,7 +38,8 @@
                 </li>
             </ul>
             <form class="d-flex">
-                <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null);"></select>
+                <select id="visibilitySelect" class="form-control me-2" onchange="showPostList(null, null, value);"></select>
+                <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null, null);"></select>
             </form>
         </div>
     </div>
@@ -47,7 +48,8 @@
 <div id="postContainer"></div>
 
 <script>
-    function showPostList(postCategory, tagName) {
+    function showPostList(postCategory, tagName, visibility) {
+        console.log(visibility);
         if (postCategory!=null && postCategory!=0) {
             postCategoryId = JSON.parse(decodeURIComponent(postCategory)).id;
         }
@@ -65,11 +67,15 @@
                     .then(blogUser => {
                         showNavbarTitle(blogUser);
                         showAddNewPostButton(blogUser.role);
+                        showIsVisibleSelect(blogUser.role, visibility);
                         if (postCategoryId != null) {
                             var url = '/api/post?postCategoryId='+postCategoryId;
                         }
                         else if (tagName != null) {
                             var url = '/api/post?tagName='+tagName;
+                        }
+                        else if (visibility != null) {
+                            var url = '/api/post?isVisible='+visibility;
                         }
                         else {
                             var url = '/api/post';
@@ -85,7 +91,7 @@
 </script>
 
 <script>
-    showPostList(null, null);
+    showPostList(null, null, null);
 </script>
 
 <script>
@@ -115,6 +121,33 @@
                     addPost.parentNode.removeChild(addPost);
                 }
                 break;
+        }
+    }
+</script>
+
+<script>
+    function showIsVisibleSelect(userRole, isVisible) {
+        var visibilitySelect = document.getElementById("visibilitySelect");
+        if (userRole == 'ADMIN') {
+            visibilitySelect.innerHTML = '';
+
+            var newOptionTrue = document.createElement('option');
+            newOptionTrue.value = true;
+            newOptionTrue.text = 'Видимые';
+            newOptionTrue.selected = newOptionTrue.value == isVisible;
+
+            var newOptionFalse = document.createElement('option');
+            newOptionFalse.value = false;
+            newOptionFalse.text = 'Скрытые';
+            newOptionFalse.selected = newOptionFalse.value == isVisible;
+
+            visibilitySelect.appendChild(newOptionTrue);
+            visibilitySelect.appendChild(newOptionFalse);
+        }
+        else {
+           if (visibilitySelect != null) {
+               visibilitySelect.parentNode.removeChild(visibilitySelect);
+           }
         }
     }
 </script>
@@ -199,7 +232,7 @@
                     <div class="card-body">
                         <div id="switchContainer">
                             <div>
-                                <input id="switchToggle" type="checkbox" class="form-check-input">  разместить</input>
+                                <input id="switchToggle" type="checkbox" class="form-check-input">  видимость</input>
                             </div>
                             <br>
                         </div>
@@ -248,7 +281,7 @@
                 tag.textContent = postTag.name;
                 tag.href = "javascript:void(0)";
                 tag.onclick = function() {
-                    showPostList(null, postTag.name);
+                    showPostList(null, postTag.name, null);
                 }
                 tagContainer.appendChild(tag);
                 if (!Object.is(array.length - 1, key)) {
