@@ -26,7 +26,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.csrf().disable();
         http.authorizeRequests().
                 antMatchers("/post-edit/**").authenticated().
-                regexMatchers("\\A/api/post\\?isVisible=false\\Z").hasRole("ADMIN").
+                regexMatchers("/api/post\\?isVisible=false").hasRole("ADMIN").
                 and()
                 .formLogin()
                 .loginPage("/login")
