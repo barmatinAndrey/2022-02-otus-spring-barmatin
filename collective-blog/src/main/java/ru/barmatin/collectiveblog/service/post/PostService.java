@@ -7,11 +7,13 @@ public interface PostService {
 
     List<Post> getAllByVisibility(boolean isVisible);
 
-    List<Post> getAllByPostCategoryId(long postCategoryId);
+    List<Post> getAllByPostCategoryId(long postCategoryId, boolean isVisible);
 
-    List<Post> getAllByTagName(String tagName);
+    List<Post> getAllByTagName(String tagName, boolean isVisible);
 
     Post getById(long id);
+
+    List<Post> getAllByBlogUserId(long blogUserId);
 
     Post getNew();
 

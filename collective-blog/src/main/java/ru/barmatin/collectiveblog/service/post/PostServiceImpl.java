@@ -31,14 +31,20 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Post> getAllByPostCategoryId(long postCategoryId) {
-        return postRepository.findAllByPostCategoryIdOrderByPostDateDesc(postCategoryId);
+    public List<Post> getAllByPostCategoryId(long postCategoryId, boolean isVisible) {
+        return postRepository.findAllByPostCategoryIdAndIsVisibleOrderByPostDateDesc(postCategoryId, isVisible);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Post> getAllByTagName(String tagName) {
-        return postRepository.findAllByPostTagListNameOrderByPostDateDesc(tagName);
+    public List<Post> getAllByTagName(String tagName, boolean isVisible) {
+        return postRepository.findAllByPostTagListNameAndIsVisibleOrderByPostDateDesc(tagName, isVisible);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Post> getAllByBlogUserId(long blogUserId) {
+        return postRepository.findAllByBlogUserIdOrderByPostDateDesc(blogUserId);
     }
 
     @Transactional(readOnly = true)

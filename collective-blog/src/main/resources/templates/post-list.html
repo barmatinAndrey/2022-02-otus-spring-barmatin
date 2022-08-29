@@ -36,10 +36,15 @@
                         Добавить пост
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPostList(null, null, null, true);" role="button" id="showYours" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Показать свои
+                    </a>
+                </li>
             </ul>
             <form class="d-flex">
-                <select id="visibilitySelect" class="form-control me-2" onchange="showPostList(null, null, value);"></select>
-                <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null, null);"></select>
+                <select id="visibilitySelect" class="form-control me-2" onchange="showPostList(null, null, value, null);"></select>
+                <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null, null, null);"></select>
             </form>
         </div>
     </div>
@@ -48,8 +53,7 @@
 <div id="postContainer"></div>
 
 <script>
-    function showPostList(postCategory, tagName, visibility) {
-        console.log(visibility);
+    function showPostList(postCategory, tagName, visibility, yours) {
         if (postCategory!=null && postCategory!=0) {
             postCategoryId = JSON.parse(decodeURIComponent(postCategory)).id;
         }
@@ -77,6 +81,9 @@
                         else if (visibility != null) {
                             var url = '/api/post?isVisible='+visibility;
                         }
+                        else if (yours != null) {
+                            var url = '/api/post?authorId='+blogUser.id;
+                        }
                         else {
                             var url = '/api/post';
                         }
@@ -91,7 +98,7 @@
 </script>
 
 <script>
-    showPostList(null, null, null);
+    showPostList(null, null, null, null);
 </script>
 
 <script>
@@ -109,6 +116,7 @@
 <script>
     function showAddNewPostButton(userRole) {
         var addPost = document.getElementById("addPost");
+        var showYours = document.getElementById("showYours");
         switch (userRole) {
             case 'ADMIN':
 
@@ -119,6 +127,9 @@
             case 'ANONYMOUS':
                 if (addPost != null) {
                     addPost.parentNode.removeChild(addPost);
+                }
+                if (showYours != null) {
+                    showYours.parentNode.removeChild(showYours);
                 }
                 break;
         }
@@ -281,7 +292,7 @@
                 tag.textContent = postTag.name;
                 tag.href = "javascript:void(0)";
                 tag.onclick = function() {
-                    showPostList(null, postTag.name, null);
+                    showPostList(null, postTag.name, null, null);
                 }
                 tagContainer.appendChild(tag);
                 if (!Object.is(array.length - 1, key)) {

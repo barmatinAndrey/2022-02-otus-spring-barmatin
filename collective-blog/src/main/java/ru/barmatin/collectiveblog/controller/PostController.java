@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.barmatin.collectiveblog.domain.Post;
-import ru.barmatin.collectiveblog.service.bloguser.BlogUserService;
 import ru.barmatin.collectiveblog.service.post.PostService;
 import ru.barmatin.collectiveblog.service.posttag.PostTagService;
 import java.util.Date;
@@ -25,15 +24,19 @@ public class PostController {
     @GetMapping("/api/post")
     public List<Post> getAll(@RequestParam(name = "isVisible", required = false) Boolean isVisible,
                              @RequestParam(name = "postCategoryId", required = false) Long postCategoryId,
-                             @RequestParam(name = "tagName", required = false) String tagName) {
+                             @RequestParam(name = "tagName", required = false) String tagName,
+                             @RequestParam(name = "authorId", required = false) Long authorId) {
         if (isVisible == null) {
             isVisible = true;
         }
         if (postCategoryId != null) {
-            return postService.getAllByPostCategoryId(postCategoryId);
+            return postService.getAllByPostCategoryId(postCategoryId, isVisible);
         }
         else if (tagName!=null && !tagName.isEmpty()) {
-            return postService.getAllByTagName(tagName);
+            return postService.getAllByTagName(tagName, isVisible);
+        }
+        else if (authorId != null) {
+            return postService.getAllByBlogUserId(authorId);
         }
         else {
             return postService.getAllByVisibility(isVisible);

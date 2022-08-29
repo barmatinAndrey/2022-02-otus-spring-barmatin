@@ -14,9 +14,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByIsVisibleOrderByPostDateDesc(boolean isVisible);
 
     @EntityGraph(attributePaths = {"blogUser", "postCategory"})
-    List<Post> findAllByPostCategoryIdOrderByPostDateDesc(long id);
+    List<Post> findAllByPostCategoryIdAndIsVisibleOrderByPostDateDesc(long id, boolean isVisible);
 
     @EntityGraph(attributePaths = {"blogUser", "postCategory"})
-    List<Post> findAllByPostTagListNameOrderByPostDateDesc(String name);
+    List<Post> findAllByPostTagListNameAndIsVisibleOrderByPostDateDesc(String name, boolean isVisible);
+
+    @EntityGraph(attributePaths = {"blogUser", "postCategory"})
+    List<Post> findAllByBlogUserIdOrderByPostDateDesc(long id);
 
 }
