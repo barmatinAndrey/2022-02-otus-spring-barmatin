@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.barmatin.collectiveblog.domain.BlogUser;
 
@@ -18,6 +19,9 @@ class BlogUserServiceImplTest {
     @Autowired
     private BlogUserService blogUserService;
 
+    @Autowired
+    private TestEntityManager em;
+
     @Test
     void getBlogUserByUsername() {
         BlogUser blogUser = blogUserService.getBlogUserByUsername("barmatin");
@@ -26,6 +30,9 @@ class BlogUserServiceImplTest {
 
     @Test
     void saveBlogUser() {
-
+        long userId = (long)em.persistAndGetId(
+                new BlogUser(0, "login", "123", "ADMIN", "Иванов", "Иван", "@"));
+        BlogUser blogUser = em.find(BlogUser.class, userId);
+        assertThat(blogUser.getUsername()).isEqualTo("login");
     }
 }
