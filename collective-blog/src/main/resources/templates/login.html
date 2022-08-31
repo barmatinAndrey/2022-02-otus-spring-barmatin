@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Bootstrap core CSS -->
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="/css/main.css" rel="stylesheet">
+	<link href="/css/all.css" rel="stylesheet"> <!--load all styles -->
+	<!-- Bootstrap core JavaScript
+	   ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.bundle.js"></script>
+	<script src="/js/loadingoverlay.min.js"></script>
+	<link href="/css/login.css" rel="stylesheet">
+	<link href="/css/main.css" rel="stylesheet">
+</head>
+<body>
+	<div class="form">		
+		<div>
+			<form th:action="@{/login}" method="post">
+				<div>
+					<h4>Вход в систему</h4>
+					<input class="form-control me-2" style="width: 295px;" type="text" name="username" placeholder="Введите логин"/>
+					<input class="form-control me-2" style="width: 295px;" type="password" name="password" placeholder="Введите пароль"/>
+					<div class="w-100 mt-2" style="text-align: right;">
+						<button class="btn btn-primary bg-viola bg-viola_text pull-center" type="submit">Войти</button>
+					</div>
+					<div class="w-100 mt-2" style="text-align: right;">
+						<a href="registration.html" th:href="@{/registration}">Зарегистрироваться</a>
+					</div>
+					<div class="w-100 mt-2" style="text-align: right;">
+						<a href="registration.html" th:href="@{/}">Войти без регистрации</a>
+					</div>
+				</div>
+				<br>
+				<div th:if="${param.error}" class="alert alert-danger" role="alert">
+					Неверный логин или пароль
+				</div>
+				<div th:if="${param.logout}" class="alert alert-success" role="alert">
+					Был произведен выход из сиситемы
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/all.css" rel="stylesheet"> <!--load all styles -->
+    <!-- Bootstrap core JavaScript
+       ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/loadingoverlay.min.js"></script>
+    <link href="/css/login.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <script type="/text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-viola">
+    <div class="container" style="max-width: 100%">
+        <a class="navbar-brand" id="navbarTitle"></a>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        На главную
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div>
+    <div class="container page">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="">
+                    <div class="card-body">
+                          <h4 id="mainTitle"></h4>
+                          <table class="w-100 mt-2">
+                            <tr>
+                              <td>
+                                <div class="form-group">
+                                  <select id="postCategorySelect" class="form-control me-2"></select>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                  <input class="form-control me-2" type="text" id="title" placeholder="Заголовок"/>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                  <textarea class="form-control me-2" rows = "15" id="content" placeholder="Текст"></textarea>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                  <input class="form-control me-2" type="text" id="tags" placeholder="Теги"/>
+                              </td>
+                            </tr>
+                          </table>
+                          <br>
+                          <div class="w-100">
+                            <button id="save" class="btn btn-primary bg-viola bg-viola_text pull-center">Сохранить</button>
+                          </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    var id = window.location.pathname.split('/').pop();
+    const mainTitle = document.getElementById("mainTitle");
+    mainTitle.textContent = id == 'new' ? 'Добавить пост' : 'Редактировать пост';
+
+    fetch('/api/current-role')
+        .then(response => response.json())
+        .then(blogUser => {
+            showNavbarTitle(blogUser);
+            fetch('/api/post/'+id)
+                .then(response => response.json())
+                .then(json => outputPost(json))
+        })
+</script>
+
+<script>
+    function showNavbarTitle(blogUser) {
+        var navbarTitle = document.getElementById("navbarTitle");
+        navbarTitle.text = blogUser.surname + ' ' + blogUser.name;
+    }
+</script>
+
+<script>
+    function outputPost(post) {
+        const postTitle = document.getElementById("title");
+        const postContent = document.getElementById("content");
+        var postTags = document.getElementById("tags");
+        const savePost = document.getElementById("save");
+
+        postTitle.value = post.title;
+        postContent.value = post.content;
+        post.postTagList.forEach((postTag, key, array) => {
+            postTags.value += postTag.name;
+            if (!Object.is(array.length - 1, key)) {
+                postTags.value += ', ';
+            }
+        });
+        save.onclick = function() {
+            post.postCategory = JSON.parse(decodeURIComponent(document.getElementById('postCategorySelect').value));
+            post.title = document.getElementById("title").value;
+            post.content = document.getElementById("content").value;
+
+            post.postTagList = [];
+            var tagList = document.getElementById("tags").value.split(/\s*,\s*/);
+            tagList.forEach(function (tag) {
+                post.postTagList.push(JSON.parse('{"name": "' + tag +'"}'))
+            });
+
+            var postCopy = post;
+            postCopy = JSON.stringify(postCopy);
+
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+
+            fetch('/api/post', {
+                method: 'POST',
+                headers: {
+                    [header]: token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: postCopy
+                })
+                .then(response => {
+                   if (response.status == 200) {
+                       window.location.href = '/';
+                   }
+                })
+            }
+
+        fetch('/api/post-category')
+            .then(response => response.json())
+            .then(json => outputPostCategories(json, post))
+    }
+</script>
+
+<script>
+    function outputPostCategories(postCategoryList, post) {
+        const postCategorySelect = document.getElementById("postCategorySelect");
+        postCategoryList.forEach(function (postCategory) {
+            var newOption = document.createElement('option');
+            newOption.value = encodeURIComponent(JSON.stringify(postCategory));
+            newOption.text = postCategory.name;
+            if (post.postCategory != null) {
+                newOption.selected = postCategory.id == post.postCategory.id ? true : false;
+            }
+            postCategorySelect.appendChild(newOption);
+        });
+    }
+</script>
+
+</body>
+</html>

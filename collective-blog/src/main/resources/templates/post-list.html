@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/all.css" rel="stylesheet"> <!--load all styles -->
+    <!-- Bootstrap core JavaScript
+       ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/loadingoverlay.min.js"></script>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-viola">
+    <div class="container" style="max-width: 100%">
+        <a class="navbar-brand" id="navbarTitle"></a>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" role="button" id="authorize" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/post-edit/new" role="button" id="addPost" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Добавить пост
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPostList(null, null, null, true);" role="button" id="showYours" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Показать свои
+                    </a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <select id="visibilitySelect" class="form-control me-2" onchange="showPostList(null, null, value, null);"></select>
+                <select id="postCategorySelect" class="form-control me-2" onchange="showPostList(value, null, null, null);"></select>
+            </form>
+        </div>
+    </div>
+</nav>
+<br>
+<div id="postContainer"></div>
+
+<script>
+    function showPostList(postCategory, tagName, visibility, yours) {
+        if (postCategory!=null && postCategory!=0) {
+            postCategoryId = JSON.parse(decodeURIComponent(postCategory)).id;
+        }
+        else {
+            postCategoryId = null;
+        }
+        const postContainer = document.getElementById("postContainer");
+        postContainer.innerHTML = '';
+        fetch('/api/post-category')
+            .then(response => response.json())
+            .then(postCategoryList => {
+                outputPostCategories(postCategoryList, postCategoryId);
+                fetch('/api/current-role')
+                    .then(response => response.json())
+                    .then(blogUser => {
+                        showNavbarTitle(blogUser);
+                        showAddNewPostButton(blogUser.role);
+                        showIsVisibleSelect(blogUser.role, visibility);
+                        if (postCategoryId != null) {
+                            var url = '/api/post?postCategoryId='+postCategoryId;
+                        }
+                        else if (tagName != null) {
+                            var url = '/api/post?tagName='+tagName;
+                        }
+                        else if (visibility != null) {
+                            var url = '/api/post?isVisible='+visibility;
+                        }
+                        else if (yours != null) {
+                            var url = '/api/post?authorId='+blogUser.id;
+                        }
+                        else {
+                            var url = '/api/post';
+                        }
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(json => outputPostList(json, blogUser));
+                    })
+                })
+
+    }
+</script>
+
+<script>
+    showPostList(null, null, null, null);
+</script>
+
+<script>
+    function showNavbarTitle(blogUser) {
+        var navbarTitle = document.getElementById("navbarTitle");
+        var authorize = document.getElementById("authorize");
+        if (blogUser.role == 'ANONYMOUS') {
+            navbarTitle.text = 'Гость';
+            authorize.text = 'Авторизоваться';
+            authorize.href= '/login';
+        }
+        else {
+            navbarTitle.text = blogUser.surname + ' ' + blogUser.name;
+            authorize.text = 'Выйти';
+            authorize.onclick = function() {
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        [header]: token
+                    }
+                    })
+                    .then(response => {
+                       if (response.status == 200) {
+                           window.location.href = '/login';
+                       }
+                    })
+
+            }
+        }
+    }
+</script>
+
+<script>
+    function showAddNewPostButton(userRole) {
+        var addPost = document.getElementById("addPost");
+        var showYours = document.getElementById("showYours");
+        switch (userRole) {
+            case 'ADMIN':
+
+                break;
+            case 'USER':
+
+                break;
+            case 'ANONYMOUS':
+                if (addPost != null) {
+                    addPost.parentNode.removeChild(addPost);
+                }
+                if (showYours != null) {
+                    showYours.parentNode.removeChild(showYours);
+                }
+                break;
+        }
+    }
+</script>
+
+<script>
+    function showIsVisibleSelect(userRole, isVisible) {
+        var visibilitySelect = document.getElementById("visibilitySelect");
+        if (userRole == 'ADMIN') {
+            visibilitySelect.innerHTML = '';
+
+            var newOptionTrue = document.createElement('option');
+            newOptionTrue.value = true;
+            newOptionTrue.text = 'Видимые';
+            newOptionTrue.selected = newOptionTrue.value == isVisible;
+
+            var newOptionFalse = document.createElement('option');
+            newOptionFalse.value = false;
+            newOptionFalse.text = 'Скрытые';
+            newOptionFalse.selected = newOptionFalse.value == isVisible;
+
+            visibilitySelect.appendChild(newOptionTrue);
+            visibilitySelect.appendChild(newOptionFalse);
+        }
+        else {
+           if (visibilitySelect != null) {
+               visibilitySelect.parentNode.removeChild(visibilitySelect);
+           }
+        }
+    }
+</script>
+
+<script>
+    function outputPostCategories(postCategoryList, postCategoryId) {
+        const postCategorySelect = document.getElementById("postCategorySelect");
+        postCategorySelect.innerHTML = '';
+        var newOption = document.createElement('option');
+        newOption.value = 0;
+        newOption.text = 'Все категории';
+        postCategorySelect.appendChild(newOption);
+        postCategoryList.forEach(function (postCategory) {
+            var newOption = document.createElement('option');
+            newOption.value = encodeURIComponent(JSON.stringify(postCategory));
+            newOption.text = postCategory.name;
+            if (postCategoryId != null) {
+                newOption.selected = postCategory.id == postCategoryId ? true : false;
+            }
+            postCategorySelect.appendChild(newOption);
+        });
+    }
+</script>
+
+<script>
+    function deletePost(id) {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        fetch('/api/post/' +id, {
+            method: 'DELETE',
+            headers: {
+                [header]: token
+            }
+            })
+            .then(removeRow(id))
+    }
+</script>
+
+<script>
+    function removeRow(id) {
+        var row = document.getElementById(id);
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+<script>
+    function savePost(post) {
+        var postCopy = post;
+        postCopy = JSON.stringify(postCopy);
+
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        fetch('/api/post', {
+            method: 'POST',
+            headers: {
+                [header]: token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: postCopy
+            })
+            .then(response => {
+               if (response.status == 200) {
+
+               }
+            })
+    }
+</script>
+
+<script>
+    function outputPostList(postList, blogUser) {
+        const postContainer = document.getElementById("postContainer");
+        postList.forEach(function (post) {
+            var postLayout = document.createElement('div');
+            postLayout.innerHTML = `
+    <div class="container page">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="">
+                    <div class="card-body">
+                        <div id="switchContainer">
+                            <div>
+                                <input id="switchToggle" type="checkbox" class="form-check-input">  видимость</input>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6"><b>Автор: </b>${post.blogUser.surname} ${post.blogUser.name}</div>
+                            <div class="col-6 ta-right"><b>Дата: </b>${post.postDate}</div>
+                        </div>
+                        <h5 class="card-title">${post.title}</h5>
+                        <p class="card-text">${post.content}</p>
+                        <div id="tagContainer" class="col-12">
+                            <b>Теги:</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><b>Категория: </b>${post.postCategory.name}</div>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <a href="/post-view/${post.id}">
+                                <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Читать
+                                </button>
+                            </a>
+                            <a id="edit" href="/post-edit/${post.id}">
+                                <button type="button" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Редактировать
+                                </button>
+                            </a>
+                            <a id="delete">
+                                <button type="button" onclick="deletePost(${post.id})" class="btn btn-primary bg-viola bg-viola_text pull-center">
+                                    Удалить
+                                </button>
+                            </a>
+					    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            `;
+            postLayout.id = post.id;
+            postContainer.appendChild(postLayout);
+
+            var tagContainer = document.getElementById("tagContainer");
+            tagContainer.id = 'tagContainer' + post.id;
+            post.postTagList.forEach((postTag, key, array) => {
+                var tag = document.createElement('a');
+                tag.textContent = postTag.name;
+                tag.href = "javascript:void(0)";
+                tag.onclick = function() {
+                    showPostList(null, postTag.name, null, null);
+                }
+                tagContainer.appendChild(tag);
+                if (!Object.is(array.length - 1, key)) {
+                    var p = document.createElement('a');
+                    p.textContent = ', ';
+                    tagContainer.appendChild(p);
+                }
+            });
+
+            var switchContainer = document.getElementById("switchContainer");
+            switchContainer.id = 'switchContainer' + post.id;
+            var editButton = document.getElementById("edit");
+            editButton.id = 'editButton' + post.id;
+            var deleteButton = document.getElementById("delete");
+            deleteButton.id = 'deleteButton' + post.id;
+
+            if (blogUser.role != 'ADMIN') {
+                switchContainer.parentNode.removeChild(switchContainer);
+            }
+            else {
+                var switchToggle = document.getElementById("switchToggle");
+                switchToggle.id = 'switchToggle' + post.id;
+                switchToggle.checked = post.visible;
+                switchToggle.onclick = function() {
+                    post.visible = switchToggle.checked;
+                    savePost(post);
+                }
+            }
+
+            if (post.blogUser.id != blogUser.id) {
+                editButton.parentNode.removeChild(editButton);
+                deleteButton.parentNode.removeChild(deleteButton);
+            }
+        });
+    }
+</script>
+
+
+</body></html>
